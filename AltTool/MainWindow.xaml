@@ -1,0 +1,124 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AltTool"
+        xmlns:Properties="clr-namespace:AltTool.Properties" x:Class="AltTool.MainWindow"
+        mc:Ignorable="d"
+        Title="alt:V | Clothes Tool" Height="450" Width="800" Icon="icon_alpha.ico">
+    <Grid>
+        <ProgressBar x:Name="currentProgress" Height="3" VerticalAlignment="Bottom" Background="White" BorderBrush="White" Value="0"/>
+        <TextBlock x:Name="currentStatusBar" Height="20" Margin="0" TextWrapping="Wrap" VerticalAlignment="Bottom" Background="{x:Null}" Padding="5,0,0,0">
+        </TextBlock>
+        <Button x:Name="buildProjectButton" Content="Build project" HorizontalAlignment="Right" Width="156" Height="20" BorderBrush="{x:Null}" Background="#FFF0F0F0" Click="BuildProjectButton_Click" VerticalAlignment="Bottom" Margin="0,0,2,2"/>
+        <Grid Margin="5,30,5,25">
+            <GroupBox Margin="0,0,585.333,-0.333" Padding="5" Header="Drawables">
+                <Grid>
+                    <ListBox x:Name="clothesListBox" BorderBrush="White" Margin="0,0,0,18" SelectionChanged="ClothesListBox_SelectionChanged">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid ShowGridLines="False">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="20" />
+                                        <ColumnDefinition Width="20" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Text="{Binding Icon}"
+                                               Grid.Column="0" />
+                                    <TextBlock Text="{Binding Type}"
+                                               Grid.Column="1" />
+                                    <TextBlock Text="{Binding Name}"
+                                               Grid.Column="2" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <Menu VerticalAlignment="Bottom" Height="18">
+                        <MenuItem x:Name="addMaleClothes" Header="Male" Click="AddMaleClothes_Click"/>
+                        <MenuItem x:Name="addFemaleClothes" Header="Female" Click="AddFemaleClothes_Click"/>
+                        <MenuItem x:Name="removeUnderCursor" Header="Remove" Click="RemoveUnderCursor_Click"/>
+                    </Menu>
+                </Grid>
+            </GroupBox>
+
+            <Grid x:Name="clothEditWindow" Margin="0,0,0.333,-0.333" HorizontalAlignment="Right" Width="580" Visibility="Collapsed">
+                <GroupBox x:Name="editGroupBox" Margin="0" Header="Drawable edit" >
+                    <Grid>
+                        <Grid Margin="0,50,0,0">
+                            <GroupBox Header="Textures" Width="400" HorizontalAlignment="Left" >
+                                <Grid>
+                                    <ListBox x:Name="texturesList" Margin="0, 0, 0, 18">
+
+                                    </ListBox>
+                                    <Menu VerticalAlignment="Bottom">
+                                        <MenuItem x:Name="addTexture" Header="Add" Click="AddTexture_Click"/>
+                                        <MenuItem x:Name="removeTexture" Header="Remove" Click="RemoveTexture_Click"/>
+                                    </Menu>
+                                </Grid>
+                            </GroupBox>
+                            <GroupBox HorizontalAlignment="Right" Width="160" Header="Flags" Margin="0">
+                                <StackPanel Margin="5">
+                                    <CheckBox x:Name="unkFlag1Check" Content="unkFlag1" Checked="UnkFlag1Check_Checked"/>
+                                    <CheckBox x:Name="unkFlag2Check" Content="unkFlag2" Checked="UnkFlag2Check_Checked"/>
+                                    <CheckBox x:Name="unkFlag3Check" Content="unkFlag3" Checked="UnkFlag3Check_Checked"/>
+                                    <CheckBox x:Name="unkFlag4Check" Content="unkFlag4" Checked="UnkFlag4Check_Checked"/>
+                                    <CheckBox x:Name="isHighHeelsCheck" Content="isHighHeels" Checked="IsHighHeelsCheck_Checked"/>
+                                </StackPanel>
+                            </GroupBox>
+                        </Grid>
+                        <GroupBox Header="Item name" HorizontalAlignment="Left" Height="40" Margin="0,0,0,0" VerticalAlignment="Top" Width="200">
+                            <TextBox x:Name="drawableName" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0" TextChanged="DrawableName_TextChanged" BorderBrush="{x:Null}"/>
+                        </GroupBox>
+                        <GroupBox Header="First person model" HorizontalAlignment="Right" Height="40" Margin="0,0,0,0" VerticalAlignment="Top" Width="360">
+                            <Grid>
+                                <TextBox x:Name="fpModelPath" VerticalAlignment="Stretch" Margin="0, 0, 100, 0" Text="Not selected..." FontSize="12" Background="Transparent" BorderBrush="{x:Null}" IsEnabled="False" IsReadOnly="True" IsUndoEnabled="False" MaxLines="1"/>
+                                <Button x:Name="selectFPModel" HorizontalAlignment="Right" Width="40" Margin="0,0,50,-0.333" Content="Select" BorderBrush="{x:Null}" BorderThickness="0" Click="SelectFPModel_Click"/>
+                                <Button x:Name="clearFPModel" VerticalAlignment="Stretch" HorizontalAlignment="Right" Width="40" Content="Clear" BorderThickness="0" Click="ClearFPModel_Click"/>
+                            </Grid>
+                        </GroupBox>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+            <Grid x:Name="pedPropEditWindow" Margin="0,0,0.333,-0.333" HorizontalAlignment="Right" Width="580" Visibility="Collapsed">
+                <GroupBox x:Name="pedPropEditGroupBox" Margin="0" Header="Ped prop edit" >
+                    <Grid>
+                        <Grid Margin="0,50,0,0">
+                            <GroupBox Header="Textures" Width="400" HorizontalAlignment="Left" >
+                                <Grid>
+                                    <ListBox x:Name="pedPropTexturesList" Margin="0, 0, 0, 18">
+
+                                    </ListBox>
+                                    <Menu VerticalAlignment="Bottom">
+                                        <MenuItem x:Name="pedPropAddTexture" Header="Add" Click="AddTexture_Click"/>
+                                        <MenuItem x:Name="pedPropRemoveTexture" Header="Remove" Click="RemoveTexture_Click"/>
+                                    </Menu>
+                                </Grid>
+                            </GroupBox>
+                            <GroupBox HorizontalAlignment="Right" Width="160" Header="Flags" Margin="0">
+                                <StackPanel Margin="5">
+                                    <CheckBox x:Name="pedPropFlag1" Content="unkFlag1" Checked="PedPropFlag1_Checked"/>
+                                    <CheckBox x:Name="pedPropFlag2" Content="unkFlag2" Checked="PedPropFlag2_Checked"/>
+                                    <CheckBox x:Name="pedPropFlag3" Content="unkFlag3" Checked="PedPropFlag3_Checked"/>
+                                    <CheckBox x:Name="pedPropFlag4" Content="unkFlag4" Checked="PedPropFlag4_Checked"/>
+                                    <CheckBox x:Name="pedPropFlag5" Content="unkFlag5" Checked="PedPropFlag5_Checked"/>
+                                </StackPanel>
+                            </GroupBox>
+                        </Grid>
+                        <GroupBox Header="Ped prop name" HorizontalAlignment="Left" Height="40" Margin="0,0,0,0" VerticalAlignment="Top" Width="200">
+                            <TextBox x:Name="pedPropName" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0" BorderBrush="{x:Null}" TextChanged="PedPropName_TextChanged"/>
+                        </GroupBox>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+        </Grid>
+        <Menu Height="20" Margin="0" VerticalAlignment="Top">
+            <MenuItem Header="Project">
+                <MenuItem Header="New"/>
+                <MenuItem Header="Open"/>
+                <MenuItem Header="Save"/>
+            </MenuItem>
+        </Menu>
+    </Grid>
+</Window>
