@@ -274,6 +274,7 @@ namespace AltTool
 
                             switch (componentTypeID)
                             {
+                                case 2:
                                 case 7:
                                     nextPropMask = 11; break;
                                 case 5:
@@ -292,9 +293,9 @@ namespace AltTool
                             textureDescription.PropMask = nextPropMask;
                             textureDescription.Unk_2806194106 = (byte)(cd.fpModelPath != "" ? 1 : 0);
 
-                            byte texId = (byte)((componentTypeID != 4 && componentTypeID != 6) ? 0 : 1);
-                            string postfix = (componentTypeID != 4 && componentTypeID != 6) ? "u" : "r";
-                            string ytdPostfix = (componentTypeID != 4 && componentTypeID != 6) ? "uni" : "whi";
+                            byte texId = (byte)(cd.mainPath.EndsWith("_u.ydd") ? 0 : 1);
+                            string postfix = cd.mainPath.EndsWith("_u.ydd") ? "u" : "r";
+                            string ytdPostfix = cd.mainPath.EndsWith("_u.ydd") ? "uni" : "whi";
 
                             foreach (string texPath in cd.textures)
                             {
@@ -404,6 +405,8 @@ namespace AltTool
 
                             string componentNumerics = currentPropIndex.ToString().PadLeft(3, '0');
                             string prefix = cd.GetPrefix();
+
+                            var ydr = new YdrFile();
 
                             File.Copy(cd.mainPath, outputFolder + "\\stream\\" + folderNames[sexNr] + "_p.rpf\\" + prefixes[sexNr] + "freemode_01_p_" + prefixes[sexNr] + collectionName + "\\" + prefix + "_" + componentNumerics + ".ydd", true);
 
@@ -523,6 +526,7 @@ namespace AltTool
 
                                 switch (componentTypeID)
                                 {
+                                    case 2:
                                     case 7:
                                         nextPropMask = 11; break;
                                     case 5:
@@ -541,9 +545,9 @@ namespace AltTool
                                 textureDescription.PropMask = nextPropMask;
                                 textureDescription.Unk_2806194106 = (byte)(cd.fpModelPath != "" ? 1 : 0);
 
-                                byte texId = (byte)((componentTypeID != 4 && componentTypeID != 6) ? 0 : 1);
-                                string postfix = (componentTypeID != 4 && componentTypeID != 6) ? "u" : "r";
-                                string ytdPostfix = (componentTypeID != 4 && componentTypeID != 6) ? "uni" : "whi";
+                                byte texId = (byte)(cd.mainPath.EndsWith("_u.ydd") ? 0 : 1);
+                                string postfix = cd.mainPath.EndsWith("_u.ydd") ? "u" : "r";
+                                string ytdPostfix = cd.mainPath.EndsWith("_u.ydd") ? "uni" : "whi";
 
                                 foreach (string texPath in cd.textures)
                                 {
@@ -814,6 +818,7 @@ namespace AltTool
 
                             switch (componentTypeID)
                             {
+                                case 2:
                                 case 7:
                                     nextPropMask = 11; break;
                                 case 5:
@@ -832,9 +837,9 @@ namespace AltTool
                             textureDescription.PropMask = nextPropMask;
                             textureDescription.Unk_2806194106 = (byte)(cd.fpModelPath != "" ? 1 : 0);
 
-                            byte texId = (byte)((componentTypeID != 4 && componentTypeID != 6) ? 0 : 1);
-                            string postfix = (componentTypeID != 4 && componentTypeID != 6) ? "u" : "r";
-                            string ytdPostfix = (componentTypeID != 4 && componentTypeID != 6) ? "uni" : "whi";
+                            byte texId = (byte)(cd.mainPath.EndsWith("_u.ydd") ? 0 : 1);
+                            string postfix = cd.mainPath.EndsWith("_u.ydd") ? "u" : "r";
+                            string ytdPostfix = cd.mainPath.EndsWith("_u.ydd") ? "uni" : "whi";
 
                             foreach (string texPath in cd.textures)
                             {
