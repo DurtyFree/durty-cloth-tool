@@ -115,9 +115,9 @@
         </Grid>
         <Menu Height="20" Margin="0" VerticalAlignment="Top">
             <MenuItem Header="Project">
-                <MenuItem Header="New"/>
-                <MenuItem Header="Open"/>
-                <MenuItem Header="Save"/>
+                <MenuItem Header="New"  Click="NewProjectButton_Click"/>
+                <MenuItem Header="Open" Click="OpenProjectButton_Click"/>
+                <MenuItem Header="Save" Click="SaveProjectButton_Click"/>
             </MenuItem>
         </Menu>
     </Grid>

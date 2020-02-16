@@ -7,13 +7,15 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace AltTool
 {
     public class ClothData: INotifyPropertyChanged
     {
-        ClothNameResolver.Type clothType;
-        ClothNameResolver.DrawableType drawableType;
+        public ClothNameResolver.Type clothType;
+        public ClothNameResolver.DrawableType drawableType;
 
         public struct ComponentFlags
         {
@@ -87,6 +89,11 @@ namespace AltTool
             }
         }
 
+        public ClothData()
+        {
+
+        }
+
         public ClothData(string path, ClothNameResolver.Type _type, ClothNameResolver.DrawableType _drawableType, string numeric, string _postfix, Sex sex)
         {
             if (!File.Exists(path))
@@ -124,19 +131,33 @@ namespace AltTool
         {
             textures.Clear();
             string rootPath = Path.GetDirectoryName(mainPath);
-            for (int i = 0; ; ++i)
+
+            if(IsComponent())
             {
-                string relPath = rootPath + "\\" + ClothNameResolver.DrawableTypeToString(drawableType) + "_diff_" + origNumerics + "_" + (char)(offsetLetter + i) + "_uni.ytd";
-                if (!File.Exists(relPath))
-                    break;
-                textures.Add(relPath);
+                for (int i = 0; ; ++i)
+                {
+                    string relPath = rootPath + "\\" + ClothNameResolver.DrawableTypeToString(drawableType) + "_diff_" + origNumerics + "_" + (char)(offsetLetter + i) + "_uni.ytd";
+                    if (!File.Exists(relPath))
+                        break;
+                    textures.Add(relPath);
+                }
+                for (int i = 0; ; ++i)
+                {
+                    string relPath = rootPath + "\\" + ClothNameResolver.DrawableTypeToString(drawableType) + "_diff_" + origNumerics + "_" + (char)(offsetLetter + i) + "_whi.ytd";
+                    if (!File.Exists(relPath))
+                        break;
+                    textures.Add(relPath);
+                }
             }
-            for (int i = 0; ; ++i)
+            else
             {
-                string relPath = rootPath + "\\" + ClothNameResolver.DrawableTypeToString(drawableType) + "_diff_" + origNumerics + "_" + (char)(offsetLetter + i) + "_whi.ytd";
-                if (!File.Exists(relPath))
-                    break;
-                textures.Add(relPath);
+                for (int i = 0; ; ++i)
+                {
+                    string relPath = rootPath + "\\" + ClothNameResolver.DrawableTypeToString(drawableType) + "_diff_" + origNumerics + "_" + (char)(offsetLetter + i) + ".ytd";
+                    if (!File.Exists(relPath))
+                        break;
+                    textures.Add(relPath);
+                }
             }
         }
 

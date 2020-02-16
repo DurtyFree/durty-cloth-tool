@@ -36,16 +36,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Ookii.Dialogs.Wpf, Version=1.0.0.0, Culture=neutral, PublicKeyToken=66aa232afad40158, processorArchitecture=MSIL">
       <HintPath>..\packages\Ookii.Dialogs.Wpf.1.1.0\lib\net45\Ookii.Dialogs.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="RageLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Projects\rage-util\RageLib.GTA5\bin\Debug\RageLib.dll</HintPath>
+      <HintPath>..\..\gtautil\gtautil\Libraries\gta-toolkit\RageLib\bin\Debug\RageLib.dll</HintPath>
     </Reference>
     <Reference Include="RageLib.GTA5, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Projects\rage-util\RageLib.GTA5\bin\Debug\RageLib.GTA5.dll</HintPath>
+      <HintPath>..\..\gtautil\gtautil\Libraries\gta-toolkit\RageLib.GTA5\bin\Debug\RageLib.GTA5.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -73,8 +76,15 @@
     <Compile Include="ProjectBuild.xaml.cs">
       <DependentUpon>ProjectBuild.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ProjectBuilder.cs" />
+    <Compile Include="Resource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
     <Compile Include="ResourceBuilder.cs" />
     <Compile Include="StatusController.cs" />
+    <Compile Include="Utils.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -113,11 +123,21 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Resources\gtav_aes_key.dat" />
+    <None Include="Resources\gtav_hash_lut.dat" />
+    <None Include="Resources\gtav_ng_decrypt_tables.dat" />
+    <None Include="Resources\gtav_ng_encrypt_luts.dat" />
+    <None Include="Resources\gtav_ng_encrypt_tables.dat" />
+    <None Include="Resources\gtav_ng_key.dat" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

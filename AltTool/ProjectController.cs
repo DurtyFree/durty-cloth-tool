@@ -40,10 +40,40 @@ namespace AltTool
                     if(!cData.isVariation)
                     {
                         ClothData nextCloth = new ClothData(filename, cData.clothType, cData.drawableType, cData.bindedNumber, cData.postfix, targetSex);
-                        nextCloth.SearchForFPModel();
-                        nextCloth.SearchForTextures();
-                        MainWindow.clothes.Add(nextCloth);
-                        StatusController.SetStatus(nextCloth.ToString() + " added (FP model found: " + (nextCloth.fpModelPath != "" ? "Yes": "No") + ", Textures: " + (nextCloth.textures.Count) + "). Total: " + MainWindow.clothes.Count);
+                        
+                        if(cData.clothType == ClothNameResolver.Type.Component)
+                        {
+                            nextCloth.SearchForFPModel();
+                            nextCloth.SearchForTextures();
+
+                            var _clothes = MainWindow.clothes.ToList();
+                            _clothes.Add(nextCloth);
+                            _clothes = _clothes.OrderBy(x => x.Name, new AlphanumericComparer()).ToList();
+                            MainWindow.clothes.Clear();
+
+                            foreach(var cloth in _clothes)
+                            {
+                                MainWindow.clothes.Add(cloth);
+                            }
+
+                            StatusController.SetStatus(nextCloth.ToString() + " added (FP model found: " + (nextCloth.fpModelPath != "" ? "Yes" : "No") + ", Textures: " + (nextCloth.textures.Count) + "). Total: " + MainWindow.clothes.Count);
+                        }
+                        else
+                        {
+                            nextCloth.SearchForTextures();
+
+                            var _clothes = MainWindow.clothes.ToList();
+                            _clothes.Add(nextCloth);
+                            _clothes = _clothes.OrderBy(x => x.Name, new AlphanumericComparer()).ToList();
+                            MainWindow.clothes.Clear();
+
+                            foreach (var cloth in _clothes)
+                            {
+                                MainWindow.clothes.Add(cloth);
+                            }
+
+                            StatusController.SetStatus(nextCloth.ToString() + " added, Textures: " + (nextCloth.textures.Count) + "). Total: " + MainWindow.clothes.Count);
+                        }
                     }
                     else
                         StatusController.SetStatus("Item " + baseFileName + " can't be added. Looks like it's variant of another item");

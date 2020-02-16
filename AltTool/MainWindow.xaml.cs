@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -69,7 +70,18 @@ namespace AltTool
         {
             if (selectedCloth != null)
             {
-                clothes.Remove(selectedCloth);
+                var _clothes = clothes.OrderBy(x => x.Name, new AlphanumericComparer()).ToList();
+
+                clothes.Clear();
+
+                foreach(var cloth in _clothes)
+                {
+                    if(cloth != selectedCloth)
+                    {
+                        clothes.Add(cloth);
+                    }
+                }
+
                 selectedCloth = null;
                 editGroupBox.Visibility = Visibility.Hidden;
             }
@@ -103,6 +115,7 @@ namespace AltTool
                     else
                     {
                         pedPropEditWindow.Visibility = Visibility.Visible;
+                        drawableName.Text = selectedCloth.Name;
                         pedPropName.Text = selectedCloth.Name;
 
                         pedPropTexturesList.ItemsSource = selectedCloth.textures;
@@ -122,6 +135,44 @@ namespace AltTool
             if(selectedCloth != null)
             {
                 selectedCloth.Name = drawableName.Text;
+            }
+        }
+
+        private void NewProjectButton_Click(object sender, RoutedEventArgs e)
+        {
+            clothes.Clear();
+        }
+
+        private void OpenProjectButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.CheckFileExists = true;
+            openFileDialog.Filter = "altV cloth JSON (*.altv-cloth.json)|*.altv-cloth.json";
+            openFileDialog.FilterIndex = 1;
+            openFileDialog.DefaultExt = "altv-cloth.json";
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                foreach (string filename in openFileDialog.FileNames)
+                {
+                    ProjectBuilder.LoadProject(filename);
+                }
+            }
+        }
+
+        private void SaveProjectButton_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog  = new SaveFileDialog();
+            saveFileDialog.Filter          = "altV cloth JSON (*.altv-cloth.json)|*.altv-cloth.json";
+            saveFileDialog.FilterIndex     = 1;
+            saveFileDialog.DefaultExt      = "altv-cloth.json";
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                foreach (string filename in saveFileDialog.FileNames)
+                {
+                    ProjectBuilder.BuildProject(filename);
+                }
             }
         }
 

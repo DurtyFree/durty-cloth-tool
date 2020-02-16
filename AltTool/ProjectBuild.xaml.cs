@@ -50,6 +50,14 @@ namespace AltTool
                 case TargetResourceType.Altv:
                     ResourceBuilder.BuildResourceAltv(outputFolder, collectionName);
                     break;
+
+                case TargetResourceType.Single:
+                    ResourceBuilder.BuildResourceSingle(outputFolder, collectionName);
+                    break;
+
+                case TargetResourceType.Fivem:
+                    ResourceBuilder.BuildResourceFivem(outputFolder, collectionName);
+                    break;
             }
         }
 
