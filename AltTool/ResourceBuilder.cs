@@ -300,6 +300,12 @@ namespace AltTool
                             byte texId = (byte)(cd.mainPath.EndsWith("_u.ydd") ? 0 : 1);
                             string postfix = cd.mainPath.EndsWith("_u.ydd") ? "u" : "r";
                             string ytdPostfix = cd.mainPath.EndsWith("_u.ydd") ? "uni" : "whi";
+                            
+                            if((cd.drawableType == ClothNameResolver.DrawableType.Shoes) || (cd.drawableType == ClothNameResolver.DrawableType.Accessories))
+                            {
+                                postfix = "r";
+                                ytdPostfix = "uni";
+                            }   
 
                             foreach (string texPath in cd.textures)
                             {
