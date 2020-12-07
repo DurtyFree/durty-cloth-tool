@@ -100,7 +100,7 @@ namespace AltTool
                 drawableName.Text = _selectedCloth.Name;
 
                 texturesList.ItemsSource = _selectedCloth.Textures;
-                fpModelPath.Text = _selectedCloth.FPModelPath != "" ? _selectedCloth.FPModelPath : "Not selected...";
+                firstPersonModelPath.Text = _selectedCloth.FirstPersonModelPath != "" ? _selectedCloth.FirstPersonModelPath : "Not selected...";
 
                 unkFlag1Check.IsChecked = _selectedCloth.PedComponentFlags.unkFlag1;
                 unkFlag2Check.IsChecked = _selectedCloth.PedComponentFlags.unkFlag2;
@@ -224,18 +224,18 @@ namespace AltTool
                 _selectedCloth.PedComponentFlags.isHighHeels = isHighHeelsCheck.IsChecked.GetValueOrDefault(false);
         }
 
-        private void ClearFPModel_Click(object sender, RoutedEventArgs e)
+        private void ClearFirstPersonModel_Click(object sender, RoutedEventArgs e)
         {
             if (_selectedCloth != null)
-                _selectedCloth.FPModelPath = "";
-            fpModelPath.Text = "Not selected...";
+                _selectedCloth.FirstPersonModelPath = "";
+            firstPersonModelPath.Text = "Not selected...";
         }
 
-        private void SelectFPModel_Click(object sender, RoutedEventArgs e)
+        private void SelectFirstPersonModel_Click(object sender, RoutedEventArgs e)
         {
             if (_selectedCloth != null)
-                ProjectController.Instance().SetFPModel(_selectedCloth);
-            fpModelPath.Text = _selectedCloth.FPModelPath != "" ? _selectedCloth.FPModelPath : "Not selected...";
+                ProjectController.Instance().SetFirstPersonModel(_selectedCloth);
+            firstPersonModelPath.Text = !string.IsNullOrEmpty(_selectedCloth?.FirstPersonModelPath) ? _selectedCloth.FirstPersonModelPath : "Not selected...";
         }
 
         private void PedPropName_TextChanged(object sender, TextChangedEventArgs e)

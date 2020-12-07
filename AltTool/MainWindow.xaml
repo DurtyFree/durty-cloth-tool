@@ -73,9 +73,9 @@
                         </GroupBox>
                         <GroupBox Header="First person model" HorizontalAlignment="Right" Height="40" Margin="0,0,0,0" VerticalAlignment="Top" Width="360">
                             <Grid>
-                                <TextBox x:Name="fpModelPath" VerticalAlignment="Stretch" Margin="0, 0, 100, 0" Text="Not selected..." FontSize="12" Background="Transparent" BorderBrush="{x:Null}" IsEnabled="False" IsReadOnly="True" IsUndoEnabled="False" MaxLines="1"/>
-                                <Button x:Name="selectFPModel" HorizontalAlignment="Right" Width="40" Margin="0,0,50,-0.333" Content="Select" BorderBrush="{x:Null}" BorderThickness="0" Click="SelectFPModel_Click"/>
-                                <Button x:Name="clearFPModel" VerticalAlignment="Stretch" HorizontalAlignment="Right" Width="40" Content="Clear" BorderThickness="0" Click="ClearFPModel_Click"/>
+                                <TextBox x:Name="firstPersonModelPath" VerticalAlignment="Stretch" Margin="0, 0, 100, 0" Text="Not selected..." FontSize="12" Background="Transparent" BorderBrush="{x:Null}" IsEnabled="False" IsReadOnly="True" IsUndoEnabled="False" MaxLines="1"/>
+                                <Button x:Name="selectFirstPersonModel" HorizontalAlignment="Right" Width="40" Margin="0,0,50,-0.333" Content="Select" BorderBrush="{x:Null}" BorderThickness="0" Click="SelectFirstPersonModel_Click"/>
+                                <Button x:Name="clearFirstPersonModel" VerticalAlignment="Stretch" HorizontalAlignment="Right" Width="40" Content="Clear" BorderThickness="0" Click="ClearFirstPersonModel_Click"/>
                             </Grid>
                         </GroupBox>
                     </Grid>

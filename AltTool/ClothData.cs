@@ -45,7 +45,7 @@ namespace AltTool
         public string MainPath { get; } = "";
         public ComponentFlags PedComponentFlags;
         public PropFlags PedPropFlags;
-        public string FPModelPath { get; set; }
+        public string FirstPersonModelPath { get; set; }
         public readonly ObservableCollection<string> Textures = new ObservableCollection<string>();
         public Sex TargetSex { get; }
         public string Icon => SexIcons[(int)TargetSex];
@@ -104,17 +104,17 @@ namespace AltTool
             MainPath = path;
         }
 
-        public void SearchForFPModel()
+        public void SearchForFirstPersonModel()
         {
             string rootPath = Path.GetDirectoryName(MainPath);
             string fileName = Path.GetFileNameWithoutExtension(MainPath);
             string relPath = rootPath + "\\" + fileName + "_1.ydd";
-            FPModelPath = File.Exists(relPath) ? relPath : "";
+            FirstPersonModelPath = File.Exists(relPath) ? relPath : "";
         }
 
-        public void SetFPModel(string path)
+        public void SetFirstPersonModel(string path)
         {
-            FPModelPath = path;
+            FirstPersonModelPath = path;
         }
 
         public void SearchForTextures()
@@ -176,7 +176,7 @@ namespace AltTool
             return false;
         }
 
-        public byte GetComponentTypeID()
+        public byte GetComponentTypeId()
         {
             return IsComponent() 
                 ? (byte) DrawableType 
@@ -188,7 +188,7 @@ namespace AltTool
             return !IsComponent();
         }
 
-        public byte GetPedPropTypeID()
+        public byte GetPedPropTypeId()
         {
             if (IsPedProp())
                 return (byte)((int)DrawableType - (int)ClothNameResolver.DrawableTypes.PropHead);

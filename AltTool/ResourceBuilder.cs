@@ -262,7 +262,7 @@ namespace AltTool
                     if (cd.IsComponent())
                     {
 
-                        byte componentTypeID = cd.GetComponentTypeID();
+                        byte componentTypeID = cd.GetComponentTypeId();
 
                         if (cd.Textures.Count > 0 && (int)cd.TargetSex == sexNr)
                         {
@@ -294,7 +294,7 @@ namespace AltTool
                             }
 
                             textureDescription.PropMask = nextPropMask;
-                            textureDescription.Unk_2806194106 = (byte)(cd.FPModelPath != "" ? 1 : 0);
+                            textureDescription.Unk_2806194106 = (byte)(cd.FirstPersonModelPath != "" ? 1 : 0);
 
                             byte texId = (byte)(cd.MainPath.EndsWith("_u.ydd") ? 0 : 1);
                             string postfix = cd.MainPath.EndsWith("_u.ydd") ? "u" : "r";
@@ -365,13 +365,13 @@ namespace AltTool
                             for (int i = 0; i < cd.Textures.Count; ++i)
                                 File.Copy(cd.Textures[i], outputFolder + "\\stream\\" + FolderNames[sexNr] + ".rpf\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "\\" + prefix + "_diff_" + componentNumerics + "_" + (char)(offsetLetter + i) + "_" + ytdPostfix + ".ytd");
 
-                            if (cd.FPModelPath != "")
-                                File.Copy(cd.FPModelPath, outputFolder + "\\stream\\" + FolderNames[sexNr] + ".rpf\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "\\" + prefix + "_" + componentNumerics + "_" + postfix + "_1.ydd");
+                            if (cd.FirstPersonModelPath != "")
+                                File.Copy(cd.FirstPersonModelPath, outputFolder + "\\stream\\" + FolderNames[sexNr] + ".rpf\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "\\" + prefix + "_" + componentNumerics + "_" + postfix + "_1.ydd");
                         }
                     }
                     else
                     {
-                        Unk_2834549053 anchor = (Unk_2834549053)cd.GetPedPropTypeID();
+                        Unk_2834549053 anchor = (Unk_2834549053)cd.GetPedPropTypeId();
 
                         if (cd.Textures.Count > 0 && (int)cd.TargetSex == sexNr)
                         {
@@ -535,7 +535,7 @@ namespace AltTool
                     {
                         if (cd.IsComponent())
                         {
-                            byte componentTypeID = cd.GetComponentTypeID();
+                            byte componentTypeID = cd.GetComponentTypeId();
 
                             if (cd.Textures.Count > 0 && (int)cd.TargetSex == sexNr)
                             {
@@ -567,7 +567,7 @@ namespace AltTool
                                 }
 
                                 textureDescription.PropMask = nextPropMask;
-                                textureDescription.Unk_2806194106 = (byte)(cd.FPModelPath != "" ? 1 : 0);
+                                textureDescription.Unk_2806194106 = (byte)(cd.FirstPersonModelPath != "" ? 1 : 0);
 
                                 byte texId = (byte)(cd.MainPath.EndsWith("_u.ydd") ? 0 : 1);
                                 string postfix = cd.MainPath.EndsWith("_u.ydd") ? "u" : "r";
@@ -642,17 +642,17 @@ namespace AltTool
                                     resource.Import(cd.Textures[i]);
                                 }
 
-                                if (cd.FPModelPath != "")
+                                if (cd.FirstPersonModelPath != "")
                                 {
                                     resource = currComponentDir.CreateResourceFile();
                                     resource.Name = prefix + "_" + componentNumerics + "_" + postfix + "_1.ydd";
-                                    resource.Import(cd.FPModelPath);
+                                    resource.Import(cd.FirstPersonModelPath);
                                 }
                             }
                         }
                         else
                         {
-                            Unk_2834549053 anchor = (Unk_2834549053)cd.GetPedPropTypeID();
+                            Unk_2834549053 anchor = (Unk_2834549053)cd.GetPedPropTypeId();
 
                             if (cd.Textures.Count > 0 && (int)cd.TargetSex == sexNr)
                             {
@@ -827,7 +827,7 @@ namespace AltTool
                 {
                     if (cd.IsComponent())
                     {
-                        byte componentTypeID = cd.GetComponentTypeID();
+                        byte componentTypeID = cd.GetComponentTypeId();
 
                         if (cd.Textures.Count > 0 && (int)cd.TargetSex == sexNr)
                         {
@@ -859,7 +859,7 @@ namespace AltTool
                             }
 
                             textureDescription.PropMask = nextPropMask;
-                            textureDescription.Unk_2806194106 = (byte)(cd.FPModelPath != "" ? 1 : 0);
+                            textureDescription.Unk_2806194106 = (byte)(cd.FirstPersonModelPath != "" ? 1 : 0);
 
                             byte texId = (byte)(cd.MainPath.EndsWith("_u.ydd") ? 0 : 1);
                             string postfix = cd.MainPath.EndsWith("_u.ydd") ? "u" : "r";
@@ -922,13 +922,13 @@ namespace AltTool
                             for (int i = 0; i < cd.Textures.Count; ++i)
                                 File.Copy(cd.Textures[i], outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "^" + prefix + "_diff_" + componentNumerics + "_" + (char)(offsetLetter + i) + "_" + ytdPostfix + ".ytd", true);
 
-                            if (cd.FPModelPath != "")
-                                File.Copy(cd.FPModelPath, outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "^" + prefix + "_" + componentNumerics + "_" + postfix + "_1.ydd", true);
+                            if (cd.FirstPersonModelPath != "")
+                                File.Copy(cd.FirstPersonModelPath, outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "^" + prefix + "_" + componentNumerics + "_" + postfix + "_1.ydd", true);
                         }
                     }
                     else
                     {
-                        Unk_2834549053 anchor = (Unk_2834549053)cd.GetPedPropTypeID();
+                        Unk_2834549053 anchor = (Unk_2834549053)cd.GetPedPropTypeId();
 
                         if (cd.Textures.Count > 0 && (int)cd.TargetSex == sexNr)
                         {

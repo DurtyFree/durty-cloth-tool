@@ -38,7 +38,7 @@ namespace AltTool
                         
                     if(cData.ClothType == ClothNameResolver.ClothTypes.Component)
                     {
-                        nextCloth.SearchForFPModel();
+                        nextCloth.SearchForFirstPersonModel();
                         nextCloth.SearchForTextures();
 
                         var clothes = MainWindow.Clothes.ToList();
@@ -51,7 +51,7 @@ namespace AltTool
                             MainWindow.Clothes.Add(cloth);
                         }
 
-                        StatusController.SetStatus(nextCloth + " added (FP model found: " + (nextCloth.FPModelPath != "" ? "Yes" : "No") + ", Textures: " + nextCloth.Textures.Count + "). Total: " + MainWindow.Clothes.Count);
+                        StatusController.SetStatus(nextCloth + " added (FP model found: " + (nextCloth.FirstPersonModelPath != "" ? "Yes" : "No") + ", Textures: " + nextCloth.Textures.Count + "). Total: " + MainWindow.Clothes.Count);
                     }
                     else
                     {
@@ -95,7 +95,7 @@ namespace AltTool
             }
         }
 
-        public void SetFPModel(ClothData cloth)
+        public void SetFirstPersonModel(ClothData cloth)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
@@ -111,7 +111,7 @@ namespace AltTool
 
             foreach (string filename in openFileDialog.FileNames.Where(f => f.EndsWith(".ydd")))
             {
-                cloth.SetFPModel(filename);
+                cloth.SetFirstPersonModel(filename);
             }
         }
     }
