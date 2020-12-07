@@ -4,12 +4,9 @@ using RageLib.GTA5.ArchiveWrappers;
 using RageLib.GTA5.ResourceWrappers.PC.Meta.Structures;
 using RageLib.Resources.GTA5.PC.GameFiles;
 using RageLib.Resources.GTA5.PC.Meta;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using static AltTool.ClothData;
 
@@ -21,7 +18,7 @@ namespace AltTool
         {
             string targetName = targetSex == Sex.Male ? "mp_m_freemode_01" : "mp_f_freemode_01";
             string dlcName = (targetSex == Sex.Male ? "mp_m_" : "mp_f_") + collectionName;
-            string character = (targetSex == Sex.Male ? "SCR_CHAR_MULTIPLAYER" : "SCR_CHAR_MULTIPLAYER_F");
+            string character = targetSex == Sex.Male ? "SCR_CHAR_MULTIPLAYER" : "SCR_CHAR_MULTIPLAYER_F";
             return $@"<?xml version=""1.0"" encoding=""UTF-8""?>
 <ShopPedApparel>
 	<pedName>{targetName}</pedName>
@@ -230,8 +227,8 @@ namespace AltTool
 </SSetupData>";
         }
 
-        private static string[] _prefixes = { "mp_m_", "mp_f_" };
-        private static string[] _folderNames = { "ped_male", "ped_female" };
+        private static readonly string[] Prefixes = { "mp_m_", "mp_f_" };
+        private static readonly string[] FolderNames = { "ped_male", "ped_female" };
 
         public static void BuildResourceAltv(string outputFolder, string collectionName)
         {
@@ -240,10 +237,12 @@ namespace AltTool
             for(int sexNr = 0; sexNr < 2; ++sexNr)
             {
                 //Male YMT generating
-                YmtPedDefinitionFile ymt = new YmtPedDefinitionFile();
+                YmtPedDefinitionFile ymt = new YmtPedDefinitionFile
+                {
+                    metaYmtName = Prefixes[sexNr] + collectionName,
+                    Unk_376833625 = {DlcName = RageLib.Hash.Jenkins.Hash(Prefixes[sexNr] + collectionName)}
+                };
 
-                ymt.metaYmtName = _prefixes[sexNr] + collectionName;
-                ymt.Unk_376833625.DlcName = RageLib.Hash.Jenkins.Hash(_prefixes[sexNr] + collectionName);
 
                 MUnk_3538495220[] componentTextureBindings = { null, null, null, null, null, null, null, null, null, null, null, null };
                 int[] componentIndexes = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -301,7 +300,7 @@ namespace AltTool
                             string postfix = cd.MainPath.EndsWith("_u.ydd") ? "u" : "r";
                             string ytdPostfix = cd.MainPath.EndsWith("_u.ydd") ? "uni" : "whi";
                             
-                            if((cd.DrawableType == ClothNameResolver.DrawableTypes.Shoes) || (cd.DrawableType == ClothNameResolver.DrawableTypes.Legs))
+                            if(cd.DrawableType == ClothNameResolver.DrawableTypes.Shoes || cd.DrawableType == ClothNameResolver.DrawableTypes.Legs)
                             {
                                 postfix = "r";
                                 ytdPostfix = "uni";
@@ -309,9 +308,11 @@ namespace AltTool
 
                             foreach (string texPath in cd.Textures)
                             {
-                                MUnk_1036962405 texInfo = new MUnk_1036962405();
-                                texInfo.Distribution = 255;
-                                texInfo.TexId = texId;
+                                MUnk_1036962405 texInfo = new MUnk_1036962405
+                                {
+                                    Distribution = 255,
+                                    TexId = texId
+                                };
                                 textureDescription.ATexData.Add(texInfo);
                             }
 
@@ -321,21 +322,26 @@ namespace AltTool
 
                             byte componentTextureLocalId = (byte)(componentTextureBindings[componentTypeID].Unk_1756136273.Count - 1);
 
-                            MCComponentInfo componentInfo = new MCComponentInfo();
-                            componentInfo.Unk_802196719 = 0;
-                            componentInfo.Unk_4233133352 = 0;
-                            componentInfo.Unk_128864925.b0 = (byte)(cd.PedComponentFlags.unkFlag1 ? 1 : 0);
-                            componentInfo.Unk_128864925.b1 = (byte)(cd.PedComponentFlags.unkFlag2 ? 1 : 0);
-                            componentInfo.Unk_128864925.b2 = (byte)(cd.PedComponentFlags.unkFlag3 ? 1 : 0);
-                            componentInfo.Unk_128864925.b3 = (byte)(cd.PedComponentFlags.unkFlag4 ? 1 : 0);
-                            componentInfo.Unk_128864925.b4 = (byte)(cd.PedComponentFlags.isHighHeels ? 1 : 0);
-                            componentInfo.Flags = 0;
-                            componentInfo.Inclusions = 0;
-                            componentInfo.Exclusions = 0;
-                            componentInfo.Unk_1613922652 = 0;
-                            componentInfo.Unk_2114993291 = 0;
-                            componentInfo.Unk_3509540765 = componentTypeID;
-                            componentInfo.Unk_4196345791 = componentTextureLocalId;
+                            MCComponentInfo componentInfo = new MCComponentInfo
+                            {
+                                Unk_802196719 = 0,
+                                Unk_4233133352 = 0,
+                                Unk_128864925 =
+                                {
+                                    b0 = (byte) (cd.PedComponentFlags.unkFlag1 ? 1 : 0),
+                                    b1 = (byte) (cd.PedComponentFlags.unkFlag2 ? 1 : 0),
+                                    b2 = (byte) (cd.PedComponentFlags.unkFlag3 ? 1 : 0),
+                                    b3 = (byte) (cd.PedComponentFlags.unkFlag4 ? 1 : 0),
+                                    b4 = (byte) (cd.PedComponentFlags.isHighHeels ? 1 : 0)
+                                },
+                                Flags = 0,
+                                Inclusions = 0,
+                                Exclusions = 0,
+                                Unk_1613922652 = 0,
+                                Unk_2114993291 = 0,
+                                Unk_3509540765 = componentTypeID,
+                                Unk_4196345791 = componentTextureLocalId
+                            };
 
                             targetYmt.Unk_376833625.CompInfos.Add(componentInfo);
 
@@ -343,8 +349,8 @@ namespace AltTool
                             {
                                 isAnyClothAdded = true;
                                 Directory.CreateDirectory(outputFolder + "\\stream");
-                                Directory.CreateDirectory(outputFolder + "\\stream\\" + _folderNames[sexNr] + ".rpf");
-                                Directory.CreateDirectory(outputFolder + "\\stream\\" + _folderNames[sexNr] + ".rpf\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName);
+                                Directory.CreateDirectory(outputFolder + "\\stream\\" + FolderNames[sexNr] + ".rpf");
+                                Directory.CreateDirectory(outputFolder + "\\stream\\" + FolderNames[sexNr] + ".rpf\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName);
                             }
 
                             int currentComponentIndex = componentIndexes[componentTypeID]++;
@@ -353,14 +359,14 @@ namespace AltTool
                             string prefix = cd.GetPrefix();
 
                             cd.SetComponentNumerics(componentNumerics, currentComponentIndex);
-                            File.Copy(cd.MainPath, outputFolder + "\\stream\\" + _folderNames[sexNr] + ".rpf\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + "\\" + prefix + "_" + componentNumerics + "_" + postfix + ".ydd");
+                            File.Copy(cd.MainPath, outputFolder + "\\stream\\" + FolderNames[sexNr] + ".rpf\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "\\" + prefix + "_" + componentNumerics + "_" + postfix + ".ydd");
 
                             char offsetLetter = 'a';
                             for (int i = 0; i < cd.Textures.Count; ++i)
-                                File.Copy(cd.Textures[i], outputFolder + "\\stream\\" + _folderNames[sexNr] + ".rpf\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + "\\" + prefix + "_diff_" + componentNumerics + "_" + (char)(offsetLetter + i) + "_" + ytdPostfix + ".ytd");
+                                File.Copy(cd.Textures[i], outputFolder + "\\stream\\" + FolderNames[sexNr] + ".rpf\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "\\" + prefix + "_diff_" + componentNumerics + "_" + (char)(offsetLetter + i) + "_" + ytdPostfix + ".ytd");
 
                             if (cd.FPModelPath != "")
-                                File.Copy(cd.FPModelPath, outputFolder + "\\stream\\" + _folderNames[sexNr] + ".rpf\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + "\\" + prefix + "_" + componentNumerics + "_" + postfix + "_1.ydd");
+                                File.Copy(cd.FPModelPath, outputFolder + "\\stream\\" + FolderNames[sexNr] + ".rpf\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "\\" + prefix + "_" + componentNumerics + "_" + postfix + "_1.ydd");
                         }
                     }
                     else
@@ -369,17 +375,18 @@ namespace AltTool
 
                         if (cd.Textures.Count > 0 && (int)cd.TargetSex == sexNr)
                         {
-                            YmtPedDefinitionFile targetYmt = ymt;
-
                             var defs = ymt.Unk_376833625.PropInfo.Props[anchor] ?? new List<MUnk_94549140>();
-                            var item = new MUnk_94549140(ymt.Unk_376833625.PropInfo);
-
-                            item.AnchorId = (byte)anchor;
+                            var item = new MUnk_94549140(ymt.Unk_376833625.PropInfo)
+                            {
+                                AnchorId = (byte) anchor
+                            };
 
                             for (int i = 0; i < cd.Textures.Count; i++)
                             {
-                                var texture = new MUnk_254518642();
-                                texture.TexId = (byte)i;
+                                var texture = new MUnk_254518642
+                                {
+                                    TexId = (byte) i
+                                };
                                 item.TexData.Add(texture);
                             }
 
@@ -390,10 +397,10 @@ namespace AltTool
                             {
                                 aanchor = new MCAnchorProps(ymt.Unk_376833625.PropInfo)
                                 {
-                                    Anchor = anchor
+                                    Anchor = anchor, 
+                                    PropsMap = {[item] = (byte) item.TexData.Count}
                                 };
 
-                                aanchor.PropsMap[item] = (byte)item.TexData.Count;
 
                                 ymt.Unk_376833625.PropInfo.AAnchors.Add(aanchor);
                             }
@@ -408,8 +415,8 @@ namespace AltTool
                             {
                                 isAnyPropAdded = true;
                                 Directory.CreateDirectory(outputFolder + "\\stream");
-                                Directory.CreateDirectory(outputFolder + "\\stream\\" + _folderNames[sexNr] + "_p.rpf");
-                                Directory.CreateDirectory(outputFolder + "\\stream\\" + _folderNames[sexNr] + "_p.rpf\\" + _prefixes[sexNr] + "freemode_01_p_" + _prefixes[sexNr] + collectionName);
+                                Directory.CreateDirectory(outputFolder + "\\stream\\" + FolderNames[sexNr] + "_p.rpf");
+                                Directory.CreateDirectory(outputFolder + "\\stream\\" + FolderNames[sexNr] + "_p.rpf\\" + Prefixes[sexNr] + "freemode_01_p_" + Prefixes[sexNr] + collectionName);
                             }
 
                             int currentPropIndex = propIndexes[(byte)anchor]++;
@@ -417,15 +424,14 @@ namespace AltTool
                             string componentNumerics = currentPropIndex.ToString().PadLeft(3, '0');
                             string prefix = cd.GetPrefix();
 
-                            var ydr = new YdrFile();
                             cd.SetComponentNumerics(componentNumerics, currentPropIndex);
 
-                            File.Copy(cd.MainPath, outputFolder + "\\stream\\" + _folderNames[sexNr] + "_p.rpf\\" + _prefixes[sexNr] + "freemode_01_p_" + _prefixes[sexNr] + collectionName + "\\" + prefix + "_" + componentNumerics + ".ydd", true);
+                            File.Copy(cd.MainPath, outputFolder + "\\stream\\" + FolderNames[sexNr] + "_p.rpf\\" + Prefixes[sexNr] + "freemode_01_p_" + Prefixes[sexNr] + collectionName + "\\" + prefix + "_" + componentNumerics + ".ydd", true);
 
                             char offsetLetter = 'a';
                             for (int i = 0; i < cd.Textures.Count; ++i)
                             {
-                                File.Copy(cd.Textures[i], outputFolder + "\\stream\\" + _folderNames[sexNr] + "_p.rpf\\" + _prefixes[sexNr] + "freemode_01_p_" + _prefixes[sexNr] + collectionName + "\\" + prefix + "_diff_" + componentNumerics + "_" + (char)(offsetLetter + i) + ".ytd", true);
+                                File.Copy(cd.Textures[i], outputFolder + "\\stream\\" + FolderNames[sexNr] + "_p.rpf\\" + Prefixes[sexNr] + "freemode_01_p_" + Prefixes[sexNr] + collectionName + "\\" + prefix + "_diff_" + componentNumerics + "_" + (char)(offsetLetter + i) + ".ytd", true);
                             }
                         }
                     }
@@ -440,7 +446,7 @@ namespace AltTool
                     {
                         if (componentTextureBindings[i] != null)
                         {
-                            byte id = (byte)(arrIndex++);
+                            byte id = (byte)arrIndex++;
                             ymt.Unk_376833625.Unk_2996560424.SetByte(i, id);
                         }
 
@@ -450,17 +456,16 @@ namespace AltTool
 
                 if(isAnyPropAdded)
                 {
-                    streamCfgIncludes.Add("stream/" + _folderNames[sexNr] + "_p.rpf/*");
+                    streamCfgIncludes.Add("stream/" + FolderNames[sexNr] + "_p.rpf/*");
                 }
 
                 if (isAnyClothAdded || isAnyPropAdded)
                 {
-                    File.WriteAllText(outputFolder + "\\stream\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + ".meta", GenerateShopMeta((Sex)sexNr, collectionName));
-                    streamCfgMetas.Add("stream/" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + ".meta: SHOP_PED_APPAREL_META_FILE");
-                    ymt.Save(outputFolder + "\\stream\\" + _folderNames[sexNr] + ".rpf\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + ".ymt");
-                    streamCfgIncludes.Add("stream/" + _folderNames[sexNr] + ".rpf/*");
+                    File.WriteAllText(outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + ".meta", GenerateShopMeta((Sex)sexNr, collectionName));
+                    streamCfgMetas.Add("stream/" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + ".meta: SHOP_PED_APPAREL_META_FILE");
+                    ymt.Save(outputFolder + "\\stream\\" + FolderNames[sexNr] + ".rpf\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + ".ymt");
+                    streamCfgIncludes.Add("stream/" + FolderNames[sexNr] + ".rpf/*");
                 }
-
             }
 
             File.WriteAllText(outputFolder + "\\stream.cfg", GenerateStreamCfg(streamCfgIncludes, streamCfgMetas));
@@ -506,10 +511,12 @@ namespace AltTool
                 for (int sexNr = 0; sexNr < 2; ++sexNr)
                 {
                     //Male YMT generating
-                    YmtPedDefinitionFile ymt = new YmtPedDefinitionFile();
+                    YmtPedDefinitionFile ymt = new YmtPedDefinitionFile
+                    {
+                        metaYmtName = Prefixes[sexNr] + collectionName,
+                        Unk_376833625 = {DlcName = RageLib.Hash.Jenkins.Hash(Prefixes[sexNr] + collectionName)}
+                    };
 
-                    ymt.metaYmtName = _prefixes[sexNr] + collectionName;
-                    ymt.Unk_376833625.DlcName = RageLib.Hash.Jenkins.Hash(_prefixes[sexNr] + collectionName);
 
                     MUnk_3538495220[] componentTextureBindings = { null, null, null, null, null, null, null, null, null, null, null, null };
                     int[] componentIndexes = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -568,9 +575,11 @@ namespace AltTool
 
                                 foreach (string texPath in cd.Textures)
                                 {
-                                    MUnk_1036962405 texInfo = new MUnk_1036962405();
-                                    texInfo.Distribution = 255;
-                                    texInfo.TexId = texId;
+                                    MUnk_1036962405 texInfo = new MUnk_1036962405
+                                    {
+                                        Distribution = 255, 
+                                        TexId = texId
+                                    };
                                     textureDescription.ATexData.Add(texInfo);
                                 }
 
@@ -580,21 +589,26 @@ namespace AltTool
 
                                 byte componentTextureLocalId = (byte)(componentTextureBindings[componentTypeID].Unk_1756136273.Count - 1);
 
-                                MCComponentInfo componentInfo = new MCComponentInfo();
-                                componentInfo.Unk_802196719 = 0;
-                                componentInfo.Unk_4233133352 = 0;
-                                componentInfo.Unk_128864925.b0 = (byte)(cd.PedComponentFlags.unkFlag1 ? 1 : 0);
-                                componentInfo.Unk_128864925.b1 = (byte)(cd.PedComponentFlags.unkFlag2 ? 1 : 0);
-                                componentInfo.Unk_128864925.b2 = (byte)(cd.PedComponentFlags.unkFlag3 ? 1 : 0);
-                                componentInfo.Unk_128864925.b3 = (byte)(cd.PedComponentFlags.unkFlag4 ? 1 : 0);
-                                componentInfo.Unk_128864925.b4 = (byte)(cd.PedComponentFlags.isHighHeels ? 1 : 0);
-                                componentInfo.Flags = 0;
-                                componentInfo.Inclusions = 0;
-                                componentInfo.Exclusions = 0;
-                                componentInfo.Unk_1613922652 = 0;
-                                componentInfo.Unk_2114993291 = 0;
-                                componentInfo.Unk_3509540765 = componentTypeID;
-                                componentInfo.Unk_4196345791 = componentTextureLocalId;
+                                MCComponentInfo componentInfo = new MCComponentInfo
+                                {
+                                    Unk_802196719 = 0,
+                                    Unk_4233133352 = 0,
+                                    Unk_128864925 =
+                                    {
+                                        b0 = (byte) (cd.PedComponentFlags.unkFlag1 ? 1 : 0),
+                                        b1 = (byte) (cd.PedComponentFlags.unkFlag2 ? 1 : 0),
+                                        b2 = (byte) (cd.PedComponentFlags.unkFlag3 ? 1 : 0),
+                                        b3 = (byte) (cd.PedComponentFlags.unkFlag4 ? 1 : 0),
+                                        b4 = (byte) (cd.PedComponentFlags.isHighHeels ? 1 : 0)
+                                    },
+                                    Flags = 0,
+                                    Inclusions = 0,
+                                    Exclusions = 0,
+                                    Unk_1613922652 = 0,
+                                    Unk_2114993291 = 0,
+                                    Unk_3509540765 = componentTypeID,
+                                    Unk_4196345791 = componentTextureLocalId
+                                };
 
                                 targetYmt.Unk_376833625.CompInfos.Add(componentInfo);
 
@@ -604,10 +618,10 @@ namespace AltTool
 
                                     var ms = new MemoryStream();
 
-                                    currComponentRpf                     = RageArchiveWrapper7.Create(ms, _folderNames[sexNr].Replace("ped_", collectionName + "_") + ".rpf");
+                                    currComponentRpf                     = RageArchiveWrapper7.Create(ms, FolderNames[sexNr].Replace("ped_", collectionName + "_") + ".rpf");
                                     currComponentRpf.archive_.Encryption = RageArchiveEncryption7.NG;
                                     currComponentDir                     = currComponentRpf.Root.CreateDirectory();
-                                    currComponentDir.Name                = _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName;
+                                    currComponentDir.Name                = Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName;
                                 }
 
                                 int currentComponentIndex = componentIndexes[componentTypeID]++;
@@ -634,7 +648,6 @@ namespace AltTool
                                     resource.Name = prefix + "_" + componentNumerics + "_" + postfix + "_1.ydd";
                                     resource.Import(cd.FPModelPath);
                                 }
-
                             }
                         }
                         else
@@ -643,8 +656,6 @@ namespace AltTool
 
                             if (cd.Textures.Count > 0 && (int)cd.TargetSex == sexNr)
                             {
-                                YmtPedDefinitionFile targetYmt = ymt;
-
                                 var defs = ymt.Unk_376833625.PropInfo.Props[anchor] ?? new List<MUnk_94549140>();
                                 var item = new MUnk_94549140(ymt.Unk_376833625.PropInfo);
 
@@ -652,8 +663,10 @@ namespace AltTool
 
                                 for (int i = 0; i < cd.Textures.Count; i++)
                                 {
-                                    var texture = new MUnk_254518642();
-                                    texture.TexId = (byte)i;
+                                    var texture = new MUnk_254518642
+                                    {
+                                        TexId = (byte) i
+                                    };
                                     item.TexData.Add(texture);
                                 }
 
@@ -664,11 +677,10 @@ namespace AltTool
                                 {
                                     aanchor = new MCAnchorProps(ymt.Unk_376833625.PropInfo)
                                     {
-                                        Anchor = anchor
+                                        Anchor = anchor, 
+                                        PropsMap = {[item] = (byte) item.TexData.Count}
                                     };
-
-                                    aanchor.PropsMap[item] = (byte)item.TexData.Count;
-
+                                    
                                     ymt.Unk_376833625.PropInfo.AAnchors.Add(aanchor);
                                 }
                                 else
@@ -684,10 +696,10 @@ namespace AltTool
 
                                     var ms = new MemoryStream();
 
-                                    currPropRpf = RageArchiveWrapper7.Create(ms, _folderNames[sexNr].Replace("ped_", collectionName + "_") + "_p.rpf");
+                                    currPropRpf = RageArchiveWrapper7.Create(ms, FolderNames[sexNr].Replace("ped_", collectionName + "_") + "_p.rpf");
                                     currPropRpf.archive_.Encryption = RageArchiveEncryption7.NG;
                                     currPropDir = currPropRpf.Root.CreateDirectory();
-                                    currPropDir.Name = _prefixes[sexNr] + "freemode_01_p_" + _prefixes[sexNr] + collectionName;
+                                    currPropDir.Name = Prefixes[sexNr] + "freemode_01_p_" + Prefixes[sexNr] + collectionName;
                                 }
 
                                 int currentPropIndex = propIndexes[(byte)anchor]++;
@@ -722,7 +734,7 @@ namespace AltTool
                         {
                             if (componentTextureBindings[i] != null)
                             {
-                                byte id = (byte)(arrIndex++);
+                                byte id = (byte)arrIndex++;
                                 ymt.Unk_376833625.Unk_2996560424.SetByte(i, id);
                             }
 
@@ -735,13 +747,13 @@ namespace AltTool
                         using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(GenerateShopMeta((Sex)sexNr, collectionName))))
                         {
                             var binFile = dataDir.CreateBinaryFile();
-                            binFile.Name = _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + ".meta";
+                            binFile.Name = Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + ".meta";
                             binFile.Import(stream);
                         }
                         currComponentRpf.Flush();
 
                         var binRpfFile = cdimagesDir.CreateBinaryFile();
-                        binRpfFile.Name = _folderNames[sexNr].Replace("ped_", collectionName + "_") + ".rpf";
+                        binRpfFile.Name = FolderNames[sexNr].Replace("ped_", collectionName + "_") + ".rpf";
                         binRpfFile.Import(currComponentRpf.archive_.BaseStream);
 
                         currComponentRpf.Dispose();
@@ -757,7 +769,7 @@ namespace AltTool
                         currPropRpf.Flush();
 
                         var binRpfFile = cdimagesDir.CreateBinaryFile();
-                        binRpfFile.Name = _folderNames[sexNr].Replace("ped_", collectionName + "_") + "_p.rpf";
+                        binRpfFile.Name = FolderNames[sexNr].Replace("ped_", collectionName + "_") + "_p.rpf";
                         binRpfFile.Import(currPropRpf.archive_.BaseStream);
 
                         currPropRpf.Dispose();
@@ -792,11 +804,12 @@ namespace AltTool
             for(int sexNr = 0; sexNr < 2; ++sexNr)
             {
                 //Male YMT generating
-                YmtPedDefinitionFile ymt = new YmtPedDefinitionFile();
-
-                ymt.metaYmtName = _prefixes[sexNr] + collectionName;
-                ymt.Unk_376833625.DlcName = RageLib.Hash.Jenkins.Hash(_prefixes[sexNr] + collectionName);
-
+                YmtPedDefinitionFile ymt = new YmtPedDefinitionFile
+                {
+                    metaYmtName = Prefixes[sexNr] + collectionName,
+                    Unk_376833625 = {DlcName = RageLib.Hash.Jenkins.Hash(Prefixes[sexNr] + collectionName)}
+                };
+                
                 MUnk_3538495220[] componentTextureBindings = { null, null, null, null, null, null, null, null, null, null, null, null };
                 int[] componentIndexes = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
                 int[] propIndexes      = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -854,9 +867,11 @@ namespace AltTool
 
                             foreach (string texPath in cd.Textures)
                             {
-                                MUnk_1036962405 texInfo = new MUnk_1036962405();
-                                texInfo.Distribution = 255;
-                                texInfo.TexId = texId;
+                                MUnk_1036962405 texInfo = new MUnk_1036962405
+                                {
+                                    Distribution = 255, 
+                                    TexId = texId
+                                };
                                 textureDescription.ATexData.Add(texInfo);
                             }
 
@@ -866,21 +881,26 @@ namespace AltTool
 
                             byte componentTextureLocalId = (byte)(componentTextureBindings[componentTypeID].Unk_1756136273.Count - 1);
 
-                            MCComponentInfo componentInfo = new MCComponentInfo();
-                            componentInfo.Unk_802196719 = 0;
-                            componentInfo.Unk_4233133352 = 0;
-                            componentInfo.Unk_128864925.b0 = (byte)(cd.PedComponentFlags.unkFlag1 ? 1 : 0);
-                            componentInfo.Unk_128864925.b1 = (byte)(cd.PedComponentFlags.unkFlag2 ? 1 : 0);
-                            componentInfo.Unk_128864925.b2 = (byte)(cd.PedComponentFlags.unkFlag3 ? 1 : 0);
-                            componentInfo.Unk_128864925.b3 = (byte)(cd.PedComponentFlags.unkFlag4 ? 1 : 0);
-                            componentInfo.Unk_128864925.b4 = (byte)(cd.PedComponentFlags.isHighHeels ? 1 : 0);
-                            componentInfo.Flags = 0;
-                            componentInfo.Inclusions = 0;
-                            componentInfo.Exclusions = 0;
-                            componentInfo.Unk_1613922652 = 0;
-                            componentInfo.Unk_2114993291 = 0;
-                            componentInfo.Unk_3509540765 = componentTypeID;
-                            componentInfo.Unk_4196345791 = componentTextureLocalId;
+                            MCComponentInfo componentInfo = new MCComponentInfo
+                            {
+                                Unk_802196719 = 0,
+                                Unk_4233133352 = 0,
+                                Unk_128864925 =
+                                {
+                                    b0 = (byte) (cd.PedComponentFlags.unkFlag1 ? 1 : 0),
+                                    b1 = (byte) (cd.PedComponentFlags.unkFlag2 ? 1 : 0),
+                                    b2 = (byte) (cd.PedComponentFlags.unkFlag3 ? 1 : 0),
+                                    b3 = (byte) (cd.PedComponentFlags.unkFlag4 ? 1 : 0),
+                                    b4 = (byte) (cd.PedComponentFlags.isHighHeels ? 1 : 0)
+                                },
+                                Flags = 0,
+                                Inclusions = 0,
+                                Exclusions = 0,
+                                Unk_1613922652 = 0,
+                                Unk_2114993291 = 0,
+                                Unk_3509540765 = componentTypeID,
+                                Unk_4196345791 = componentTextureLocalId
+                            };
 
                             targetYmt.Unk_376833625.CompInfos.Add(componentInfo);
 
@@ -888,7 +908,7 @@ namespace AltTool
                             {
                                 isAnyClothAdded = true;
                                 Directory.CreateDirectory(outputFolder + "\\stream");
-                                Directory.CreateDirectory(outputFolder + "\\stream\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName);
+                                Directory.CreateDirectory(outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName);
                             }
 
                             int currentComponentIndex = componentIndexes[componentTypeID]++;
@@ -896,14 +916,14 @@ namespace AltTool
                             string componentNumerics = currentComponentIndex.ToString().PadLeft(3, '0');
                             string prefix = cd.GetPrefix();
 
-                            File.Copy(cd.MainPath, outputFolder + "\\stream\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + "\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + "^" + prefix + "_" + componentNumerics + "_" + postfix + ".ydd", true);
+                            File.Copy(cd.MainPath, outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "^" + prefix + "_" + componentNumerics + "_" + postfix + ".ydd", true);
 
                             char offsetLetter = 'a';
                             for (int i = 0; i < cd.Textures.Count; ++i)
-                                File.Copy(cd.Textures[i], outputFolder + "\\stream\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + "\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + "^" + prefix + "_diff_" + componentNumerics + "_" + (char)(offsetLetter + i) + "_" + ytdPostfix + ".ytd", true);
+                                File.Copy(cd.Textures[i], outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "^" + prefix + "_diff_" + componentNumerics + "_" + (char)(offsetLetter + i) + "_" + ytdPostfix + ".ytd", true);
 
                             if (cd.FPModelPath != "")
-                                File.Copy(cd.FPModelPath, outputFolder + "\\stream\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + "\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + "^" + prefix + "_" + componentNumerics + "_" + postfix + "_1.ydd", true);
+                                File.Copy(cd.FPModelPath, outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "^" + prefix + "_" + componentNumerics + "_" + postfix + "_1.ydd", true);
                         }
                     }
                     else
@@ -915,14 +935,17 @@ namespace AltTool
                             YmtPedDefinitionFile targetYmt = ymt;
 
                             var defs = ymt.Unk_376833625.PropInfo.Props[anchor] ?? new List<MUnk_94549140>();
-                            var item = new MUnk_94549140(ymt.Unk_376833625.PropInfo);
-
-                            item.AnchorId = (byte)anchor;
+                            var item = new MUnk_94549140(ymt.Unk_376833625.PropInfo)
+                            {
+                                AnchorId = (byte) anchor
+                            };
 
                             for (int i = 0; i < cd.Textures.Count; i++)
                             {
-                                var texture = new MUnk_254518642();
-                                texture.TexId = (byte)i;
+                                var texture = new MUnk_254518642
+                                {
+                                    TexId = (byte) i
+                                };
                                 item.TexData.Add(texture);
                             }
 
@@ -933,10 +956,9 @@ namespace AltTool
                             {
                                 aanchor = new MCAnchorProps(ymt.Unk_376833625.PropInfo)
                                 {
-                                    Anchor = anchor
+                                    Anchor = anchor, 
+                                    PropsMap = {[item] = (byte) item.TexData.Count}
                                 };
-
-                                aanchor.PropsMap[item] = (byte)item.TexData.Count;
 
                                 ymt.Unk_376833625.PropInfo.AAnchors.Add(aanchor);
                             }
@@ -951,7 +973,7 @@ namespace AltTool
                             {
                                 isAnyPropAdded = true;
                                 Directory.CreateDirectory(outputFolder + "\\stream");
-                                Directory.CreateDirectory(outputFolder + "\\stream\\" + _prefixes[sexNr] + "freemode_01_p_" + _prefixes[sexNr] + collectionName);
+                                Directory.CreateDirectory(outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_p_" + Prefixes[sexNr] + collectionName);
                             }
 
                             int currentPropIndex = propIndexes[(byte)anchor]++;
@@ -959,12 +981,12 @@ namespace AltTool
                             string componentNumerics = currentPropIndex.ToString().PadLeft(3, '0');
                             string prefix = cd.GetPrefix();
 
-                            File.Copy(cd.MainPath, outputFolder + "\\stream\\" + _prefixes[sexNr] + "freemode_01_p_" + _prefixes[sexNr] + collectionName + "\\" + _prefixes[sexNr] + "freemode_01_p_" + _prefixes[sexNr] + collectionName + "^" + prefix + "_" + componentNumerics + ".ydd", true);
+                            File.Copy(cd.MainPath, outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_p_" + Prefixes[sexNr] + collectionName + "\\" + Prefixes[sexNr] + "freemode_01_p_" + Prefixes[sexNr] + collectionName + "^" + prefix + "_" + componentNumerics + ".ydd", true);
 
                             char offsetLetter = 'a';
                             for (int i = 0; i < cd.Textures.Count; ++i)
                             {
-                                File.Copy(cd.Textures[i], outputFolder + "\\stream\\" + _prefixes[sexNr] + "freemode_01_p_" + _prefixes[sexNr] + collectionName + "\\" + _prefixes[sexNr] + "freemode_01_p_" + _prefixes[sexNr] + collectionName + "^" + prefix + "_diff_" + componentNumerics + "_" + (char)(offsetLetter + i) + ".ytd", true);
+                                File.Copy(cd.Textures[i], outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_p_" + Prefixes[sexNr] + collectionName + "\\" + Prefixes[sexNr] + "freemode_01_p_" + Prefixes[sexNr] + collectionName + "^" + prefix + "_diff_" + componentNumerics + "_" + (char)(offsetLetter + i) + ".ytd", true);
                             }
                         }
                     }
@@ -979,7 +1001,7 @@ namespace AltTool
                     {
                         if (componentTextureBindings[i] != null)
                         {
-                            byte id = (byte)(arrIndex++);
+                            byte id = (byte)arrIndex++;
                             ymt.Unk_376833625.Unk_2996560424.SetByte(i, id);
                         }
 
@@ -989,9 +1011,9 @@ namespace AltTool
 
                 if(isAnyClothAdded || isAnyPropAdded)
                 {
-                    ymt.Save(outputFolder + "\\stream\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + ".ymt");
-                    File.WriteAllText(outputFolder + "\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + ".meta", GenerateShopMeta((Sex)sexNr, collectionName));
-                    resourceLUAMetas.Add(_prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + ".meta");
+                    ymt.Save(outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + ".ymt");
+                    File.WriteAllText(outputFolder + "\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + ".meta", GenerateShopMeta((Sex)sexNr, collectionName));
+                    resourceLUAMetas.Add(Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + ".meta");
                 }
             }
 

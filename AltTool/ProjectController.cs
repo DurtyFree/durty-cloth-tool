@@ -1,12 +1,6 @@
 ﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace AltTool
 {
@@ -27,7 +21,7 @@ namespace AltTool
                 FilterIndex = 1,
                 DefaultExt = "ydd",
                 Multiselect = true,
-                Title = "Adding " + ((targetSex == ClothData.Sex.Male) ? "male" : "female") + " clothes"
+                Title = "Adding " + (targetSex == ClothData.Sex.Male ? "male" : "female") + " clothes"
             };
 
             if (openFileDialog.ShowDialog() != true) 
@@ -40,9 +34,9 @@ namespace AltTool
 
                 if(!cData.IsVariation)
                 {
-                    ClothData nextCloth = new ClothData(filename, cData.ClothClothTypes, cData.DrawableType, cData.BindedNumber, cData.Postfix, targetSex);
+                    ClothData nextCloth = new ClothData(filename, cData.ClothType, cData.DrawableType, cData.BindedNumber, cData.Postfix, targetSex);
                         
-                    if(cData.ClothClothTypes == ClothNameResolver.ClothTypes.Component)
+                    if(cData.ClothType == ClothNameResolver.ClothTypes.Component)
                     {
                         nextCloth.SearchForFPModel();
                         nextCloth.SearchForTextures();
@@ -57,7 +51,7 @@ namespace AltTool
                             MainWindow.Clothes.Add(cloth);
                         }
 
-                        StatusController.SetStatus(nextCloth.ToString() + " added (FP model found: " + (nextCloth.FPModelPath != "" ? "Yes" : "No") + ", Textures: " + (nextCloth.Textures.Count) + "). Total: " + MainWindow.Clothes.Count);
+                        StatusController.SetStatus(nextCloth + " added (FP model found: " + (nextCloth.FPModelPath != "" ? "Yes" : "No") + ", Textures: " + nextCloth.Textures.Count + "). Total: " + MainWindow.Clothes.Count);
                     }
                     else
                     {
@@ -73,7 +67,7 @@ namespace AltTool
                             MainWindow.Clothes.Add(cloth);
                         }
 
-                        StatusController.SetStatus(nextCloth.ToString() + " added, Textures: " + (nextCloth.Textures.Count) + "). Total: " + MainWindow.Clothes.Count);
+                        StatusController.SetStatus(nextCloth + " added, Textures: " + nextCloth.Textures.Count + "). Total: " + MainWindow.Clothes.Count);
                     }
                 }
                 else
@@ -95,12 +89,9 @@ namespace AltTool
             if (openFileDialog.ShowDialog() != true) 
                 return;
 
-            foreach (string filename in openFileDialog.FileNames)
+            foreach (string filename in openFileDialog.FileNames.Where(f => f.EndsWith(".ytd")))
             {
-                if(filename.EndsWith(".ytd"))
-                {
-                    cloth.AddTexture(filename);
-                }
+                cloth.AddTexture(filename);
             }
         }
 
@@ -118,12 +109,9 @@ namespace AltTool
             if (openFileDialog.ShowDialog() != true) 
                 return;
 
-            foreach (string filename in openFileDialog.FileNames)
+            foreach (string filename in openFileDialog.FileNames.Where(f => f.EndsWith(".ydd")))
             {
-                if (filename.EndsWith(".ydd"))
-                {
-                    cloth.SetFPModel(filename);
-                }
+                cloth.SetFPModel(filename);
             }
         }
     }

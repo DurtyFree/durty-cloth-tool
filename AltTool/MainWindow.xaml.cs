@@ -18,9 +18,6 @@ using static AltTool.ClothData;
 
 namespace AltTool
 {
-    /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         private static TextBlock _statusTextBlock;
@@ -75,12 +72,9 @@ namespace AltTool
 
             Clothes.Clear();
 
-            foreach(var cloth in clothes)
+            foreach(var cloth in clothes.Where(c => c != _selectedCloth))
             {
-                if(cloth != _selectedCloth)
-                {
-                    Clothes.Add(cloth);
-                }
+                Clothes.Add(cloth);
             }
 
             _selectedCloth = null;
@@ -89,45 +83,44 @@ namespace AltTool
 
         private void ClothesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(e.AddedItems.Count > 0)
+            if (e.AddedItems.Count <= 0) 
+                return;
+            _selectedCloth = (ClothData)e.AddedItems[0];
+
+            if (_selectedCloth == null) 
+                return;
+
+            clothEditWindow.Visibility = Visibility.Collapsed;
+            pedPropEditWindow.Visibility = Visibility.Collapsed;
+            editGroupBox.Visibility = Visibility.Visible;
+
+            if (_selectedCloth.IsComponent())
             {
-                _selectedCloth = (ClothData)e.AddedItems[0];
+                clothEditWindow.Visibility = Visibility.Visible;
+                drawableName.Text = _selectedCloth.Name;
 
-                if (_selectedCloth != null)
-                {
-                    clothEditWindow.Visibility = Visibility.Collapsed;
-                    pedPropEditWindow.Visibility = Visibility.Collapsed;
-                    editGroupBox.Visibility = Visibility.Visible;
+                texturesList.ItemsSource = _selectedCloth.Textures;
+                fpModelPath.Text = _selectedCloth.FPModelPath != "" ? _selectedCloth.FPModelPath : "Not selected...";
 
-                    if (_selectedCloth.IsComponent())
-                    {
-                        clothEditWindow.Visibility = Visibility.Visible;
-                        drawableName.Text = _selectedCloth.Name;
+                unkFlag1Check.IsChecked = _selectedCloth.PedComponentFlags.unkFlag1;
+                unkFlag2Check.IsChecked = _selectedCloth.PedComponentFlags.unkFlag2;
+                unkFlag3Check.IsChecked = _selectedCloth.PedComponentFlags.unkFlag3;
+                unkFlag4Check.IsChecked = _selectedCloth.PedComponentFlags.unkFlag4;
+                isHighHeelsCheck.IsChecked = _selectedCloth.PedComponentFlags.isHighHeels;
+            }
+            else
+            {
+                pedPropEditWindow.Visibility = Visibility.Visible;
+                drawableName.Text = _selectedCloth.Name;
+                pedPropName.Text = _selectedCloth.Name;
 
-                        texturesList.ItemsSource = _selectedCloth.Textures;
-                        fpModelPath.Text = _selectedCloth.FPModelPath != "" ? _selectedCloth.FPModelPath : "Not selected...";
+                pedPropTexturesList.ItemsSource = _selectedCloth.Textures;
 
-                        unkFlag1Check.IsChecked = _selectedCloth.PedComponentFlags.unkFlag1;
-                        unkFlag2Check.IsChecked = _selectedCloth.PedComponentFlags.unkFlag2;
-                        unkFlag3Check.IsChecked = _selectedCloth.PedComponentFlags.unkFlag3;
-                        unkFlag4Check.IsChecked = _selectedCloth.PedComponentFlags.unkFlag4;
-                        isHighHeelsCheck.IsChecked = _selectedCloth.PedComponentFlags.isHighHeels;
-                    }
-                    else
-                    {
-                        pedPropEditWindow.Visibility = Visibility.Visible;
-                        drawableName.Text = _selectedCloth.Name;
-                        pedPropName.Text = _selectedCloth.Name;
-
-                        pedPropTexturesList.ItemsSource = _selectedCloth.Textures;
-
-                        pedPropFlag1.IsChecked = _selectedCloth.PedPropFlags.unkFlag1;
-                        pedPropFlag2.IsChecked = _selectedCloth.PedPropFlags.unkFlag2;
-                        pedPropFlag3.IsChecked = _selectedCloth.PedPropFlags.unkFlag3;
-                        pedPropFlag4.IsChecked = _selectedCloth.PedPropFlags.unkFlag4;
-                        pedPropFlag5.IsChecked = _selectedCloth.PedPropFlags.unkFlag5;
-                    }
-                }
+                pedPropFlag1.IsChecked = _selectedCloth.PedPropFlags.unkFlag1;
+                pedPropFlag2.IsChecked = _selectedCloth.PedPropFlags.unkFlag2;
+                pedPropFlag3.IsChecked = _selectedCloth.PedPropFlags.unkFlag3;
+                pedPropFlag4.IsChecked = _selectedCloth.PedPropFlags.unkFlag4;
+                pedPropFlag5.IsChecked = _selectedCloth.PedPropFlags.unkFlag5;
             }
         }
 

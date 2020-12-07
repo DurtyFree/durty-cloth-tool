@@ -178,9 +178,9 @@ namespace AltTool
 
         public byte GetComponentTypeID()
         {
-            if(IsComponent())
-                return (byte)DrawableType;
-            return 255;
+            return IsComponent() 
+                ? (byte) DrawableType 
+                : (byte) 255;
         }
 
         public bool IsPedProp()

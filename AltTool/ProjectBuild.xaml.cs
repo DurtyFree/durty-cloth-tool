@@ -16,16 +16,13 @@ using System.Windows.Shapes;
 
 namespace AltTool
 {
-    /// <summary>
-    /// Логика взаимодействия для ProjectBuild.xaml
-    /// </summary>
     public partial class ProjectBuild : Window
     {
         public enum TargetResourceType
         {
-            Altv,
+            AltV,
             Single,
-            Fivem
+            FiveM
         }
         public string OutputFolder = "";
         public string CollectionName = "";
@@ -37,18 +34,18 @@ namespace AltTool
 
         private void BuildButton_Click(object sender, RoutedEventArgs e)
         {
-            TargetResourceType resType = TargetResourceType.Altv;
+            TargetResourceType resType = TargetResourceType.AltV;
 
             if (isSinglePlayerRadio.IsChecked == true)
                 resType = TargetResourceType.Single;
             else if (isFivemResourceRadio.IsChecked == true)
-                resType = TargetResourceType.Fivem;
+                resType = TargetResourceType.FiveM;
 
             CollectionName = collectionNameText.Text;
 
             switch (resType)
             {
-                case TargetResourceType.Altv:
+                case TargetResourceType.AltV:
                     ResourceBuilder.BuildResourceAltv(OutputFolder, CollectionName);
                     break;
 
@@ -56,7 +53,7 @@ namespace AltTool
                     ResourceBuilder.BuildResourceSingle(OutputFolder, CollectionName);
                     break;
 
-                case TargetResourceType.Fivem:
+                case TargetResourceType.FiveM:
                     ResourceBuilder.BuildResourceFivem(OutputFolder, CollectionName);
                     break;
             }
@@ -65,11 +62,11 @@ namespace AltTool
         private void SelectFolderButton_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
-            if (dialog.ShowDialog(this).GetValueOrDefault())
-            {
-                OutputFolder = dialog.SelectedPath;
-                outFolderPathText.Content = OutputFolder;
-            }
+            if (!dialog.ShowDialog(this).GetValueOrDefault()) 
+                return;
+
+            OutputFolder = dialog.SelectedPath;
+            outFolderPathText.Content = OutputFolder;
         }
 
         private void ValidationTextBox(object sender, TextCompositionEventArgs e)

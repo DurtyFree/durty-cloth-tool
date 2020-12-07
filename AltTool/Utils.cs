@@ -1,13 +1,9 @@
 ﻿using RageLib.GTA5.Cryptography;
 using RageLib.GTA5.Cryptography.Helpers;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AltTool
 {
@@ -38,7 +34,8 @@ namespace AltTool
         }
     }
 
-    public class AlphanumericComparer : IComparer<string>
+    public class AlphanumericComparer 
+        : IComparer<string>
     {
         [DllImport("shlwapi.dll", CharSet = CharSet.Unicode)]
         static extern int StrCmpLogicalW(string s1, string s2);

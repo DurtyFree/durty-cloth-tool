@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 
@@ -18,7 +16,6 @@ namespace AltTool
 
         public static void LoadProject(string inputFile)
         {
-            string dir = Path.GetDirectoryName(inputFile);
             var data = JsonConvert.DeserializeObject<List<ClothData>>(File.ReadAllText(inputFile));
 
             MainWindow.Clothes.Clear();
