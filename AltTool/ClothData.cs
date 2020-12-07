@@ -9,9 +9,6 @@ namespace AltTool
     public class ClothData
         : INotifyPropertyChanged
     {
-        public readonly ClothNameResolver.ClothTypes ClothType;
-        public readonly ClothNameResolver.DrawableTypes DrawableType;
-
         public struct ComponentFlags
         {
             public bool unkFlag1;
@@ -21,7 +18,7 @@ namespace AltTool
             public bool isHighHeels;
         }
 
-        public struct PedPropFlags
+        public struct PropFlags
         {
             public bool unkFlag1;
             public bool unkFlag2;
@@ -40,15 +37,17 @@ namespace AltTool
         private static char _offsetLetter = 'a';
         private static readonly string[] SexIcons = { "👨🏻", "👩🏻" };
         private static readonly string[] TypeIcons = { "🧥", "👓" };
-        private string _origNumerics = "";
+        private readonly string _origNumerics = "";
         private string _postfix = "";
 
-        public string MainPath = "";
-        public ComponentFlags componentFlags;
-        public PedPropFlags pedPropFlags;
-        public string FpModelPath;
-        public ObservableCollection<string> Textures = new ObservableCollection<string>();
-        public Sex TargetSex;
+        public ClothNameResolver.ClothTypes ClothType { get; }
+        public ClothNameResolver.DrawableTypes DrawableType  { get; }
+        public string MainPath { get; } = "";
+        public ComponentFlags PedComponentFlags;
+        public PropFlags PedPropFlags;
+        public string FPModelPath { get; set; }
+        public readonly ObservableCollection<string> Textures = new ObservableCollection<string>();
+        public Sex TargetSex { get; }
         public string Icon => SexIcons[(int)TargetSex];
         public string Type => TypeIcons[(int)ClothType];
 
@@ -110,12 +109,12 @@ namespace AltTool
             string rootPath = Path.GetDirectoryName(MainPath);
             string fileName = Path.GetFileNameWithoutExtension(MainPath);
             string relPath = rootPath + "\\" + fileName + "_1.ydd";
-            FpModelPath = File.Exists(relPath) ? relPath : "";
+            FPModelPath = File.Exists(relPath) ? relPath : "";
         }
 
         public void SetFPModel(string path)
         {
-            FpModelPath = path;
+            FPModelPath = path;
         }
 
         public void SearchForTextures()

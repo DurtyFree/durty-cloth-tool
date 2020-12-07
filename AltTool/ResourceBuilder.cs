@@ -295,7 +295,7 @@ namespace AltTool
                             }
 
                             textureDescription.PropMask = nextPropMask;
-                            textureDescription.Unk_2806194106 = (byte)(cd.FpModelPath != "" ? 1 : 0);
+                            textureDescription.Unk_2806194106 = (byte)(cd.FPModelPath != "" ? 1 : 0);
 
                             byte texId = (byte)(cd.MainPath.EndsWith("_u.ydd") ? 0 : 1);
                             string postfix = cd.MainPath.EndsWith("_u.ydd") ? "u" : "r";
@@ -324,11 +324,11 @@ namespace AltTool
                             MCComponentInfo componentInfo = new MCComponentInfo();
                             componentInfo.Unk_802196719 = 0;
                             componentInfo.Unk_4233133352 = 0;
-                            componentInfo.Unk_128864925.b0 = (byte)(cd.componentFlags.unkFlag1 ? 1 : 0);
-                            componentInfo.Unk_128864925.b1 = (byte)(cd.componentFlags.unkFlag2 ? 1 : 0);
-                            componentInfo.Unk_128864925.b2 = (byte)(cd.componentFlags.unkFlag3 ? 1 : 0);
-                            componentInfo.Unk_128864925.b3 = (byte)(cd.componentFlags.unkFlag4 ? 1 : 0);
-                            componentInfo.Unk_128864925.b4 = (byte)(cd.componentFlags.isHighHeels ? 1 : 0);
+                            componentInfo.Unk_128864925.b0 = (byte)(cd.PedComponentFlags.unkFlag1 ? 1 : 0);
+                            componentInfo.Unk_128864925.b1 = (byte)(cd.PedComponentFlags.unkFlag2 ? 1 : 0);
+                            componentInfo.Unk_128864925.b2 = (byte)(cd.PedComponentFlags.unkFlag3 ? 1 : 0);
+                            componentInfo.Unk_128864925.b3 = (byte)(cd.PedComponentFlags.unkFlag4 ? 1 : 0);
+                            componentInfo.Unk_128864925.b4 = (byte)(cd.PedComponentFlags.isHighHeels ? 1 : 0);
                             componentInfo.Flags = 0;
                             componentInfo.Inclusions = 0;
                             componentInfo.Exclusions = 0;
@@ -359,8 +359,8 @@ namespace AltTool
                             for (int i = 0; i < cd.Textures.Count; ++i)
                                 File.Copy(cd.Textures[i], outputFolder + "\\stream\\" + _folderNames[sexNr] + ".rpf\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + "\\" + prefix + "_diff_" + componentNumerics + "_" + (char)(offsetLetter + i) + "_" + ytdPostfix + ".ytd");
 
-                            if (cd.FpModelPath != "")
-                                File.Copy(cd.FpModelPath, outputFolder + "\\stream\\" + _folderNames[sexNr] + ".rpf\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + "\\" + prefix + "_" + componentNumerics + "_" + postfix + "_1.ydd");
+                            if (cd.FPModelPath != "")
+                                File.Copy(cd.FPModelPath, outputFolder + "\\stream\\" + _folderNames[sexNr] + ".rpf\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + "\\" + prefix + "_" + componentNumerics + "_" + postfix + "_1.ydd");
                         }
                     }
                     else
@@ -560,7 +560,7 @@ namespace AltTool
                                 }
 
                                 textureDescription.PropMask = nextPropMask;
-                                textureDescription.Unk_2806194106 = (byte)(cd.FpModelPath != "" ? 1 : 0);
+                                textureDescription.Unk_2806194106 = (byte)(cd.FPModelPath != "" ? 1 : 0);
 
                                 byte texId = (byte)(cd.MainPath.EndsWith("_u.ydd") ? 0 : 1);
                                 string postfix = cd.MainPath.EndsWith("_u.ydd") ? "u" : "r";
@@ -583,11 +583,11 @@ namespace AltTool
                                 MCComponentInfo componentInfo = new MCComponentInfo();
                                 componentInfo.Unk_802196719 = 0;
                                 componentInfo.Unk_4233133352 = 0;
-                                componentInfo.Unk_128864925.b0 = (byte)(cd.componentFlags.unkFlag1 ? 1 : 0);
-                                componentInfo.Unk_128864925.b1 = (byte)(cd.componentFlags.unkFlag2 ? 1 : 0);
-                                componentInfo.Unk_128864925.b2 = (byte)(cd.componentFlags.unkFlag3 ? 1 : 0);
-                                componentInfo.Unk_128864925.b3 = (byte)(cd.componentFlags.unkFlag4 ? 1 : 0);
-                                componentInfo.Unk_128864925.b4 = (byte)(cd.componentFlags.isHighHeels ? 1 : 0);
+                                componentInfo.Unk_128864925.b0 = (byte)(cd.PedComponentFlags.unkFlag1 ? 1 : 0);
+                                componentInfo.Unk_128864925.b1 = (byte)(cd.PedComponentFlags.unkFlag2 ? 1 : 0);
+                                componentInfo.Unk_128864925.b2 = (byte)(cd.PedComponentFlags.unkFlag3 ? 1 : 0);
+                                componentInfo.Unk_128864925.b3 = (byte)(cd.PedComponentFlags.unkFlag4 ? 1 : 0);
+                                componentInfo.Unk_128864925.b4 = (byte)(cd.PedComponentFlags.isHighHeels ? 1 : 0);
                                 componentInfo.Flags = 0;
                                 componentInfo.Inclusions = 0;
                                 componentInfo.Exclusions = 0;
@@ -628,11 +628,11 @@ namespace AltTool
                                     resource.Import(cd.Textures[i]);
                                 }
 
-                                if (cd.FpModelPath != "")
+                                if (cd.FPModelPath != "")
                                 {
                                     resource = currComponentDir.CreateResourceFile();
                                     resource.Name = prefix + "_" + componentNumerics + "_" + postfix + "_1.ydd";
-                                    resource.Import(cd.FpModelPath);
+                                    resource.Import(cd.FPModelPath);
                                 }
 
                             }
@@ -846,7 +846,7 @@ namespace AltTool
                             }
 
                             textureDescription.PropMask = nextPropMask;
-                            textureDescription.Unk_2806194106 = (byte)(cd.FpModelPath != "" ? 1 : 0);
+                            textureDescription.Unk_2806194106 = (byte)(cd.FPModelPath != "" ? 1 : 0);
 
                             byte texId = (byte)(cd.MainPath.EndsWith("_u.ydd") ? 0 : 1);
                             string postfix = cd.MainPath.EndsWith("_u.ydd") ? "u" : "r";
@@ -869,11 +869,11 @@ namespace AltTool
                             MCComponentInfo componentInfo = new MCComponentInfo();
                             componentInfo.Unk_802196719 = 0;
                             componentInfo.Unk_4233133352 = 0;
-                            componentInfo.Unk_128864925.b0 = (byte)(cd.componentFlags.unkFlag1 ? 1 : 0);
-                            componentInfo.Unk_128864925.b1 = (byte)(cd.componentFlags.unkFlag2 ? 1 : 0);
-                            componentInfo.Unk_128864925.b2 = (byte)(cd.componentFlags.unkFlag3 ? 1 : 0);
-                            componentInfo.Unk_128864925.b3 = (byte)(cd.componentFlags.unkFlag4 ? 1 : 0);
-                            componentInfo.Unk_128864925.b4 = (byte)(cd.componentFlags.isHighHeels ? 1 : 0);
+                            componentInfo.Unk_128864925.b0 = (byte)(cd.PedComponentFlags.unkFlag1 ? 1 : 0);
+                            componentInfo.Unk_128864925.b1 = (byte)(cd.PedComponentFlags.unkFlag2 ? 1 : 0);
+                            componentInfo.Unk_128864925.b2 = (byte)(cd.PedComponentFlags.unkFlag3 ? 1 : 0);
+                            componentInfo.Unk_128864925.b3 = (byte)(cd.PedComponentFlags.unkFlag4 ? 1 : 0);
+                            componentInfo.Unk_128864925.b4 = (byte)(cd.PedComponentFlags.isHighHeels ? 1 : 0);
                             componentInfo.Flags = 0;
                             componentInfo.Inclusions = 0;
                             componentInfo.Exclusions = 0;
@@ -902,8 +902,8 @@ namespace AltTool
                             for (int i = 0; i < cd.Textures.Count; ++i)
                                 File.Copy(cd.Textures[i], outputFolder + "\\stream\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + "\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + "^" + prefix + "_diff_" + componentNumerics + "_" + (char)(offsetLetter + i) + "_" + ytdPostfix + ".ytd", true);
 
-                            if (cd.FpModelPath != "")
-                                File.Copy(cd.FpModelPath, outputFolder + "\\stream\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + "\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + "^" + prefix + "_" + componentNumerics + "_" + postfix + "_1.ydd", true);
+                            if (cd.FPModelPath != "")
+                                File.Copy(cd.FPModelPath, outputFolder + "\\stream\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + "\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + "^" + prefix + "_" + componentNumerics + "_" + postfix + "_1.ydd", true);
                         }
                     }
                     else

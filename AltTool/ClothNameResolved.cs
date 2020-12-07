@@ -41,11 +41,11 @@ namespace AltTool
             COUNT
         }
 
-        public ClothTypes clothClothTypes;
-        public DrawableTypes DrawableType;
-        public string BindedNumber = "";
-        public string Postfix = "";
-        public bool IsVariation = false;
+        public ClothTypes ClothClothTypes { get; }
+        public DrawableTypes DrawableType { get; }
+        public string BindedNumber { get; }
+        public string Postfix { get; } = "";
+        public bool IsVariation { get; }
 
         public ClothNameResolver(string filename)
         {
@@ -55,7 +55,7 @@ namespace AltTool
 
             if(parts[0].ToLower() == "p")
             {
-                clothClothTypes = ClothTypes.PedProp;
+                ClothClothTypes = ClothTypes.PedProp;
 
                 string drName = parts[1].ToLower();
                 switch(drName)
@@ -80,7 +80,7 @@ namespace AltTool
             }
             else
             {
-                clothClothTypes = ClothTypes.Component;
+                ClothClothTypes = ClothTypes.Component;
 
                 string drName = parts[0].ToLower();
                 switch(drName)
@@ -109,7 +109,7 @@ namespace AltTool
 
         public override string ToString()
         {
-            return clothClothTypes + " " + DrawableType + " " + BindedNumber;
+            return ClothClothTypes + " " + DrawableType + " " + BindedNumber;
         }
 
         public static string DrawableTypeToString(DrawableTypes types)

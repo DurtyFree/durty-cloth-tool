@@ -105,13 +105,13 @@ namespace AltTool
                         drawableName.Text = _selectedCloth.Name;
 
                         texturesList.ItemsSource = _selectedCloth.Textures;
-                        fpModelPath.Text = _selectedCloth.FpModelPath != "" ? _selectedCloth.FpModelPath : "Not selected...";
+                        fpModelPath.Text = _selectedCloth.FPModelPath != "" ? _selectedCloth.FPModelPath : "Not selected...";
 
-                        unkFlag1Check.IsChecked = _selectedCloth.componentFlags.unkFlag1;
-                        unkFlag2Check.IsChecked = _selectedCloth.componentFlags.unkFlag2;
-                        unkFlag3Check.IsChecked = _selectedCloth.componentFlags.unkFlag3;
-                        unkFlag4Check.IsChecked = _selectedCloth.componentFlags.unkFlag4;
-                        isHighHeelsCheck.IsChecked = _selectedCloth.componentFlags.isHighHeels;
+                        unkFlag1Check.IsChecked = _selectedCloth.PedComponentFlags.unkFlag1;
+                        unkFlag2Check.IsChecked = _selectedCloth.PedComponentFlags.unkFlag2;
+                        unkFlag3Check.IsChecked = _selectedCloth.PedComponentFlags.unkFlag3;
+                        unkFlag4Check.IsChecked = _selectedCloth.PedComponentFlags.unkFlag4;
+                        isHighHeelsCheck.IsChecked = _selectedCloth.PedComponentFlags.isHighHeels;
                     }
                     else
                     {
@@ -121,11 +121,11 @@ namespace AltTool
 
                         pedPropTexturesList.ItemsSource = _selectedCloth.Textures;
 
-                        pedPropFlag1.IsChecked = _selectedCloth.pedPropFlags.unkFlag1;
-                        pedPropFlag2.IsChecked = _selectedCloth.pedPropFlags.unkFlag2;
-                        pedPropFlag3.IsChecked = _selectedCloth.pedPropFlags.unkFlag3;
-                        pedPropFlag4.IsChecked = _selectedCloth.pedPropFlags.unkFlag4;
-                        pedPropFlag5.IsChecked = _selectedCloth.pedPropFlags.unkFlag5;
+                        pedPropFlag1.IsChecked = _selectedCloth.PedPropFlags.unkFlag1;
+                        pedPropFlag2.IsChecked = _selectedCloth.PedPropFlags.unkFlag2;
+                        pedPropFlag3.IsChecked = _selectedCloth.PedPropFlags.unkFlag3;
+                        pedPropFlag4.IsChecked = _selectedCloth.PedPropFlags.unkFlag4;
+                        pedPropFlag5.IsChecked = _selectedCloth.PedPropFlags.unkFlag5;
                     }
                 }
             }
@@ -204,37 +204,37 @@ namespace AltTool
         private void UnkFlag1Check_Checked(object sender, RoutedEventArgs e)
         {
             if (_selectedCloth != null)
-                _selectedCloth.componentFlags.unkFlag1 = unkFlag1Check.IsChecked.GetValueOrDefault(false);
+                _selectedCloth.PedComponentFlags.unkFlag1 = unkFlag1Check.IsChecked.GetValueOrDefault(false);
         }
 
         private void UnkFlag2Check_Checked(object sender, RoutedEventArgs e)
         {
             if (_selectedCloth != null)
-                _selectedCloth.componentFlags.unkFlag2 = unkFlag2Check.IsChecked.GetValueOrDefault(false);
+                _selectedCloth.PedComponentFlags.unkFlag2 = unkFlag2Check.IsChecked.GetValueOrDefault(false);
         }
 
         private void UnkFlag3Check_Checked(object sender, RoutedEventArgs e)
         {
             if (_selectedCloth != null)
-                _selectedCloth.componentFlags.unkFlag3 = unkFlag3Check.IsChecked.GetValueOrDefault(false);
+                _selectedCloth.PedComponentFlags.unkFlag3 = unkFlag3Check.IsChecked.GetValueOrDefault(false);
         }
 
         private void UnkFlag4Check_Checked(object sender, RoutedEventArgs e)
         {
             if (_selectedCloth != null)
-                _selectedCloth.componentFlags.unkFlag4 = unkFlag4Check.IsChecked.GetValueOrDefault(false);
+                _selectedCloth.PedComponentFlags.unkFlag4 = unkFlag4Check.IsChecked.GetValueOrDefault(false);
         }
 
         private void IsHighHeelsCheck_Checked(object sender, RoutedEventArgs e)
         {
             if (_selectedCloth != null)
-                _selectedCloth.componentFlags.isHighHeels = isHighHeelsCheck.IsChecked.GetValueOrDefault(false);
+                _selectedCloth.PedComponentFlags.isHighHeels = isHighHeelsCheck.IsChecked.GetValueOrDefault(false);
         }
 
         private void ClearFPModel_Click(object sender, RoutedEventArgs e)
         {
             if (_selectedCloth != null)
-                _selectedCloth.FpModelPath = "";
+                _selectedCloth.FPModelPath = "";
             fpModelPath.Text = "Not selected...";
         }
 
@@ -242,7 +242,7 @@ namespace AltTool
         {
             if (_selectedCloth != null)
                 ProjectController.Instance().SetFPModel(_selectedCloth);
-            fpModelPath.Text = _selectedCloth.FpModelPath != "" ? _selectedCloth.FpModelPath : "Not selected...";
+            fpModelPath.Text = _selectedCloth.FPModelPath != "" ? _selectedCloth.FPModelPath : "Not selected...";
         }
 
         private void PedPropName_TextChanged(object sender, TextChangedEventArgs e)
@@ -256,31 +256,31 @@ namespace AltTool
         private void PedPropFlag1_Checked(object sender, RoutedEventArgs e)
         {
             if (_selectedCloth != null)
-                _selectedCloth.pedPropFlags.unkFlag1 = unkFlag1Check.IsChecked.GetValueOrDefault(false);
+                _selectedCloth.PedPropFlags.unkFlag1 = unkFlag1Check.IsChecked.GetValueOrDefault(false);
         }
 
         private void PedPropFlag2_Checked(object sender, RoutedEventArgs e)
         {
             if (_selectedCloth != null)
-                _selectedCloth.pedPropFlags.unkFlag2 = unkFlag1Check.IsChecked.GetValueOrDefault(false);
+                _selectedCloth.PedPropFlags.unkFlag2 = unkFlag1Check.IsChecked.GetValueOrDefault(false);
         }
 
         private void PedPropFlag3_Checked(object sender, RoutedEventArgs e)
         {
             if (_selectedCloth != null)
-                _selectedCloth.pedPropFlags.unkFlag3 = unkFlag1Check.IsChecked.GetValueOrDefault(false);
+                _selectedCloth.PedPropFlags.unkFlag3 = unkFlag1Check.IsChecked.GetValueOrDefault(false);
         }
 
         private void PedPropFlag4_Checked(object sender, RoutedEventArgs e)
         {
             if (_selectedCloth != null)
-                _selectedCloth.pedPropFlags.unkFlag4 = unkFlag1Check.IsChecked.GetValueOrDefault(false);
+                _selectedCloth.PedPropFlags.unkFlag4 = unkFlag1Check.IsChecked.GetValueOrDefault(false);
         }
 
         private void PedPropFlag5_Checked(object sender, RoutedEventArgs e)
         {
             if (_selectedCloth != null)
-                _selectedCloth.pedPropFlags.unkFlag5 = unkFlag1Check.IsChecked.GetValueOrDefault(false);
+                _selectedCloth.PedPropFlags.unkFlag5 = unkFlag1Check.IsChecked.GetValueOrDefault(false);
         }
     }
 }

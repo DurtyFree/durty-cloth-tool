@@ -40,9 +40,9 @@ namespace AltTool
 
                 if(!cData.IsVariation)
                 {
-                    ClothData nextCloth = new ClothData(filename, cData.clothClothTypes, cData.DrawableType, cData.BindedNumber, cData.Postfix, targetSex);
+                    ClothData nextCloth = new ClothData(filename, cData.ClothClothTypes, cData.DrawableType, cData.BindedNumber, cData.Postfix, targetSex);
                         
-                    if(cData.clothClothTypes == ClothNameResolver.ClothTypes.Component)
+                    if(cData.ClothClothTypes == ClothNameResolver.ClothTypes.Component)
                     {
                         nextCloth.SearchForFPModel();
                         nextCloth.SearchForTextures();
@@ -57,7 +57,7 @@ namespace AltTool
                             MainWindow.Clothes.Add(cloth);
                         }
 
-                        StatusController.SetStatus(nextCloth.ToString() + " added (FP model found: " + (nextCloth.FpModelPath != "" ? "Yes" : "No") + ", Textures: " + (nextCloth.Textures.Count) + "). Total: " + MainWindow.Clothes.Count);
+                        StatusController.SetStatus(nextCloth.ToString() + " added (FP model found: " + (nextCloth.FPModelPath != "" ? "Yes" : "No") + ", Textures: " + (nextCloth.Textures.Count) + "). Total: " + MainWindow.Clothes.Count);
                     }
                     else
                     {
