@@ -14,7 +14,7 @@ namespace AltTool
 {
     public class ResourceBuilder
     {
-        public static string GenerateShopMeta(Sex targetSex, string collectionName)
+        private static string GenerateShopMeta(Sex targetSex, string collectionName)
         {
             string targetName = targetSex == Sex.Male ? "mp_m_freemode_01" : "mp_f_freemode_01";
             string dlcName = (targetSex == Sex.Male ? "mp_m_" : "mp_f_") + collectionName;
@@ -35,7 +35,7 @@ namespace AltTool
 </ShopPedApparel>";
         }
 
-        public static string GenerateStreamCfg(List<string> files, List<string> metas)
+        private static string GenerateAltvStreamCfg(List<string> files, List<string> metas)
         {
             string filesText = "";
             for(int i = 0; i < files.Count; ++i)
@@ -56,12 +56,12 @@ namespace AltTool
             return $"files: [\n{filesText}\n]\nmeta: {{\n{metasText}\n}}\n";
         }
 
-        public static string GenerateResourceCfg()
+        private static string GenerateAltvResourceCfg()
         {
             return "type: dlc,\nmain: stream.cfg,\nclient-files: [\n  stream/*\n]\n";
         }
 
-        public static string GenerateResourceLua(List<string> metas)
+        private static string GenerateFiveMResourceLua(List<string> metas)
         {
             string filesText = "";
             for (int i = 0; i < metas.Count; ++i)
@@ -86,7 +86,7 @@ namespace AltTool
             return manifestContent;
         }
 
-        public static string GenerateContentXML(string collectionName, bool hasMale, bool hasFemale, bool hasMaleProps, bool hasFemaleProps)
+        private static string GenerateSingleplayerContentXml(string collectionName, bool hasMale, bool hasFemale, bool hasMaleProps, bool hasFemaleProps)
         {
             string str = $@"<?xml version=""1.0"" encoding=""UTF-8""?>
 <CDataFileMgr__ContentsOfDataFileXml>
@@ -198,7 +198,7 @@ namespace AltTool
             return str;
         }
 
-        public static string GenerateSetup2XML(string collectionName, int order = 1000)
+        private static string GenerateSingleplayerSetup2Xml(string collectionName, int order = 1000)
         {
             return $@"<?xml version=""1.0"" encoding=""UTF-8""?>
 <SSetupData>
@@ -264,85 +264,11 @@ namespace AltTool
                         if (clothData.Textures.Count <= 0 || (int) clothData.TargetSex != sexNr) 
                             continue;
 
-                        byte componentTypeId = clothData.GetComponentTypeId();
-                        YmtPedDefinitionFile targetYmt = ymt;
+                        var componentItemInfo = GenerateYmtPedComponentItem(clothData, ref componentTextureBindings);
+                        ymt.Unk_376833625.CompInfos.Add(componentItemInfo);
 
-                        if (componentTextureBindings[componentTypeId] == null)
-                            componentTextureBindings[componentTypeId] = new MUnk_3538495220();
-
-                        MUnk_1535046754 textureDescription = new MUnk_1535046754();
-
-                        byte nextPropMask = 17;
-
-                        switch (componentTypeId)
-                        {
-                            case 2:
-                            case 7:
-                                nextPropMask = 11; break;
-                            case 5:
-                            case 8:
-                                nextPropMask = 65; break;
-                            case 9:
-                                nextPropMask = 1; break;
-                            case 10:
-                                nextPropMask = 5; break;
-                            case 11:
-                                nextPropMask = 1; break;
-                            default:
-                                break;
-                        }
-
-                        textureDescription.PropMask = nextPropMask;
-                        textureDescription.Unk_2806194106 = (byte)(clothData.FirstPersonModelPath != "" ? 1 : 0);
-
-                        byte texId = (byte)(clothData.MainPath.EndsWith("_u.ydd") ? 0 : 1);
-                        string postfix = clothData.MainPath.EndsWith("_u.ydd") ? "u" : "r";
-                        string ytdPostfix = clothData.MainPath.EndsWith("_u.ydd") ? "uni" : "whi";
-                            
-                        if(clothData.DrawableType == ClothNameResolver.DrawableTypes.Shoes || clothData.DrawableType == ClothNameResolver.DrawableTypes.Legs)
-                        {
-                            postfix = "r";
-                            ytdPostfix = "uni";
-                        }   
-
-                        foreach (string texPath in clothData.Textures)
-                        {
-                            MUnk_1036962405 texInfo = new MUnk_1036962405
-                            {
-                                Distribution = 255,
-                                TexId = texId
-                            };
-                            textureDescription.ATexData.Add(texInfo);
-                        }
-
-                        textureDescription.ClothData.Unk_2828247905 = 0;
-
-                        componentTextureBindings[componentTypeId].Unk_1756136273.Add(textureDescription);
-
-                        byte componentTextureLocalId = (byte)(componentTextureBindings[componentTypeId].Unk_1756136273.Count - 1);
-
-                        MCComponentInfo componentInfo = new MCComponentInfo
-                        {
-                            Unk_802196719 = 0,
-                            Unk_4233133352 = 0,
-                            Unk_128864925 =
-                            {
-                                b0 = (byte) (clothData.PedComponentFlags.unkFlag1 ? 1 : 0),
-                                b1 = (byte) (clothData.PedComponentFlags.unkFlag2 ? 1 : 0),
-                                b2 = (byte) (clothData.PedComponentFlags.unkFlag3 ? 1 : 0),
-                                b3 = (byte) (clothData.PedComponentFlags.unkFlag4 ? 1 : 0),
-                                b4 = (byte) (clothData.PedComponentFlags.isHighHeels ? 1 : 0)
-                            },
-                            Flags = 0,
-                            Inclusions = 0,
-                            Exclusions = 0,
-                            Unk_1613922652 = 0,
-                            Unk_2114993291 = 0,
-                            Unk_3509540765 = componentTypeId,
-                            Unk_4196345791 = componentTextureLocalId
-                        };
-
-                        targetYmt.Unk_376833625.CompInfos.Add(componentInfo);
+                        var componentTypeId = componentItemInfo.Unk_3509540765;
+                        GetClothPostfixes(clothData, out var ytdPostfix, out var yddPostfix);
 
                         if (!isAnyClothAdded)
                         {
@@ -353,19 +279,19 @@ namespace AltTool
                         }
 
                         int currentComponentIndex = componentIndexes[componentTypeId]++;
-
                         string componentNumerics = currentComponentIndex.ToString().PadLeft(3, '0');
                         string prefix = clothData.GetPrefix();
 
                         clothData.SetComponentNumerics(componentNumerics, currentComponentIndex);
-                        File.Copy(clothData.MainPath, outputFolder + "\\stream\\" + FolderNames[sexNr] + ".rpf\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "\\" + prefix + "_" + componentNumerics + "_" + postfix + ".ydd");
+
+                        File.Copy(clothData.MainPath, outputFolder + "\\stream\\" + FolderNames[sexNr] + ".rpf\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "\\" + prefix + "_" + componentNumerics + "_" + yddPostfix + ".ydd");
 
                         char offsetLetter = 'a';
                         for (int i = 0; i < clothData.Textures.Count; ++i)
                             File.Copy(clothData.Textures[i], outputFolder + "\\stream\\" + FolderNames[sexNr] + ".rpf\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "\\" + prefix + "_diff_" + componentNumerics + "_" + (char)(offsetLetter + i) + "_" + ytdPostfix + ".ytd");
 
                         if (clothData.FirstPersonModelPath != "")
-                            File.Copy(clothData.FirstPersonModelPath, outputFolder + "\\stream\\" + FolderNames[sexNr] + ".rpf\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "\\" + prefix + "_" + componentNumerics + "_" + postfix + "_1.ydd");
+                            File.Copy(clothData.FirstPersonModelPath, outputFolder + "\\stream\\" + FolderNames[sexNr] + ".rpf\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "\\" + prefix + "_" + componentNumerics + "_" + yddPostfix + "_1.ydd");
                     }
                     else
                     {
@@ -373,41 +299,8 @@ namespace AltTool
                             continue;
 
                         Unk_2834549053 anchor = (Unk_2834549053)clothData.GetPedPropTypeId();
-
                         var defs = ymt.Unk_376833625.PropInfo.Props[anchor] ?? new List<MUnk_94549140>();
-                        var item = new MUnk_94549140(ymt.Unk_376833625.PropInfo)
-                        {
-                            AnchorId = (byte) anchor
-                        };
-
-                        for (int i = 0; i < clothData.Textures.Count; i++)
-                        {
-                            var texture = new MUnk_254518642
-                            {
-                                TexId = (byte) i
-                            };
-                            item.TexData.Add(texture);
-                        }
-
-                        // Get or create linked anchor
-                        var aanchor = ymt.Unk_376833625.PropInfo.AAnchors.Find(e => e.Anchor == anchor);
-
-                        if (aanchor == null)
-                        {
-                            aanchor = new MCAnchorProps(ymt.Unk_376833625.PropInfo)
-                            {
-                                Anchor = anchor, 
-                                PropsMap = {[item] = (byte) item.TexData.Count}
-                            };
-
-
-                            ymt.Unk_376833625.PropInfo.AAnchors.Add(aanchor);
-                        }
-                        else
-                        {
-                            aanchor.PropsMap[item] = (byte)item.TexData.Count;
-                        }
-
+                        var item = GenerateYmtPedPropItem(ymt, anchor, clothData);
                         defs.Add(item);
 
                         if (!isAnyPropAdded)
@@ -437,17 +330,7 @@ namespace AltTool
                 
                 if (isAnyClothAdded)
                 {
-                    int arrIndex = 0;
-                    for (int i = 0; i < componentTextureBindings.Length; ++i)
-                    {
-                        if (componentTextureBindings[i] != null)
-                        {
-                            byte id = (byte)arrIndex++;
-                            ymt.Unk_376833625.Unk_2996560424.SetByte(i, id);
-                        }
-
-                        ymt.Unk_376833625.Components[(Unk_884254308)i] = componentTextureBindings[i];
-                    }
+                    UpdateYmtComponentTextureBindings(componentTextureBindings, ymt);
                 }
 
                 if(isAnyPropAdded)
@@ -464,10 +347,152 @@ namespace AltTool
                 }
             }
 
-            File.WriteAllText(outputFolder + "\\stream.cfg", GenerateStreamCfg(streamCfgIncludes, streamCfgMetas));
-            File.WriteAllText(outputFolder + "\\resource.cfg", GenerateResourceCfg());
+            File.WriteAllText(outputFolder + "\\stream.cfg", GenerateAltvStreamCfg(streamCfgIncludes, streamCfgMetas));
+            File.WriteAllText(outputFolder + "\\resource.cfg", GenerateAltvResourceCfg());
 
-            MessageBox.Show("Resource built!");
+            MessageBox.Show("alt:V Resource built!");
+        }
+
+        private static void UpdateYmtComponentTextureBindings(MUnk_3538495220[] componentTextureBindings, YmtPedDefinitionFile ymt)
+        {
+            int arrIndex = 0;
+            for (int i = 0; i < componentTextureBindings.Length; ++i)
+            {
+                if (componentTextureBindings[i] != null)
+                {
+                    byte id = (byte) arrIndex++;
+                    ymt.Unk_376833625.Unk_2996560424.SetByte(i, id);
+                }
+
+                ymt.Unk_376833625.Components[(Unk_884254308) i] = componentTextureBindings[i];
+            }
+        }
+
+        private static MUnk_94549140 GenerateYmtPedPropItem(YmtPedDefinitionFile ymt, Unk_2834549053 anchor, ClothData clothData)
+        {
+            var item = new MUnk_94549140(ymt.Unk_376833625.PropInfo)
+            {
+                AnchorId = (byte) anchor
+            };
+
+            for (int i = 0; i < clothData.Textures.Count; i++)
+            {
+                var texture = new MUnk_254518642
+                {
+                    TexId = (byte) i
+                };
+                item.TexData.Add(texture);
+            }
+
+            // Get or create linked anchor
+            var aanchor = ymt.Unk_376833625.PropInfo.AAnchors.Find(e => e.Anchor == anchor);
+
+            if (aanchor == null)
+            {
+                aanchor = new MCAnchorProps(ymt.Unk_376833625.PropInfo)
+                {
+                    Anchor = anchor,
+                    PropsMap = {[item] = (byte) item.TexData.Count}
+                };
+
+                ymt.Unk_376833625.PropInfo.AAnchors.Add(aanchor);
+            }
+            else
+            {
+                aanchor.PropsMap[item] = (byte) item.TexData.Count;
+            }
+            return item;
+        }
+
+        private static void GetClothPostfixes(ClothData clothData, out string ytdPostfix, out string yddPostfix)
+        {
+            yddPostfix = clothData.MainPath.EndsWith("_u.ydd") ? "u" : "r";
+            ytdPostfix = clothData.MainPath.EndsWith("_u.ydd") ? "uni" : "whi";
+
+            if (clothData.DrawableType == ClothNameResolver.DrawableTypes.Shoes ||
+                clothData.DrawableType == ClothNameResolver.DrawableTypes.Legs)
+            {
+                yddPostfix = "r";
+                ytdPostfix = "uni";
+            }
+        }
+
+        private static MCComponentInfo GenerateYmtPedComponentItem(ClothData clothData, ref MUnk_3538495220[] componentTextureBindings)
+        {
+            byte componentTypeId = clothData.GetComponentTypeId();
+            if (componentTextureBindings[componentTypeId] == null)
+                componentTextureBindings[componentTypeId] = new MUnk_3538495220();
+
+            byte nextPropMask = 17;
+            switch (componentTypeId)
+            {
+                case 2:
+                case 7:
+                    nextPropMask = 11;
+                    break;
+                case 5:
+                case 8:
+                    nextPropMask = 65;
+                    break;
+                case 9:
+                    nextPropMask = 1;
+                    break;
+                case 10:
+                    nextPropMask = 5;
+                    break;
+                case 11:
+                    nextPropMask = 1;
+                    break;
+                default:
+                    break;
+            }
+
+            MUnk_1535046754 textureDescription = new MUnk_1535046754
+            {
+                PropMask = nextPropMask,
+                Unk_2806194106 = (byte) (clothData.FirstPersonModelPath != "" ? 1 : 0),
+                ClothData =
+                {
+                    Unk_2828247905 = 0
+                }
+            };
+
+            byte texId = (byte) (clothData.MainPath.EndsWith("_u.ydd") ? 0 : 1);
+
+            foreach (string texPath in clothData.Textures)
+            {
+                MUnk_1036962405 texInfo = new MUnk_1036962405
+                {
+                    Distribution = 255,
+                    TexId = texId
+                };
+                textureDescription.ATexData.Add(texInfo);
+            }
+
+            componentTextureBindings[componentTypeId].Unk_1756136273.Add(textureDescription);
+
+            byte componentTextureLocalId = (byte) (componentTextureBindings[componentTypeId].Unk_1756136273.Count - 1);
+
+            return new MCComponentInfo
+            {
+                Unk_802196719 = 0,
+                Unk_4233133352 = 0,
+                Unk_128864925 =
+                {
+                    b0 = (byte) (clothData.PedComponentFlags.unkFlag1 ? 1 : 0),
+                    b1 = (byte) (clothData.PedComponentFlags.unkFlag2 ? 1 : 0),
+                    b2 = (byte) (clothData.PedComponentFlags.unkFlag3 ? 1 : 0),
+                    b3 = (byte) (clothData.PedComponentFlags.unkFlag4 ? 1 : 0),
+                    b4 = (byte) (clothData.PedComponentFlags.isHighHeels ? 1 : 0)
+                },
+                Flags = 0,
+                Inclusions = 0,
+                Exclusions = 0,
+                Unk_1613922652 = 0,
+                Unk_2114993291 = 0,
+                Unk_3509540765 = componentTypeId,
+                Unk_4196345791 = componentTextureLocalId
+            };
         }
 
         public static void BuildResourceSingle(string outputFolder, string collectionName)
@@ -526,87 +551,18 @@ namespace AltTool
                     bool isAnyClothAdded = false;
                     bool isAnyPropAdded  = false;
 
-                    foreach (ClothData cd in MainWindow.Clothes)
+                    foreach (ClothData clothData in MainWindow.Clothes)
                     {
-                        if (cd.IsComponent())
+                        if (clothData.IsComponent())
                         {
-                            if (cd.Textures.Count <= 0 || (int) cd.TargetSex != sexNr)
+                            if (clothData.Textures.Count <= 0 || (int) clothData.TargetSex != sexNr)
                                 continue;
 
-                            byte componentTypeId = cd.GetComponentTypeId();
+                            var componentItemInfo = GenerateYmtPedComponentItem(clothData, ref componentTextureBindings);
+                            ymt.Unk_376833625.CompInfos.Add(componentItemInfo);
 
-                            YmtPedDefinitionFile targetYmt = ymt;
-
-                            if (componentTextureBindings[componentTypeId] == null)
-                                componentTextureBindings[componentTypeId] = new MUnk_3538495220();
-
-                            MUnk_1535046754 textureDescription = new MUnk_1535046754();
-
-                            byte nextPropMask = 17;
-
-                            switch (componentTypeId)
-                            {
-                                case 2:
-                                case 7:
-                                    nextPropMask = 11; break;
-                                case 5:
-                                case 8:
-                                    nextPropMask = 65; break;
-                                case 9:
-                                    nextPropMask = 1; break;
-                                case 10:
-                                    nextPropMask = 5; break;
-                                case 11:
-                                    nextPropMask = 1; break;
-                                default:
-                                    break;
-                            }
-
-                            textureDescription.PropMask = nextPropMask;
-                            textureDescription.Unk_2806194106 = (byte)(cd.FirstPersonModelPath != "" ? 1 : 0);
-
-                            byte texId = (byte)(cd.MainPath.EndsWith("_u.ydd") ? 0 : 1);
-                            string postfix = cd.MainPath.EndsWith("_u.ydd") ? "u" : "r";
-                            string ytdPostfix = cd.MainPath.EndsWith("_u.ydd") ? "uni" : "whi";
-
-                            foreach (string texPath in cd.Textures)
-                            {
-                                MUnk_1036962405 texInfo = new MUnk_1036962405
-                                {
-                                    Distribution = 255, 
-                                    TexId = texId
-                                };
-                                textureDescription.ATexData.Add(texInfo);
-                            }
-
-                            textureDescription.ClothData.Unk_2828247905 = 0;
-
-                            componentTextureBindings[componentTypeId].Unk_1756136273.Add(textureDescription);
-
-                            byte componentTextureLocalId = (byte)(componentTextureBindings[componentTypeId].Unk_1756136273.Count - 1);
-
-                            MCComponentInfo componentInfo = new MCComponentInfo
-                            {
-                                Unk_802196719 = 0,
-                                Unk_4233133352 = 0,
-                                Unk_128864925 =
-                                {
-                                    b0 = (byte) (cd.PedComponentFlags.unkFlag1 ? 1 : 0),
-                                    b1 = (byte) (cd.PedComponentFlags.unkFlag2 ? 1 : 0),
-                                    b2 = (byte) (cd.PedComponentFlags.unkFlag3 ? 1 : 0),
-                                    b3 = (byte) (cd.PedComponentFlags.unkFlag4 ? 1 : 0),
-                                    b4 = (byte) (cd.PedComponentFlags.isHighHeels ? 1 : 0)
-                                },
-                                Flags = 0,
-                                Inclusions = 0,
-                                Exclusions = 0,
-                                Unk_1613922652 = 0,
-                                Unk_2114993291 = 0,
-                                Unk_3509540765 = componentTypeId,
-                                Unk_4196345791 = componentTextureLocalId
-                            };
-
-                            targetYmt.Unk_376833625.CompInfos.Add(componentInfo);
+                            var componentTypeId = componentItemInfo.Unk_3509540765;
+                            GetClothPostfixes(clothData, out var ytdPostfix, out var yddPostfix);
 
                             if (!isAnyClothAdded)
                             {
@@ -623,66 +579,36 @@ namespace AltTool
                             int currentComponentIndex = componentIndexes[componentTypeId]++;
 
                             string componentNumerics = currentComponentIndex.ToString().PadLeft(3, '0');
-                            string prefix = cd.GetPrefix();
+                            string prefix = clothData.GetPrefix();
 
                             var resource = currComponentDir.CreateResourceFile();
-                            resource.Name = prefix + "_" + componentNumerics + "_" + postfix + ".ydd";
-                            resource.Import(cd.MainPath);
+                            resource.Name = prefix + "_" + componentNumerics + "_" + yddPostfix + ".ydd";
+                            resource.Import(clothData.MainPath);
 
                             char offsetLetter = 'a';
 
-                            for (int i = 0; i < cd.Textures.Count; ++i)
+                            for (int i = 0; i < clothData.Textures.Count; ++i)
                             {
                                 resource = currComponentDir.CreateResourceFile();
                                 resource.Name = prefix + "_diff_" + componentNumerics + "_" + (char)(offsetLetter + i) + "_" + ytdPostfix + ".ytd";
-                                resource.Import(cd.Textures[i]);
+                                resource.Import(clothData.Textures[i]);
                             }
 
-                            if (cd.FirstPersonModelPath != "")
+                            if (clothData.FirstPersonModelPath != "")
                             {
                                 resource = currComponentDir.CreateResourceFile();
-                                resource.Name = prefix + "_" + componentNumerics + "_" + postfix + "_1.ydd";
-                                resource.Import(cd.FirstPersonModelPath);
+                                resource.Name = prefix + "_" + componentNumerics + "_" + yddPostfix + "_1.ydd";
+                                resource.Import(clothData.FirstPersonModelPath);
                             }
                         }
                         else
                         {
-                            if (cd.Textures.Count <= 0 || (int) cd.TargetSex != sexNr)
+                            if (clothData.Textures.Count <= 0 || (int) clothData.TargetSex != sexNr)
                                 continue;
 
-                            Unk_2834549053 anchor = (Unk_2834549053)cd.GetPedPropTypeId();
+                            Unk_2834549053 anchor = (Unk_2834549053)clothData.GetPedPropTypeId();
                             var defs = ymt.Unk_376833625.PropInfo.Props[anchor] ?? new List<MUnk_94549140>();
-                            var item = new MUnk_94549140(ymt.Unk_376833625.PropInfo);
-
-                            item.AnchorId = (byte)anchor;
-
-                            for (int i = 0; i < cd.Textures.Count; i++)
-                            {
-                                var texture = new MUnk_254518642
-                                {
-                                    TexId = (byte) i
-                                };
-                                item.TexData.Add(texture);
-                            }
-
-                            // Get or create linked anchor
-                            var aanchor = ymt.Unk_376833625.PropInfo.AAnchors.Find(e => e.Anchor == anchor);
-
-                            if (aanchor == null)
-                            {
-                                aanchor = new MCAnchorProps(ymt.Unk_376833625.PropInfo)
-                                {
-                                    Anchor = anchor, 
-                                    PropsMap = {[item] = (byte) item.TexData.Count}
-                                };
-                                    
-                                ymt.Unk_376833625.PropInfo.AAnchors.Add(aanchor);
-                            }
-                            else
-                            {
-                                aanchor.PropsMap[item] = (byte)item.TexData.Count;
-                            }
-
+                            var item = GenerateYmtPedPropItem(ymt, anchor, clothData);
                             defs.Add(item);
 
                             if (!isAnyPropAdded)
@@ -700,18 +626,18 @@ namespace AltTool
                             int currentPropIndex = propIndexes[(byte)anchor]++;
 
                             string componentNumerics = currentPropIndex.ToString().PadLeft(3, '0');
-                            string prefix = cd.GetPrefix();
+                            string prefix = clothData.GetPrefix();
 
                             var resource = currPropDir.CreateResourceFile();
                             resource.Name = prefix + "_" + componentNumerics + ".ydd";
-                            resource.Import(cd.MainPath);
+                            resource.Import(clothData.MainPath);
 
                             char offsetLetter = 'a';
-                            for (int i = 0; i < cd.Textures.Count; ++i)
+                            for (int i = 0; i < clothData.Textures.Count; ++i)
                             {
                                 resource = currPropDir.CreateResourceFile();
                                 resource.Name = prefix + "_diff_" + componentNumerics + "_" + (char)(offsetLetter + i) + ".ytd";
-                                resource.Import(cd.Textures[i]);
+                                resource.Import(clothData.Textures[i]);
                             }
                         }
                     }
@@ -723,17 +649,7 @@ namespace AltTool
                         else if (sexNr == 1)
                             hasFemale = true;
 
-                        int arrIndex = 0;
-                        for (int i = 0; i < componentTextureBindings.Length; ++i)
-                        {
-                            if (componentTextureBindings[i] != null)
-                            {
-                                byte id = (byte)arrIndex++;
-                                ymt.Unk_376833625.Unk_2996560424.SetByte(i, id);
-                            }
-
-                            ymt.Unk_376833625.Components[(Unk_884254308)i] = componentTextureBindings[i];
-                        }
+                        UpdateYmtComponentTextureBindings(componentTextureBindings, ymt);
                     }
 
                     if (isAnyClothAdded || isAnyPropAdded)
@@ -770,14 +686,14 @@ namespace AltTool
                     }
                 }
 
-                using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(GenerateContentXML(collectionName, hasMale, hasFemale, hasMaleProps, hasFemaleProps))))
+                using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(GenerateSingleplayerContentXml(collectionName, hasMale, hasFemale, hasMaleProps, hasFemaleProps))))
                 {
                     var binFile = rpf.Root.CreateBinaryFile();
                     binFile.Name = "content.xml";
                     binFile.Import(stream);
                 }
 
-                using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(GenerateSetup2XML(collectionName))))
+                using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(GenerateSingleplayerSetup2Xml(collectionName))))
                 {
                     var binFile = rpf.Root.CreateBinaryFile();
                     binFile.Name = "setup2.xml";
@@ -787,7 +703,7 @@ namespace AltTool
                 rpf.Flush();
                 rpf.Dispose();
 
-                MessageBox.Show("Resource built!");
+                MessageBox.Show("Singleplayer Resource built!");
             }
         }
 
@@ -817,86 +733,18 @@ namespace AltTool
                 bool isAnyClothAdded = false;
                 bool isAnyPropAdded = false;
 
-                foreach (ClothData cd in MainWindow.Clothes)
+                foreach (ClothData clothData in MainWindow.Clothes)
                 {
-                    if (cd.IsComponent())
+                    if (clothData.IsComponent())
                     {
-                        if (cd.Textures.Count <= 0 || (int) cd.TargetSex != sexNr) 
+                        if (clothData.Textures.Count <= 0 || (int) clothData.TargetSex != sexNr) 
                             continue;
 
-                        byte componentTypeId = cd.GetComponentTypeId();
-                        YmtPedDefinitionFile targetYmt = ymt;
+                        var componentItemInfo = GenerateYmtPedComponentItem(clothData, ref componentTextureBindings);
+                        ymt.Unk_376833625.CompInfos.Add(componentItemInfo);
 
-                        if (componentTextureBindings[componentTypeId] == null)
-                            componentTextureBindings[componentTypeId] = new MUnk_3538495220();
-
-                        MUnk_1535046754 textureDescription = new MUnk_1535046754();
-
-                        byte nextPropMask = 17;
-
-                        switch (componentTypeId)
-                        {
-                            case 2:
-                            case 7:
-                                nextPropMask = 11; break;
-                            case 5:
-                            case 8:
-                                nextPropMask = 65; break;
-                            case 9:
-                                nextPropMask = 1; break;
-                            case 10:
-                                nextPropMask = 5; break;
-                            case 11:
-                                nextPropMask = 1; break;
-                            default:
-                                break;
-                        }
-
-                        textureDescription.PropMask = nextPropMask;
-                        textureDescription.Unk_2806194106 = (byte)(cd.FirstPersonModelPath != "" ? 1 : 0);
-
-                        byte texId = (byte)(cd.MainPath.EndsWith("_u.ydd") ? 0 : 1);
-                        string postfix = cd.MainPath.EndsWith("_u.ydd") ? "u" : "r";
-                        string ytdPostfix = cd.MainPath.EndsWith("_u.ydd") ? "uni" : "whi";
-
-                        foreach (string texPath in cd.Textures)
-                        {
-                            MUnk_1036962405 texInfo = new MUnk_1036962405
-                            {
-                                Distribution = 255, 
-                                TexId = texId
-                            };
-                            textureDescription.ATexData.Add(texInfo);
-                        }
-
-                        textureDescription.ClothData.Unk_2828247905 = 0;
-
-                        componentTextureBindings[componentTypeId].Unk_1756136273.Add(textureDescription);
-
-                        byte componentTextureLocalId = (byte)(componentTextureBindings[componentTypeId].Unk_1756136273.Count - 1);
-
-                        MCComponentInfo componentInfo = new MCComponentInfo
-                        {
-                            Unk_802196719 = 0,
-                            Unk_4233133352 = 0,
-                            Unk_128864925 =
-                            {
-                                b0 = (byte) (cd.PedComponentFlags.unkFlag1 ? 1 : 0),
-                                b1 = (byte) (cd.PedComponentFlags.unkFlag2 ? 1 : 0),
-                                b2 = (byte) (cd.PedComponentFlags.unkFlag3 ? 1 : 0),
-                                b3 = (byte) (cd.PedComponentFlags.unkFlag4 ? 1 : 0),
-                                b4 = (byte) (cd.PedComponentFlags.isHighHeels ? 1 : 0)
-                            },
-                            Flags = 0,
-                            Inclusions = 0,
-                            Exclusions = 0,
-                            Unk_1613922652 = 0,
-                            Unk_2114993291 = 0,
-                            Unk_3509540765 = componentTypeId,
-                            Unk_4196345791 = componentTextureLocalId
-                        };
-
-                        targetYmt.Unk_376833625.CompInfos.Add(componentInfo);
+                        var componentTypeId = componentItemInfo.Unk_3509540765;
+                        GetClothPostfixes(clothData, out var ytdPostfix, out var yddPostfix);
 
                         if (!isAnyClothAdded)
                         {
@@ -908,56 +756,25 @@ namespace AltTool
                         int currentComponentIndex = componentIndexes[componentTypeId]++;
 
                         string componentNumerics = currentComponentIndex.ToString().PadLeft(3, '0');
-                        string prefix = cd.GetPrefix();
+                        string prefix = clothData.GetPrefix();
 
-                        File.Copy(cd.MainPath, outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "^" + prefix + "_" + componentNumerics + "_" + postfix + ".ydd", true);
+                        File.Copy(clothData.MainPath, outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "^" + prefix + "_" + componentNumerics + "_" + yddPostfix + ".ydd", true);
 
                         char offsetLetter = 'a';
-                        for (int i = 0; i < cd.Textures.Count; ++i)
-                            File.Copy(cd.Textures[i], outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "^" + prefix + "_diff_" + componentNumerics + "_" + (char)(offsetLetter + i) + "_" + ytdPostfix + ".ytd", true);
+                        for (int i = 0; i < clothData.Textures.Count; ++i)
+                            File.Copy(clothData.Textures[i], outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "^" + prefix + "_diff_" + componentNumerics + "_" + (char)(offsetLetter + i) + "_" + ytdPostfix + ".ytd", true);
 
-                        if (cd.FirstPersonModelPath != "")
-                            File.Copy(cd.FirstPersonModelPath, outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "^" + prefix + "_" + componentNumerics + "_" + postfix + "_1.ydd", true);
+                        if (clothData.FirstPersonModelPath != "")
+                            File.Copy(clothData.FirstPersonModelPath, outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "^" + prefix + "_" + componentNumerics + "_" + yddPostfix + "_1.ydd", true);
                     }
                     else
                     {
-                        if (cd.Textures.Count <= 0 || (int) cd.TargetSex != sexNr) 
+                        if (clothData.Textures.Count <= 0 || (int) clothData.TargetSex != sexNr) 
                             continue;
 
-                        Unk_2834549053 anchor = (Unk_2834549053)cd.GetPedPropTypeId();
+                        Unk_2834549053 anchor = (Unk_2834549053)clothData.GetPedPropTypeId();
                         var defs = ymt.Unk_376833625.PropInfo.Props[anchor] ?? new List<MUnk_94549140>();
-                        var item = new MUnk_94549140(ymt.Unk_376833625.PropInfo)
-                        {
-                            AnchorId = (byte) anchor
-                        };
-
-                        for (int i = 0; i < cd.Textures.Count; i++)
-                        {
-                            var texture = new MUnk_254518642
-                            {
-                                TexId = (byte) i
-                            };
-                            item.TexData.Add(texture);
-                        }
-
-                        // Get or create linked anchor
-                        var aanchor = ymt.Unk_376833625.PropInfo.AAnchors.Find(e => e.Anchor == anchor);
-
-                        if (aanchor == null)
-                        {
-                            aanchor = new MCAnchorProps(ymt.Unk_376833625.PropInfo)
-                            {
-                                Anchor = anchor, 
-                                PropsMap = {[item] = (byte) item.TexData.Count}
-                            };
-
-                            ymt.Unk_376833625.PropInfo.AAnchors.Add(aanchor);
-                        }
-                        else
-                        {
-                            aanchor.PropsMap[item] = (byte)item.TexData.Count;
-                        }
-
+                        var item = GenerateYmtPedPropItem(ymt, anchor, clothData);
                         defs.Add(item);
 
                         if (!isAnyPropAdded)
@@ -970,31 +787,21 @@ namespace AltTool
                         int currentPropIndex = propIndexes[(byte)anchor]++;
 
                         string componentNumerics = currentPropIndex.ToString().PadLeft(3, '0');
-                        string prefix = cd.GetPrefix();
+                        string prefix = clothData.GetPrefix();
 
-                        File.Copy(cd.MainPath, outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_p_" + Prefixes[sexNr] + collectionName + "\\" + Prefixes[sexNr] + "freemode_01_p_" + Prefixes[sexNr] + collectionName + "^" + prefix + "_" + componentNumerics + ".ydd", true);
+                        File.Copy(clothData.MainPath, outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_p_" + Prefixes[sexNr] + collectionName + "\\" + Prefixes[sexNr] + "freemode_01_p_" + Prefixes[sexNr] + collectionName + "^" + prefix + "_" + componentNumerics + ".ydd", true);
 
                         char offsetLetter = 'a';
-                        for (int i = 0; i < cd.Textures.Count; ++i)
+                        for (int i = 0; i < clothData.Textures.Count; ++i)
                         {
-                            File.Copy(cd.Textures[i], outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_p_" + Prefixes[sexNr] + collectionName + "\\" + Prefixes[sexNr] + "freemode_01_p_" + Prefixes[sexNr] + collectionName + "^" + prefix + "_diff_" + componentNumerics + "_" + (char)(offsetLetter + i) + ".ytd", true);
+                            File.Copy(clothData.Textures[i], outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_p_" + Prefixes[sexNr] + collectionName + "\\" + Prefixes[sexNr] + "freemode_01_p_" + Prefixes[sexNr] + collectionName + "^" + prefix + "_diff_" + componentNumerics + "_" + (char)(offsetLetter + i) + ".ytd", true);
                         }
                     }
                 }
                 
                 if (isAnyClothAdded)
                 {
-                    int arrIndex = 0;
-                    for (int i = 0; i < componentTextureBindings.Length; ++i)
-                    {
-                        if (componentTextureBindings[i] != null)
-                        {
-                            byte id = (byte)arrIndex++;
-                            ymt.Unk_376833625.Unk_2996560424.SetByte(i, id);
-                        }
-
-                        ymt.Unk_376833625.Components[(Unk_884254308)i] = componentTextureBindings[i];
-                    }
+                    UpdateYmtComponentTextureBindings(componentTextureBindings, ymt);
                 }
 
                 if(isAnyClothAdded || isAnyPropAdded)
@@ -1005,9 +812,9 @@ namespace AltTool
                 }
             }
 
-            File.WriteAllText(outputFolder + "\\fxmanifest.lua", GenerateResourceLua(resourceLUAMetas));
+            File.WriteAllText(outputFolder + "\\fxmanifest.lua", GenerateFiveMResourceLua(resourceLUAMetas));
 
-            MessageBox.Show("Resource built!");
+            MessageBox.Show("FiveM Resource built!");
         }
     }
 }
