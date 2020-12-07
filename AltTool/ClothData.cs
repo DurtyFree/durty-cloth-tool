@@ -76,6 +76,28 @@ namespace AltTool
             }
         }
 
+        private int _currentComponentIndex;
+        public int CurrentComponentIndex
+        {
+            get => _currentComponentIndex;
+            set
+            {
+                _currentComponentIndex = value;
+                OnPropertyChanged("DisplayName");
+            }
+        }
+
+        private string _componentNumerics;
+        public string ComponentNumerics
+        {
+            get => _componentNumerics;
+            set
+            {
+                _componentNumerics = value;
+                OnPropertyChanged("DisplayName");
+            }
+        }
+
         public string Name
         {
             get
@@ -85,9 +107,11 @@ namespace AltTool
             set
             {
                 name = value;
-                OnPropertyChanged("Name");
+                OnPropertyChanged("DisplayName");
             }
         }
+
+        public string DisplayName => $"{name} (ID: {_currentComponentIndex}) ({_componentNumerics})";
 
         public ClothData()
         {
@@ -212,6 +236,12 @@ namespace AltTool
         public string GetPrefix()
         {
             return ClothNameResolver.DrawableTypeToString(drawableType);
+        }
+
+        public void SetComponentNumerics(string componentNumerics, int currentComponentIndex)
+        {
+            ComponentNumerics = componentNumerics;
+            CurrentComponentIndex = currentComponentIndex;
         }
     }
 }

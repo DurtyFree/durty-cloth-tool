@@ -352,6 +352,7 @@ namespace AltTool
                             string componentNumerics = currentComponentIndex.ToString().PadLeft(3, '0');
                             string prefix = cd.GetPrefix();
 
+                            cd.SetComponentNumerics(componentNumerics, currentComponentIndex);
                             File.Copy(cd.mainPath, outputFolder + "\\stream\\" + folderNames[sexNr] + ".rpf\\" + prefixes[sexNr] + "freemode_01_" + prefixes[sexNr] + collectionName + "\\" + prefix + "_" + componentNumerics + "_" + postfix + ".ydd");
 
                             char offsetLetter = 'a';
@@ -417,6 +418,7 @@ namespace AltTool
                             string prefix = cd.GetPrefix();
 
                             var ydr = new YdrFile();
+                            cd.SetComponentNumerics(componentNumerics, currentPropIndex);
 
                             File.Copy(cd.mainPath, outputFolder + "\\stream\\" + folderNames[sexNr] + "_p.rpf\\" + prefixes[sexNr] + "freemode_01_p_" + prefixes[sexNr] + collectionName + "\\" + prefix + "_" + componentNumerics + ".ydd", true);
 
