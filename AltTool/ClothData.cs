@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
+using Newtonsoft.Json;
 
 namespace AltTool
 {
@@ -40,14 +41,15 @@ namespace AltTool
         private readonly string _origNumerics = "";
         private string _postfix = "";
 
-        public ClothNameResolver.ClothTypes ClothType { get; }
-        public ClothNameResolver.DrawableTypes DrawableType  { get; }
-        public string MainPath { get; } = "";
+        public ClothNameResolver.ClothTypes ClothType { get; set; }
+        public ClothNameResolver.DrawableTypes DrawableType  { get; set; }
+        public string MainPath { get; set; }
         public ComponentFlags PedComponentFlags;
         public PropFlags PedPropFlags;
         public string FirstPersonModelPath { get; set; }
         public readonly ObservableCollection<string> Textures = new ObservableCollection<string>();
-        public Sex TargetSex { get; }
+        public Sex TargetSex { get; set; }
+
         public string Icon => SexIcons[(int)TargetSex];
         public string Type => TypeIcons[(int)ClothType];
 

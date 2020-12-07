@@ -170,7 +170,7 @@ namespace AltTool
 
             foreach (string filename in saveFileDialog.FileNames)
             {
-                ProjectBuilder.BuildProject(filename);
+                ProjectBuilder.SaveProject(filename);
             }
         }
 

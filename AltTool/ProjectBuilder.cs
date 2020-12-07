@@ -7,7 +7,7 @@ namespace AltTool
 {
     class ProjectBuilder
     {
-        public static void BuildProject(string outputFile)
+        public static void SaveProject(string outputFile)
         {
             var data = JsonConvert.SerializeObject(MainWindow.Clothes, Formatting.Indented);
 

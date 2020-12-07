@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:AltTool"
         xmlns:Properties="clr-namespace:AltTool.Properties" x:Class="AltTool.MainWindow"
         mc:Ignorable="d"
-        Title="alt:V | Clothes Tool" Height="450" Width="800" Icon="icon_alpha.ico">
+        Title="alt:V | Clothes Tool" Height="450" Width="850" Icon="icon_alpha.ico">
     <Grid>
         <ProgressBar x:Name="currentProgress" Height="3" VerticalAlignment="Bottom" Background="White" BorderBrush="White" Value="0"/>
         <TextBlock x:Name="currentStatusBar" Height="20" Margin="0" TextWrapping="Wrap" VerticalAlignment="Bottom" Background="{x:Null}" Padding="5,0,0,0">
