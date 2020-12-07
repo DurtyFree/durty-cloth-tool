@@ -86,7 +86,7 @@ namespace AltTool
             }
         }
 
-        public string DisplayName => $"{Name} (ID: {CurrentComponentIndex}) ({ComponentNumerics})";
+        public string DisplayName => $"{Name} (ID: {CurrentComponentIndex}) ({ComponentNumerics}) ({DrawableType})";
 
         public ClothData()
         { }
