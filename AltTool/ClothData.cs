@@ -1,21 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace AltTool
 {
     public class ClothData: INotifyPropertyChanged
     {
-        public ClothNameResolver.Type clothType;
-        public ClothNameResolver.DrawableType drawableType;
+        public readonly ClothNameResolver.ClothTypes clothClothTypes;
+        public readonly ClothNameResolver.DrawableTypes drawableTypes;
 
         public struct ComponentFlags
         {
@@ -41,43 +35,29 @@ namespace AltTool
             Female
         }
 
-        static int[] idsOffset = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-        static char offsetLetter = 'a';
-        static string[] sexIcons = { "👨🏻", "👩🏻" };
-        static string[] typeIcons = { "🧥", "👓" };
+        private static int[] _idsOffset = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        private static char _offsetLetter = 'a';
+        private static readonly string[] SexIcons = { "👨🏻", "👩🏻" };
+        private static readonly string[] TypeIcons = { "🧥", "👓" };
 
-        public string mainPath = "";
-        string origNumerics = "";
-        string postfix = "";
+        public string MainPath = "";
+        private string _origNumerics = "";
+        private string _postfix = "";
 
         public ComponentFlags componentFlags;
         public PedPropFlags pedPropFlags;
 
-        public string fpModelPath;
-        public ObservableCollection<string> textures = new ObservableCollection<string>();
+        public string FpModelPath;
+        public ObservableCollection<string> Textures = new ObservableCollection<string>();
 
-        public Sex targetSex;
+        public Sex TargetSex;
 
-        public string name = "";
+        public string Icon => SexIcons[(int)TargetSex];
 
-        public string Icon
-        {
-            get
-            {
-                return sexIcons[(int)targetSex];
-            }
-        }
-
-        public string Type
-        {
-            get
-            {
-                return typeIcons[(int)clothType];
-            }
-        }
+        public string Type => TypeIcons[(int)clothClothTypes];
 
         private int _currentComponentIndex;
-        public int CurrentComponentIndex
+        private int CurrentComponentIndex
         {
             get => _currentComponentIndex;
             set
@@ -88,7 +68,7 @@ namespace AltTool
         }
 
         private string _componentNumerics;
-        public string ComponentNumerics
+        private string ComponentNumerics
         {
             get => _componentNumerics;
             set
@@ -98,118 +78,109 @@ namespace AltTool
             }
         }
 
+        private string _name = "";
         public string Name
         {
-            get
-            {
-                return name;
-            }
+            get => _name;
             set
             {
-                name = value;
+                _name = value;
                 OnPropertyChanged("DisplayName");
             }
         }
 
-        public string DisplayName => $"{name} (ID: {_currentComponentIndex}) ({_componentNumerics})";
+        public string DisplayName => $"{_name} (ID: {_currentComponentIndex}) ({_componentNumerics})";
 
         public ClothData()
         {
 
         }
 
-        public ClothData(string path, ClothNameResolver.Type _type, ClothNameResolver.DrawableType _drawableType, string numeric, string _postfix, Sex sex)
+        public ClothData(string path, ClothNameResolver.ClothTypes clothTypes, ClothNameResolver.DrawableTypes drawableTypes, string numeric, string postfix, Sex sex)
         {
             if (!File.Exists(path))
                 throw new Exception("YDD file not found");
 
-            clothType = _type;
-            drawableType = _drawableType;
-            origNumerics = numeric;
+            clothClothTypes = clothTypes;
+            this.drawableTypes = drawableTypes;
+            _origNumerics = numeric;
 
-            targetSex = sex;
-            postfix = _postfix;
+            TargetSex = sex;
+            _postfix = postfix;
 
-            name = drawableType.ToString() + "_" + origNumerics;
+            _name = this.drawableTypes + "_" + _origNumerics;
 
-            mainPath = path;
+            MainPath = path;
         }
 
         public void SearchForFPModel()
         {
-            string rootPath = Path.GetDirectoryName(mainPath);
-            string fileName = Path.GetFileNameWithoutExtension(mainPath);
+            string rootPath = Path.GetDirectoryName(MainPath);
+            string fileName = Path.GetFileNameWithoutExtension(MainPath);
             string relPath = rootPath + "\\" + fileName + "_1.ydd";
-            if (File.Exists(relPath))
-                fpModelPath = relPath;
-            else
-                fpModelPath = "";
+            FpModelPath = File.Exists(relPath) ? relPath : "";
         }
 
         public void SetFPModel(string path)
         {
-            fpModelPath = path;
+            FpModelPath = path;
         }
 
         public void SearchForTextures()
         {
-            textures.Clear();
-            string rootPath = Path.GetDirectoryName(mainPath);
+            Textures.Clear();
+            string rootPath = Path.GetDirectoryName(MainPath);
 
             if(IsComponent())
             {
                 for (int i = 0; ; ++i)
                 {
-                    string relPath = rootPath + "\\" + ClothNameResolver.DrawableTypeToString(drawableType) + "_diff_" + origNumerics + "_" + (char)(offsetLetter + i) + "_uni.ytd";
+                    string relPath = rootPath + "\\" + ClothNameResolver.DrawableTypeToString(drawableTypes) + "_diff_" + _origNumerics + "_" + (char)(_offsetLetter + i) + "_uni.ytd";
                     if (!File.Exists(relPath))
                         break;
-                    textures.Add(relPath);
+                    Textures.Add(relPath);
                 }
                 for (int i = 0; ; ++i)
                 {
-                    string relPath = rootPath + "\\" + ClothNameResolver.DrawableTypeToString(drawableType) + "_diff_" + origNumerics + "_" + (char)(offsetLetter + i) + "_whi.ytd";
+                    string relPath = rootPath + "\\" + ClothNameResolver.DrawableTypeToString(drawableTypes) + "_diff_" + _origNumerics + "_" + (char)(_offsetLetter + i) + "_whi.ytd";
                     if (!File.Exists(relPath))
                         break;
-                    textures.Add(relPath);
+                    Textures.Add(relPath);
                 }
             }
             else
             {
                 for (int i = 0; ; ++i)
                 {
-                    string relPath = rootPath + "\\" + ClothNameResolver.DrawableTypeToString(drawableType) + "_diff_" + origNumerics + "_" + (char)(offsetLetter + i) + ".ytd";
+                    string relPath = rootPath + "\\" + ClothNameResolver.DrawableTypeToString(drawableTypes) + "_diff_" + _origNumerics + "_" + (char)(_offsetLetter + i) + ".ytd";
                     if (!File.Exists(relPath))
                         break;
-                    textures.Add(relPath);
+                    Textures.Add(relPath);
                 }
             }
         }
 
         public void AddTexture(string path)
         {
-            if(!textures.Contains(path))
-                textures.Add(path);
+            if(!Textures.Contains(path))
+                Textures.Add(path);
         }
 
         public override string ToString()
         {
-            return sexIcons[(int)targetSex] + " " + name;
+            return SexIcons[(int)TargetSex] + " " + _name;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public bool IsComponent()
         {
-            if (drawableType <= ClothNameResolver.DrawableType.Top)
+            if (drawableTypes <= ClothNameResolver.DrawableTypes.Top)
                 return true;
             return false;
         }
@@ -217,7 +188,7 @@ namespace AltTool
         public byte GetComponentTypeID()
         {
             if(IsComponent())
-                return (byte)drawableType;
+                return (byte)drawableTypes;
             return 255;
         }
 
@@ -229,13 +200,13 @@ namespace AltTool
         public byte GetPedPropTypeID()
         {
             if (IsPedProp())
-                return (byte)((int)drawableType - (int)ClothNameResolver.DrawableType.PropHead);
+                return (byte)((int)drawableTypes - (int)ClothNameResolver.DrawableTypes.PropHead);
             return 255;
         }
 
         public string GetPrefix()
         {
-            return ClothNameResolver.DrawableTypeToString(drawableType);
+            return ClothNameResolver.DrawableTypeToString(drawableTypes);
         }
 
         public void SetComponentNumerics(string componentNumerics, int currentComponentIndex)

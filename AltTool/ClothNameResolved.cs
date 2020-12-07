@@ -1,21 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AltTool
 {
     public class ClothNameResolver
     {
-        public enum Type
+        public enum ClothTypes
         {
             Component,
             PedProp
         }
 
-        public enum DrawableType
+        public enum DrawableTypes
         {
             Head,
             Mask,
@@ -45,11 +41,12 @@ namespace AltTool
             COUNT
         }
 
-        public Type clothType;
-        public DrawableType drawableType;
-        public string bindedNumber = "";
-        public string postfix = "";
-        public bool isVariation = false;
+        public ClothTypes clothClothTypes;
+        public DrawableTypes DrawableType;
+        public string BindedNumber = "";
+        public string Postfix = "";
+        public bool IsVariation = false;
+
         public ClothNameResolver(string filename)
         {
             string[] parts = Path.GetFileNameWithoutExtension(filename).Split('_');
@@ -58,92 +55,92 @@ namespace AltTool
 
             if(parts[0].ToLower() == "p")
             {
-                clothType = Type.PedProp;
+                clothClothTypes = ClothTypes.PedProp;
 
                 string drName = parts[1].ToLower();
                 switch(drName)
                 {
-                    case "head": drawableType = DrawableType.PropHead; break;
-                    case "eyes": drawableType = DrawableType.PropEyes; break;
-                    case "ears": drawableType = DrawableType.PropEars; break;
-                    case "mouth": drawableType = DrawableType.PropMouth; break;
-                    case "lhand": drawableType = DrawableType.PropLHand; break;
-                    case "rhand": drawableType = DrawableType.PropRHand; break;
-                    case "lwrist": drawableType = DrawableType.PropLWrist; break;
-                    case "rwrist": drawableType = DrawableType.PropRWrist; break;
-                    case "hip": drawableType = DrawableType.PropHip; break;
-                    case "lfoot": drawableType = DrawableType.PropLFoot; break;
-                    case "rfoot": drawableType = DrawableType.PropRFoot; break;
-                    case "unk1": drawableType = DrawableType.PropUnk1; break;
-                    case "unk2": drawableType = DrawableType.PropUnk2; break;
+                    case "head": DrawableType = DrawableTypes.PropHead; break;
+                    case "eyes": DrawableType = DrawableTypes.PropEyes; break;
+                    case "ears": DrawableType = DrawableTypes.PropEars; break;
+                    case "mouth": DrawableType = DrawableTypes.PropMouth; break;
+                    case "lhand": DrawableType = DrawableTypes.PropLHand; break;
+                    case "rhand": DrawableType = DrawableTypes.PropRHand; break;
+                    case "lwrist": DrawableType = DrawableTypes.PropLWrist; break;
+                    case "rwrist": DrawableType = DrawableTypes.PropRWrist; break;
+                    case "hip": DrawableType = DrawableTypes.PropHip; break;
+                    case "lfoot": DrawableType = DrawableTypes.PropLFoot; break;
+                    case "rfoot": DrawableType = DrawableTypes.PropRFoot; break;
+                    case "unk1": DrawableType = DrawableTypes.PropUnk1; break;
+                    case "unk2": DrawableType = DrawableTypes.PropUnk2; break;
                     default: break;
                 }
 
-                bindedNumber = parts[2];
+                BindedNumber = parts[2];
             }
             else
             {
-                clothType = Type.Component;
+                clothClothTypes = ClothTypes.Component;
 
                 string drName = parts[0].ToLower();
                 switch(drName)
                 {
-                    case "head": drawableType = DrawableType.Head; break;
-                    case "berd": drawableType = DrawableType.Mask; break;
-                    case "hair": drawableType = DrawableType.Hair; break;
-                    case "uppr": drawableType = DrawableType.Body; break;
-                    case "lowr": drawableType = DrawableType.Legs; break;
-                    case "hand": drawableType = DrawableType.Bag; break;
-                    case "feet": drawableType = DrawableType.Shoes; break;
-                    case "teef": drawableType = DrawableType.Accessories; break;
-                    case "accs": drawableType = DrawableType.Undershirt; break;
-                    case "task": drawableType = DrawableType.Armor; break;
-                    case "decl": drawableType = DrawableType.Decal; break;
-                    case "jbib": drawableType = DrawableType.Top; break;
+                    case "head": DrawableType = DrawableTypes.Head; break;
+                    case "berd": DrawableType = DrawableTypes.Mask; break;
+                    case "hair": DrawableType = DrawableTypes.Hair; break;
+                    case "uppr": DrawableType = DrawableTypes.Body; break;
+                    case "lowr": DrawableType = DrawableTypes.Legs; break;
+                    case "hand": DrawableType = DrawableTypes.Bag; break;
+                    case "feet": DrawableType = DrawableTypes.Shoes; break;
+                    case "teef": DrawableType = DrawableTypes.Accessories; break;
+                    case "accs": DrawableType = DrawableTypes.Undershirt; break;
+                    case "task": DrawableType = DrawableTypes.Armor; break;
+                    case "decl": DrawableType = DrawableTypes.Decal; break;
+                    case "jbib": DrawableType = DrawableTypes.Top; break;
                     default: break;
                 }
 
-                bindedNumber = parts[1];
-                postfix = parts[2].ToLower();
+                BindedNumber = parts[1];
+                Postfix = parts[2].ToLower();
                 if (parts.Length > 3)
-                    isVariation = true;
+                    IsVariation = true;
             }
         }
 
         public override string ToString()
         {
-            return clothType.ToString() + " " + drawableType.ToString() + " " + bindedNumber;
+            return clothClothTypes + " " + DrawableType + " " + BindedNumber;
         }
 
-        public static string DrawableTypeToString(DrawableType type)
+        public static string DrawableTypeToString(DrawableTypes types)
         {
-            switch(type)
+            switch(types)
             {
-                case DrawableType.Head: return "head";
-                case DrawableType.Mask: return "berd";
-                case DrawableType.Hair: return "hair";
-                case DrawableType.Body: return "uppr";
-                case DrawableType.Legs: return "lowr";
-                case DrawableType.Bag: return "hand";
-                case DrawableType.Shoes: return "feet";
-                case DrawableType.Accessories: return "teef";
-                case DrawableType.Undershirt: return "accs";
-                case DrawableType.Armor: return "task";
-                case DrawableType.Decal: return "decl";
-                case DrawableType.Top: return "jbib";
-                case DrawableType.PropHead: return "p_head";
-                case DrawableType.PropEyes: return "p_eyes";
-                case DrawableType.PropEars: return "p_ears";
-                case DrawableType.PropMouth: return "p_mouth";
-                case DrawableType.PropLHand: return "p_lhand";
-                case DrawableType.PropRHand: return "p_rhand";
-                case DrawableType.PropLWrist: return "p_lwrist";
-                case DrawableType.PropRWrist: return "p_rwrist";
-                case DrawableType.PropHip: return "p_hip";
-                case DrawableType.PropLFoot: return "p_lfoot";
-                case DrawableType.PropRFoot: return "p_rfoot";
-                case DrawableType.PropUnk1: return "p_unk1";
-                case DrawableType.PropUnk2: return "p_unk2";
+                case DrawableTypes.Head: return "head";
+                case DrawableTypes.Mask: return "berd";
+                case DrawableTypes.Hair: return "hair";
+                case DrawableTypes.Body: return "uppr";
+                case DrawableTypes.Legs: return "lowr";
+                case DrawableTypes.Bag: return "hand";
+                case DrawableTypes.Shoes: return "feet";
+                case DrawableTypes.Accessories: return "teef";
+                case DrawableTypes.Undershirt: return "accs";
+                case DrawableTypes.Armor: return "task";
+                case DrawableTypes.Decal: return "decl";
+                case DrawableTypes.Top: return "jbib";
+                case DrawableTypes.PropHead: return "p_head";
+                case DrawableTypes.PropEyes: return "p_eyes";
+                case DrawableTypes.PropEars: return "p_ears";
+                case DrawableTypes.PropMouth: return "p_mouth";
+                case DrawableTypes.PropLHand: return "p_lhand";
+                case DrawableTypes.PropRHand: return "p_rhand";
+                case DrawableTypes.PropLWrist: return "p_lwrist";
+                case DrawableTypes.PropRWrist: return "p_rwrist";
+                case DrawableTypes.PropHip: return "p_hip";
+                case DrawableTypes.PropLFoot: return "p_lfoot";
+                case DrawableTypes.PropRFoot: return "p_rfoot";
+                case DrawableTypes.PropUnk1: return "p_unk1";
+                case DrawableTypes.PropUnk2: return "p_unk2";
                 default: return "";
             }
         }

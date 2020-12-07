@@ -230,8 +230,8 @@ namespace AltTool
 </SSetupData>";
         }
 
-        private static string[] prefixes = { "mp_m_", "mp_f_" };
-        private static string[] folderNames = { "ped_male", "ped_female" };
+        private static string[] _prefixes = { "mp_m_", "mp_f_" };
+        private static string[] _folderNames = { "ped_male", "ped_female" };
 
         public static void BuildResourceAltv(string outputFolder, string collectionName)
         {
@@ -242,8 +242,8 @@ namespace AltTool
                 //Male YMT generating
                 YmtPedDefinitionFile ymt = new YmtPedDefinitionFile();
 
-                ymt.metaYmtName = prefixes[sexNr] + collectionName;
-                ymt.Unk_376833625.DlcName = RageLib.Hash.Jenkins.Hash(prefixes[sexNr] + collectionName);
+                ymt.metaYmtName = _prefixes[sexNr] + collectionName;
+                ymt.Unk_376833625.DlcName = RageLib.Hash.Jenkins.Hash(_prefixes[sexNr] + collectionName);
 
                 MUnk_3538495220[] componentTextureBindings = { null, null, null, null, null, null, null, null, null, null, null, null };
                 int[] componentIndexes = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -258,14 +258,14 @@ namespace AltTool
                 bool isAnyClothAdded = false;
                 bool isAnyPropAdded  = false;
 
-                foreach (ClothData cd in MainWindow.clothes)
+                foreach (ClothData cd in MainWindow.Clothes)
                 {
                     if (cd.IsComponent())
                     {
 
                         byte componentTypeID = cd.GetComponentTypeID();
 
-                        if (cd.textures.Count > 0 && (int)cd.targetSex == sexNr)
+                        if (cd.Textures.Count > 0 && (int)cd.TargetSex == sexNr)
                         {
                             YmtPedDefinitionFile targetYmt = ymt;
 
@@ -295,19 +295,19 @@ namespace AltTool
                             }
 
                             textureDescription.PropMask = nextPropMask;
-                            textureDescription.Unk_2806194106 = (byte)(cd.fpModelPath != "" ? 1 : 0);
+                            textureDescription.Unk_2806194106 = (byte)(cd.FpModelPath != "" ? 1 : 0);
 
-                            byte texId = (byte)(cd.mainPath.EndsWith("_u.ydd") ? 0 : 1);
-                            string postfix = cd.mainPath.EndsWith("_u.ydd") ? "u" : "r";
-                            string ytdPostfix = cd.mainPath.EndsWith("_u.ydd") ? "uni" : "whi";
+                            byte texId = (byte)(cd.MainPath.EndsWith("_u.ydd") ? 0 : 1);
+                            string postfix = cd.MainPath.EndsWith("_u.ydd") ? "u" : "r";
+                            string ytdPostfix = cd.MainPath.EndsWith("_u.ydd") ? "uni" : "whi";
                             
-                            if((cd.drawableType == ClothNameResolver.DrawableType.Shoes) || (cd.drawableType == ClothNameResolver.DrawableType.Legs))
+                            if((cd.drawableTypes == ClothNameResolver.DrawableTypes.Shoes) || (cd.drawableTypes == ClothNameResolver.DrawableTypes.Legs))
                             {
                                 postfix = "r";
                                 ytdPostfix = "uni";
                             }   
 
-                            foreach (string texPath in cd.textures)
+                            foreach (string texPath in cd.Textures)
                             {
                                 MUnk_1036962405 texInfo = new MUnk_1036962405();
                                 texInfo.Distribution = 255;
@@ -343,8 +343,8 @@ namespace AltTool
                             {
                                 isAnyClothAdded = true;
                                 Directory.CreateDirectory(outputFolder + "\\stream");
-                                Directory.CreateDirectory(outputFolder + "\\stream\\" + folderNames[sexNr] + ".rpf");
-                                Directory.CreateDirectory(outputFolder + "\\stream\\" + folderNames[sexNr] + ".rpf\\" + prefixes[sexNr] + "freemode_01_" + prefixes[sexNr] + collectionName);
+                                Directory.CreateDirectory(outputFolder + "\\stream\\" + _folderNames[sexNr] + ".rpf");
+                                Directory.CreateDirectory(outputFolder + "\\stream\\" + _folderNames[sexNr] + ".rpf\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName);
                             }
 
                             int currentComponentIndex = componentIndexes[componentTypeID]++;
@@ -353,21 +353,21 @@ namespace AltTool
                             string prefix = cd.GetPrefix();
 
                             cd.SetComponentNumerics(componentNumerics, currentComponentIndex);
-                            File.Copy(cd.mainPath, outputFolder + "\\stream\\" + folderNames[sexNr] + ".rpf\\" + prefixes[sexNr] + "freemode_01_" + prefixes[sexNr] + collectionName + "\\" + prefix + "_" + componentNumerics + "_" + postfix + ".ydd");
+                            File.Copy(cd.MainPath, outputFolder + "\\stream\\" + _folderNames[sexNr] + ".rpf\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + "\\" + prefix + "_" + componentNumerics + "_" + postfix + ".ydd");
 
                             char offsetLetter = 'a';
-                            for (int i = 0; i < cd.textures.Count; ++i)
-                                File.Copy(cd.textures[i], outputFolder + "\\stream\\" + folderNames[sexNr] + ".rpf\\" + prefixes[sexNr] + "freemode_01_" + prefixes[sexNr] + collectionName + "\\" + prefix + "_diff_" + componentNumerics + "_" + (char)(offsetLetter + i) + "_" + ytdPostfix + ".ytd");
+                            for (int i = 0; i < cd.Textures.Count; ++i)
+                                File.Copy(cd.Textures[i], outputFolder + "\\stream\\" + _folderNames[sexNr] + ".rpf\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + "\\" + prefix + "_diff_" + componentNumerics + "_" + (char)(offsetLetter + i) + "_" + ytdPostfix + ".ytd");
 
-                            if (cd.fpModelPath != "")
-                                File.Copy(cd.fpModelPath, outputFolder + "\\stream\\" + folderNames[sexNr] + ".rpf\\" + prefixes[sexNr] + "freemode_01_" + prefixes[sexNr] + collectionName + "\\" + prefix + "_" + componentNumerics + "_" + postfix + "_1.ydd");
+                            if (cd.FpModelPath != "")
+                                File.Copy(cd.FpModelPath, outputFolder + "\\stream\\" + _folderNames[sexNr] + ".rpf\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + "\\" + prefix + "_" + componentNumerics + "_" + postfix + "_1.ydd");
                         }
                     }
                     else
                     {
                         Unk_2834549053 anchor = (Unk_2834549053)cd.GetPedPropTypeID();
 
-                        if (cd.textures.Count > 0 && (int)cd.targetSex == sexNr)
+                        if (cd.Textures.Count > 0 && (int)cd.TargetSex == sexNr)
                         {
                             YmtPedDefinitionFile targetYmt = ymt;
 
@@ -376,7 +376,7 @@ namespace AltTool
 
                             item.AnchorId = (byte)anchor;
 
-                            for (int i = 0; i < cd.textures.Count; i++)
+                            for (int i = 0; i < cd.Textures.Count; i++)
                             {
                                 var texture = new MUnk_254518642();
                                 texture.TexId = (byte)i;
@@ -408,8 +408,8 @@ namespace AltTool
                             {
                                 isAnyPropAdded = true;
                                 Directory.CreateDirectory(outputFolder + "\\stream");
-                                Directory.CreateDirectory(outputFolder + "\\stream\\" + folderNames[sexNr] + "_p.rpf");
-                                Directory.CreateDirectory(outputFolder + "\\stream\\" + folderNames[sexNr] + "_p.rpf\\" + prefixes[sexNr] + "freemode_01_p_" + prefixes[sexNr] + collectionName);
+                                Directory.CreateDirectory(outputFolder + "\\stream\\" + _folderNames[sexNr] + "_p.rpf");
+                                Directory.CreateDirectory(outputFolder + "\\stream\\" + _folderNames[sexNr] + "_p.rpf\\" + _prefixes[sexNr] + "freemode_01_p_" + _prefixes[sexNr] + collectionName);
                             }
 
                             int currentPropIndex = propIndexes[(byte)anchor]++;
@@ -420,12 +420,12 @@ namespace AltTool
                             var ydr = new YdrFile();
                             cd.SetComponentNumerics(componentNumerics, currentPropIndex);
 
-                            File.Copy(cd.mainPath, outputFolder + "\\stream\\" + folderNames[sexNr] + "_p.rpf\\" + prefixes[sexNr] + "freemode_01_p_" + prefixes[sexNr] + collectionName + "\\" + prefix + "_" + componentNumerics + ".ydd", true);
+                            File.Copy(cd.MainPath, outputFolder + "\\stream\\" + _folderNames[sexNr] + "_p.rpf\\" + _prefixes[sexNr] + "freemode_01_p_" + _prefixes[sexNr] + collectionName + "\\" + prefix + "_" + componentNumerics + ".ydd", true);
 
                             char offsetLetter = 'a';
-                            for (int i = 0; i < cd.textures.Count; ++i)
+                            for (int i = 0; i < cd.Textures.Count; ++i)
                             {
-                                File.Copy(cd.textures[i], outputFolder + "\\stream\\" + folderNames[sexNr] + "_p.rpf\\" + prefixes[sexNr] + "freemode_01_p_" + prefixes[sexNr] + collectionName + "\\" + prefix + "_diff_" + componentNumerics + "_" + (char)(offsetLetter + i) + ".ytd", true);
+                                File.Copy(cd.Textures[i], outputFolder + "\\stream\\" + _folderNames[sexNr] + "_p.rpf\\" + _prefixes[sexNr] + "freemode_01_p_" + _prefixes[sexNr] + collectionName + "\\" + prefix + "_diff_" + componentNumerics + "_" + (char)(offsetLetter + i) + ".ytd", true);
                             }
                         }
                     }
@@ -450,15 +450,15 @@ namespace AltTool
 
                 if(isAnyPropAdded)
                 {
-                    streamCfgIncludes.Add("stream/" + folderNames[sexNr] + "_p.rpf/*");
+                    streamCfgIncludes.Add("stream/" + _folderNames[sexNr] + "_p.rpf/*");
                 }
 
                 if (isAnyClothAdded || isAnyPropAdded)
                 {
-                    File.WriteAllText(outputFolder + "\\stream\\" + prefixes[sexNr] + "freemode_01_" + prefixes[sexNr] + collectionName + ".meta", GenerateShopMeta((Sex)sexNr, collectionName));
-                    streamCfgMetas.Add("stream/" + prefixes[sexNr] + "freemode_01_" + prefixes[sexNr] + collectionName + ".meta: SHOP_PED_APPAREL_META_FILE");
-                    ymt.Save(outputFolder + "\\stream\\" + folderNames[sexNr] + ".rpf\\" + prefixes[sexNr] + "freemode_01_" + prefixes[sexNr] + collectionName + ".ymt");
-                    streamCfgIncludes.Add("stream/" + folderNames[sexNr] + ".rpf/*");
+                    File.WriteAllText(outputFolder + "\\stream\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + ".meta", GenerateShopMeta((Sex)sexNr, collectionName));
+                    streamCfgMetas.Add("stream/" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + ".meta: SHOP_PED_APPAREL_META_FILE");
+                    ymt.Save(outputFolder + "\\stream\\" + _folderNames[sexNr] + ".rpf\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + ".ymt");
+                    streamCfgIncludes.Add("stream/" + _folderNames[sexNr] + ".rpf/*");
                 }
 
             }
@@ -508,8 +508,8 @@ namespace AltTool
                     //Male YMT generating
                     YmtPedDefinitionFile ymt = new YmtPedDefinitionFile();
 
-                    ymt.metaYmtName = prefixes[sexNr] + collectionName;
-                    ymt.Unk_376833625.DlcName = RageLib.Hash.Jenkins.Hash(prefixes[sexNr] + collectionName);
+                    ymt.metaYmtName = _prefixes[sexNr] + collectionName;
+                    ymt.Unk_376833625.DlcName = RageLib.Hash.Jenkins.Hash(_prefixes[sexNr] + collectionName);
 
                     MUnk_3538495220[] componentTextureBindings = { null, null, null, null, null, null, null, null, null, null, null, null };
                     int[] componentIndexes = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -524,13 +524,13 @@ namespace AltTool
                     bool isAnyClothAdded = false;
                     bool isAnyPropAdded  = false;
 
-                    foreach (ClothData cd in MainWindow.clothes)
+                    foreach (ClothData cd in MainWindow.Clothes)
                     {
                         if (cd.IsComponent())
                         {
                             byte componentTypeID = cd.GetComponentTypeID();
 
-                            if (cd.textures.Count > 0 && (int)cd.targetSex == sexNr)
+                            if (cd.Textures.Count > 0 && (int)cd.TargetSex == sexNr)
                             {
                                 YmtPedDefinitionFile targetYmt = ymt;
 
@@ -560,13 +560,13 @@ namespace AltTool
                                 }
 
                                 textureDescription.PropMask = nextPropMask;
-                                textureDescription.Unk_2806194106 = (byte)(cd.fpModelPath != "" ? 1 : 0);
+                                textureDescription.Unk_2806194106 = (byte)(cd.FpModelPath != "" ? 1 : 0);
 
-                                byte texId = (byte)(cd.mainPath.EndsWith("_u.ydd") ? 0 : 1);
-                                string postfix = cd.mainPath.EndsWith("_u.ydd") ? "u" : "r";
-                                string ytdPostfix = cd.mainPath.EndsWith("_u.ydd") ? "uni" : "whi";
+                                byte texId = (byte)(cd.MainPath.EndsWith("_u.ydd") ? 0 : 1);
+                                string postfix = cd.MainPath.EndsWith("_u.ydd") ? "u" : "r";
+                                string ytdPostfix = cd.MainPath.EndsWith("_u.ydd") ? "uni" : "whi";
 
-                                foreach (string texPath in cd.textures)
+                                foreach (string texPath in cd.Textures)
                                 {
                                     MUnk_1036962405 texInfo = new MUnk_1036962405();
                                     texInfo.Distribution = 255;
@@ -604,10 +604,10 @@ namespace AltTool
 
                                     var ms = new MemoryStream();
 
-                                    currComponentRpf                     = RageArchiveWrapper7.Create(ms, folderNames[sexNr].Replace("ped_", collectionName + "_") + ".rpf");
+                                    currComponentRpf                     = RageArchiveWrapper7.Create(ms, _folderNames[sexNr].Replace("ped_", collectionName + "_") + ".rpf");
                                     currComponentRpf.archive_.Encryption = RageArchiveEncryption7.NG;
                                     currComponentDir                     = currComponentRpf.Root.CreateDirectory();
-                                    currComponentDir.Name                = prefixes[sexNr] + "freemode_01_" + prefixes[sexNr] + collectionName;
+                                    currComponentDir.Name                = _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName;
                                 }
 
                                 int currentComponentIndex = componentIndexes[componentTypeID]++;
@@ -617,22 +617,22 @@ namespace AltTool
 
                                 var resource = currComponentDir.CreateResourceFile();
                                 resource.Name = prefix + "_" + componentNumerics + "_" + postfix + ".ydd";
-                                resource.Import(cd.mainPath);
+                                resource.Import(cd.MainPath);
 
                                 char offsetLetter = 'a';
 
-                                for (int i = 0; i < cd.textures.Count; ++i)
+                                for (int i = 0; i < cd.Textures.Count; ++i)
                                 {
                                     resource = currComponentDir.CreateResourceFile();
                                     resource.Name = prefix + "_diff_" + componentNumerics + "_" + (char)(offsetLetter + i) + "_" + ytdPostfix + ".ytd";
-                                    resource.Import(cd.textures[i]);
+                                    resource.Import(cd.Textures[i]);
                                 }
 
-                                if (cd.fpModelPath != "")
+                                if (cd.FpModelPath != "")
                                 {
                                     resource = currComponentDir.CreateResourceFile();
                                     resource.Name = prefix + "_" + componentNumerics + "_" + postfix + "_1.ydd";
-                                    resource.Import(cd.fpModelPath);
+                                    resource.Import(cd.FpModelPath);
                                 }
 
                             }
@@ -641,7 +641,7 @@ namespace AltTool
                         {
                             Unk_2834549053 anchor = (Unk_2834549053)cd.GetPedPropTypeID();
 
-                            if (cd.textures.Count > 0 && (int)cd.targetSex == sexNr)
+                            if (cd.Textures.Count > 0 && (int)cd.TargetSex == sexNr)
                             {
                                 YmtPedDefinitionFile targetYmt = ymt;
 
@@ -650,7 +650,7 @@ namespace AltTool
 
                                 item.AnchorId = (byte)anchor;
 
-                                for (int i = 0; i < cd.textures.Count; i++)
+                                for (int i = 0; i < cd.Textures.Count; i++)
                                 {
                                     var texture = new MUnk_254518642();
                                     texture.TexId = (byte)i;
@@ -684,10 +684,10 @@ namespace AltTool
 
                                     var ms = new MemoryStream();
 
-                                    currPropRpf = RageArchiveWrapper7.Create(ms, folderNames[sexNr].Replace("ped_", collectionName + "_") + "_p.rpf");
+                                    currPropRpf = RageArchiveWrapper7.Create(ms, _folderNames[sexNr].Replace("ped_", collectionName + "_") + "_p.rpf");
                                     currPropRpf.archive_.Encryption = RageArchiveEncryption7.NG;
                                     currPropDir = currPropRpf.Root.CreateDirectory();
-                                    currPropDir.Name = prefixes[sexNr] + "freemode_01_p_" + prefixes[sexNr] + collectionName;
+                                    currPropDir.Name = _prefixes[sexNr] + "freemode_01_p_" + _prefixes[sexNr] + collectionName;
                                 }
 
                                 int currentPropIndex = propIndexes[(byte)anchor]++;
@@ -697,14 +697,14 @@ namespace AltTool
 
                                 var resource = currPropDir.CreateResourceFile();
                                 resource.Name = prefix + "_" + componentNumerics + ".ydd";
-                                resource.Import(cd.mainPath);
+                                resource.Import(cd.MainPath);
 
                                 char offsetLetter = 'a';
-                                for (int i = 0; i < cd.textures.Count; ++i)
+                                for (int i = 0; i < cd.Textures.Count; ++i)
                                 {
                                     resource = currPropDir.CreateResourceFile();
                                     resource.Name = prefix + "_diff_" + componentNumerics + "_" + (char)(offsetLetter + i) + ".ytd";
-                                    resource.Import(cd.textures[i]);
+                                    resource.Import(cd.Textures[i]);
                                 }
                             }
                         }
@@ -735,13 +735,13 @@ namespace AltTool
                         using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(GenerateShopMeta((Sex)sexNr, collectionName))))
                         {
                             var binFile = dataDir.CreateBinaryFile();
-                            binFile.Name = prefixes[sexNr] + "freemode_01_" + prefixes[sexNr] + collectionName + ".meta";
+                            binFile.Name = _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + ".meta";
                             binFile.Import(stream);
                         }
                         currComponentRpf.Flush();
 
                         var binRpfFile = cdimagesDir.CreateBinaryFile();
-                        binRpfFile.Name = folderNames[sexNr].Replace("ped_", collectionName + "_") + ".rpf";
+                        binRpfFile.Name = _folderNames[sexNr].Replace("ped_", collectionName + "_") + ".rpf";
                         binRpfFile.Import(currComponentRpf.archive_.BaseStream);
 
                         currComponentRpf.Dispose();
@@ -757,7 +757,7 @@ namespace AltTool
                         currPropRpf.Flush();
 
                         var binRpfFile = cdimagesDir.CreateBinaryFile();
-                        binRpfFile.Name = folderNames[sexNr].Replace("ped_", collectionName + "_") + "_p.rpf";
+                        binRpfFile.Name = _folderNames[sexNr].Replace("ped_", collectionName + "_") + "_p.rpf";
                         binRpfFile.Import(currPropRpf.archive_.BaseStream);
 
                         currPropRpf.Dispose();
@@ -794,8 +794,8 @@ namespace AltTool
                 //Male YMT generating
                 YmtPedDefinitionFile ymt = new YmtPedDefinitionFile();
 
-                ymt.metaYmtName = prefixes[sexNr] + collectionName;
-                ymt.Unk_376833625.DlcName = RageLib.Hash.Jenkins.Hash(prefixes[sexNr] + collectionName);
+                ymt.metaYmtName = _prefixes[sexNr] + collectionName;
+                ymt.Unk_376833625.DlcName = RageLib.Hash.Jenkins.Hash(_prefixes[sexNr] + collectionName);
 
                 MUnk_3538495220[] componentTextureBindings = { null, null, null, null, null, null, null, null, null, null, null, null };
                 int[] componentIndexes = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -810,13 +810,13 @@ namespace AltTool
                 bool isAnyClothAdded = false;
                 bool isAnyPropAdded = false;
 
-                foreach (ClothData cd in MainWindow.clothes)
+                foreach (ClothData cd in MainWindow.Clothes)
                 {
                     if (cd.IsComponent())
                     {
                         byte componentTypeID = cd.GetComponentTypeID();
 
-                        if (cd.textures.Count > 0 && (int)cd.targetSex == sexNr)
+                        if (cd.Textures.Count > 0 && (int)cd.TargetSex == sexNr)
                         {
                             YmtPedDefinitionFile targetYmt = ymt;
 
@@ -846,13 +846,13 @@ namespace AltTool
                             }
 
                             textureDescription.PropMask = nextPropMask;
-                            textureDescription.Unk_2806194106 = (byte)(cd.fpModelPath != "" ? 1 : 0);
+                            textureDescription.Unk_2806194106 = (byte)(cd.FpModelPath != "" ? 1 : 0);
 
-                            byte texId = (byte)(cd.mainPath.EndsWith("_u.ydd") ? 0 : 1);
-                            string postfix = cd.mainPath.EndsWith("_u.ydd") ? "u" : "r";
-                            string ytdPostfix = cd.mainPath.EndsWith("_u.ydd") ? "uni" : "whi";
+                            byte texId = (byte)(cd.MainPath.EndsWith("_u.ydd") ? 0 : 1);
+                            string postfix = cd.MainPath.EndsWith("_u.ydd") ? "u" : "r";
+                            string ytdPostfix = cd.MainPath.EndsWith("_u.ydd") ? "uni" : "whi";
 
-                            foreach (string texPath in cd.textures)
+                            foreach (string texPath in cd.Textures)
                             {
                                 MUnk_1036962405 texInfo = new MUnk_1036962405();
                                 texInfo.Distribution = 255;
@@ -888,7 +888,7 @@ namespace AltTool
                             {
                                 isAnyClothAdded = true;
                                 Directory.CreateDirectory(outputFolder + "\\stream");
-                                Directory.CreateDirectory(outputFolder + "\\stream\\" + prefixes[sexNr] + "freemode_01_" + prefixes[sexNr] + collectionName);
+                                Directory.CreateDirectory(outputFolder + "\\stream\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName);
                             }
 
                             int currentComponentIndex = componentIndexes[componentTypeID]++;
@@ -896,21 +896,21 @@ namespace AltTool
                             string componentNumerics = currentComponentIndex.ToString().PadLeft(3, '0');
                             string prefix = cd.GetPrefix();
 
-                            File.Copy(cd.mainPath, outputFolder + "\\stream\\" + prefixes[sexNr] + "freemode_01_" + prefixes[sexNr] + collectionName + "\\" + prefixes[sexNr] + "freemode_01_" + prefixes[sexNr] + collectionName + "^" + prefix + "_" + componentNumerics + "_" + postfix + ".ydd", true);
+                            File.Copy(cd.MainPath, outputFolder + "\\stream\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + "\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + "^" + prefix + "_" + componentNumerics + "_" + postfix + ".ydd", true);
 
                             char offsetLetter = 'a';
-                            for (int i = 0; i < cd.textures.Count; ++i)
-                                File.Copy(cd.textures[i], outputFolder + "\\stream\\" + prefixes[sexNr] + "freemode_01_" + prefixes[sexNr] + collectionName + "\\" + prefixes[sexNr] + "freemode_01_" + prefixes[sexNr] + collectionName + "^" + prefix + "_diff_" + componentNumerics + "_" + (char)(offsetLetter + i) + "_" + ytdPostfix + ".ytd", true);
+                            for (int i = 0; i < cd.Textures.Count; ++i)
+                                File.Copy(cd.Textures[i], outputFolder + "\\stream\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + "\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + "^" + prefix + "_diff_" + componentNumerics + "_" + (char)(offsetLetter + i) + "_" + ytdPostfix + ".ytd", true);
 
-                            if (cd.fpModelPath != "")
-                                File.Copy(cd.fpModelPath, outputFolder + "\\stream\\" + prefixes[sexNr] + "freemode_01_" + prefixes[sexNr] + collectionName + "\\" + prefixes[sexNr] + "freemode_01_" + prefixes[sexNr] + collectionName + "^" + prefix + "_" + componentNumerics + "_" + postfix + "_1.ydd", true);
+                            if (cd.FpModelPath != "")
+                                File.Copy(cd.FpModelPath, outputFolder + "\\stream\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + "\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + "^" + prefix + "_" + componentNumerics + "_" + postfix + "_1.ydd", true);
                         }
                     }
                     else
                     {
                         Unk_2834549053 anchor = (Unk_2834549053)cd.GetPedPropTypeID();
 
-                        if (cd.textures.Count > 0 && (int)cd.targetSex == sexNr)
+                        if (cd.Textures.Count > 0 && (int)cd.TargetSex == sexNr)
                         {
                             YmtPedDefinitionFile targetYmt = ymt;
 
@@ -919,7 +919,7 @@ namespace AltTool
 
                             item.AnchorId = (byte)anchor;
 
-                            for (int i = 0; i < cd.textures.Count; i++)
+                            for (int i = 0; i < cd.Textures.Count; i++)
                             {
                                 var texture = new MUnk_254518642();
                                 texture.TexId = (byte)i;
@@ -951,7 +951,7 @@ namespace AltTool
                             {
                                 isAnyPropAdded = true;
                                 Directory.CreateDirectory(outputFolder + "\\stream");
-                                Directory.CreateDirectory(outputFolder + "\\stream\\" + prefixes[sexNr] + "freemode_01_p_" + prefixes[sexNr] + collectionName);
+                                Directory.CreateDirectory(outputFolder + "\\stream\\" + _prefixes[sexNr] + "freemode_01_p_" + _prefixes[sexNr] + collectionName);
                             }
 
                             int currentPropIndex = propIndexes[(byte)anchor]++;
@@ -959,12 +959,12 @@ namespace AltTool
                             string componentNumerics = currentPropIndex.ToString().PadLeft(3, '0');
                             string prefix = cd.GetPrefix();
 
-                            File.Copy(cd.mainPath, outputFolder + "\\stream\\" + prefixes[sexNr] + "freemode_01_p_" + prefixes[sexNr] + collectionName + "\\" + prefixes[sexNr] + "freemode_01_p_" + prefixes[sexNr] + collectionName + "^" + prefix + "_" + componentNumerics + ".ydd", true);
+                            File.Copy(cd.MainPath, outputFolder + "\\stream\\" + _prefixes[sexNr] + "freemode_01_p_" + _prefixes[sexNr] + collectionName + "\\" + _prefixes[sexNr] + "freemode_01_p_" + _prefixes[sexNr] + collectionName + "^" + prefix + "_" + componentNumerics + ".ydd", true);
 
                             char offsetLetter = 'a';
-                            for (int i = 0; i < cd.textures.Count; ++i)
+                            for (int i = 0; i < cd.Textures.Count; ++i)
                             {
-                                File.Copy(cd.textures[i], outputFolder + "\\stream\\" + prefixes[sexNr] + "freemode_01_p_" + prefixes[sexNr] + collectionName + "\\" + prefixes[sexNr] + "freemode_01_p_" + prefixes[sexNr] + collectionName + "^" + prefix + "_diff_" + componentNumerics + "_" + (char)(offsetLetter + i) + ".ytd", true);
+                                File.Copy(cd.Textures[i], outputFolder + "\\stream\\" + _prefixes[sexNr] + "freemode_01_p_" + _prefixes[sexNr] + collectionName + "\\" + _prefixes[sexNr] + "freemode_01_p_" + _prefixes[sexNr] + collectionName + "^" + prefix + "_diff_" + componentNumerics + "_" + (char)(offsetLetter + i) + ".ytd", true);
                             }
                         }
                     }
@@ -989,9 +989,9 @@ namespace AltTool
 
                 if(isAnyClothAdded || isAnyPropAdded)
                 {
-                    ymt.Save(outputFolder + "\\stream\\" + prefixes[sexNr] + "freemode_01_" + prefixes[sexNr] + collectionName + ".ymt");
-                    File.WriteAllText(outputFolder + "\\" + prefixes[sexNr] + "freemode_01_" + prefixes[sexNr] + collectionName + ".meta", GenerateShopMeta((Sex)sexNr, collectionName));
-                    resourceLUAMetas.Add(prefixes[sexNr] + "freemode_01_" + prefixes[sexNr] + collectionName + ".meta");
+                    ymt.Save(outputFolder + "\\stream\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + ".ymt");
+                    File.WriteAllText(outputFolder + "\\" + _prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + ".meta", GenerateShopMeta((Sex)sexNr, collectionName));
+                    resourceLUAMetas.Add(_prefixes[sexNr] + "freemode_01_" + _prefixes[sexNr] + collectionName + ".meta");
                 }
             }
 

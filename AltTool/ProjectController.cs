@@ -12,111 +12,117 @@ namespace AltTool
 {
     class ProjectController
     {
-
-        static ProjectController singleton = null;
+        private static ProjectController _singleton;
         public static ProjectController Instance()
         {
-            if(singleton == null)
-                singleton = new ProjectController();
-            return singleton;
+            return _singleton ?? (_singleton = new ProjectController());
         }
 
         public void AddFiles(ClothData.Sex targetSex)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.CheckFileExists = true;
-            openFileDialog.Filter = "Clothes geometry (*.ydd)|*.ydd";
-            openFileDialog.FilterIndex = 1;
-            openFileDialog.DefaultExt = "ydd";
-            openFileDialog.Multiselect = true;
-            openFileDialog.Title = "Adding " + ((targetSex == ClothData.Sex.Male) ? "male" : "female") + " clothes";
-            if (openFileDialog.ShowDialog() == true)
+            OpenFileDialog openFileDialog = new OpenFileDialog
             {
-                foreach (string filename in openFileDialog.FileNames)
+                CheckFileExists = true,
+                Filter = "Clothes geometry (*.ydd)|*.ydd",
+                FilterIndex = 1,
+                DefaultExt = "ydd",
+                Multiselect = true,
+                Title = "Adding " + ((targetSex == ClothData.Sex.Male) ? "male" : "female") + " clothes"
+            };
+
+            if (openFileDialog.ShowDialog() != true) 
+                return;
+
+            foreach (string filename in openFileDialog.FileNames)
+            {
+                string baseFileName = Path.GetFileName(filename);
+                ClothNameResolver cData = new ClothNameResolver(baseFileName);
+
+                if(!cData.IsVariation)
                 {
-                    string baseFileName = Path.GetFileName(filename);
-                    ClothNameResolver cData = new ClothNameResolver(baseFileName);
-
-                    if(!cData.isVariation)
-                    {
-                        ClothData nextCloth = new ClothData(filename, cData.clothType, cData.drawableType, cData.bindedNumber, cData.postfix, targetSex);
+                    ClothData nextCloth = new ClothData(filename, cData.clothClothTypes, cData.DrawableType, cData.BindedNumber, cData.Postfix, targetSex);
                         
-                        if(cData.clothType == ClothNameResolver.Type.Component)
+                    if(cData.clothClothTypes == ClothNameResolver.ClothTypes.Component)
+                    {
+                        nextCloth.SearchForFPModel();
+                        nextCloth.SearchForTextures();
+
+                        var clothes = MainWindow.Clothes.ToList();
+                        clothes.Add(nextCloth);
+                        clothes = clothes.OrderBy(x => x.Name, new AlphanumericComparer()).ToList();
+                        MainWindow.Clothes.Clear();
+
+                        foreach(var cloth in clothes)
                         {
-                            nextCloth.SearchForFPModel();
-                            nextCloth.SearchForTextures();
-
-                            var _clothes = MainWindow.clothes.ToList();
-                            _clothes.Add(nextCloth);
-                            _clothes = _clothes.OrderBy(x => x.Name, new AlphanumericComparer()).ToList();
-                            MainWindow.clothes.Clear();
-
-                            foreach(var cloth in _clothes)
-                            {
-                                MainWindow.clothes.Add(cloth);
-                            }
-
-                            StatusController.SetStatus(nextCloth.ToString() + " added (FP model found: " + (nextCloth.fpModelPath != "" ? "Yes" : "No") + ", Textures: " + (nextCloth.textures.Count) + "). Total: " + MainWindow.clothes.Count);
+                            MainWindow.Clothes.Add(cloth);
                         }
-                        else
-                        {
-                            nextCloth.SearchForTextures();
 
-                            var _clothes = MainWindow.clothes.ToList();
-                            _clothes.Add(nextCloth);
-                            _clothes = _clothes.OrderBy(x => x.Name, new AlphanumericComparer()).ToList();
-                            MainWindow.clothes.Clear();
-
-                            foreach (var cloth in _clothes)
-                            {
-                                MainWindow.clothes.Add(cloth);
-                            }
-
-                            StatusController.SetStatus(nextCloth.ToString() + " added, Textures: " + (nextCloth.textures.Count) + "). Total: " + MainWindow.clothes.Count);
-                        }
+                        StatusController.SetStatus(nextCloth.ToString() + " added (FP model found: " + (nextCloth.FpModelPath != "" ? "Yes" : "No") + ", Textures: " + (nextCloth.Textures.Count) + "). Total: " + MainWindow.Clothes.Count);
                     }
                     else
-                        StatusController.SetStatus("Item " + baseFileName + " can't be added. Looks like it's variant of another item");
+                    {
+                        nextCloth.SearchForTextures();
+
+                        var clothes = MainWindow.Clothes.ToList();
+                        clothes.Add(nextCloth);
+                        clothes = clothes.OrderBy(x => x.Name, new AlphanumericComparer()).ToList();
+                        MainWindow.Clothes.Clear();
+
+                        foreach (var cloth in clothes)
+                        {
+                            MainWindow.Clothes.Add(cloth);
+                        }
+
+                        StatusController.SetStatus(nextCloth.ToString() + " added, Textures: " + (nextCloth.Textures.Count) + "). Total: " + MainWindow.Clothes.Count);
+                    }
                 }
+                else
+                    StatusController.SetStatus("Item " + baseFileName + " can't be added. Looks like it's variant of another item");
             }
         }
 
         public void AddTexture(ClothData cloth)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.CheckFileExists = true;
-            openFileDialog.Filter = "Clothes texture (*.ytd)|*.ytd";
-            openFileDialog.FilterIndex = 1;
-            openFileDialog.DefaultExt = "ytd";
-            openFileDialog.Multiselect = true;
-            if (openFileDialog.ShowDialog() == true)
+            OpenFileDialog openFileDialog = new OpenFileDialog
             {
-                foreach (string filename in openFileDialog.FileNames)
+                CheckFileExists = true,
+                Filter = "Clothes texture (*.ytd)|*.ytd",
+                FilterIndex = 1,
+                DefaultExt = "ytd",
+                Multiselect = true
+            };
+
+            if (openFileDialog.ShowDialog() != true) 
+                return;
+
+            foreach (string filename in openFileDialog.FileNames)
+            {
+                if(filename.EndsWith(".ytd"))
                 {
-                    if(filename.EndsWith(".ytd"))
-                    {
-                        cloth.AddTexture(filename);
-                    }
+                    cloth.AddTexture(filename);
                 }
             }
         }
 
         public void SetFPModel(ClothData cloth)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.CheckFileExists = true;
-            openFileDialog.Filter = "Clothes drawable (*.ydd)|*.ydd";
-            openFileDialog.FilterIndex = 1;
-            openFileDialog.DefaultExt = "ydd";
-            openFileDialog.Multiselect = false;
-            if (openFileDialog.ShowDialog() == true)
+            OpenFileDialog openFileDialog = new OpenFileDialog
             {
-                foreach (string filename in openFileDialog.FileNames)
+                CheckFileExists = true,
+                Filter = "Clothes drawable (*.ydd)|*.ydd",
+                FilterIndex = 1,
+                DefaultExt = "ydd",
+                Multiselect = false
+            };
+
+            if (openFileDialog.ShowDialog() != true) 
+                return;
+
+            foreach (string filename in openFileDialog.FileNames)
+            {
+                if (filename.EndsWith(".ydd"))
                 {
-                    if (filename.EndsWith(".ydd"))
-                    {
-                        cloth.SetFPModel(filename);
-                    }
+                    cloth.SetFPModel(filename);
                 }
             }
         }
