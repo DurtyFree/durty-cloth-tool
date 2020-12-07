@@ -62,7 +62,7 @@ namespace AltTool
             }
         }
 
-        private string _componentNumerics;
+        private string _componentNumerics = "-";
         private string ComponentNumerics
         {
             get => _componentNumerics;
