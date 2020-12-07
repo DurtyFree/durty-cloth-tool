@@ -42,13 +42,11 @@
     <Reference Include="Ookii.Dialogs.Wpf, Version=1.0.0.0, Culture=neutral, PublicKeyToken=66aa232afad40158, processorArchitecture=MSIL">
       <HintPath>..\packages\Ookii.Dialogs.Wpf.1.1.0\lib\net45\Ookii.Dialogs.Wpf.dll</HintPath>
     </Reference>
-    <Reference Include="RageLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\gtautil\gtautil\Libraries\gta-toolkit\RageLib\bin\Debug\RageLib.dll</HintPath>
+    <Reference Include="RageLib">
+      <HintPath>..\Libraries\ragelib\RageLib.dll</HintPath>
     </Reference>
-    <Reference Include="RageLib.GTA5, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\gtautil\gtautil\Libraries\gta-toolkit\RageLib.GTA5\bin\Debug\RageLib.GTA5.dll</HintPath>
+    <Reference Include="RageLib.GTA5">
+      <HintPath>..\Libraries\ragelib\RageLib.GTA5.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
