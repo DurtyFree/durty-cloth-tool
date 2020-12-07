@@ -56,7 +56,7 @@ namespace AltTool
                 metasText += "  " + metas[i];
             }
 
-            return $"files: [\n{filesText}/*\n]\nmeta: {{\n{metasText}\n}}\n";
+            return $"files: [\n{filesText}\n]\nmeta: {{\n{metasText}\n}}\n";
         }
 
         public static string GenerateResourceCfg()
@@ -448,7 +448,7 @@ namespace AltTool
 
                 if(isAnyPropAdded)
                 {
-                    streamCfgIncludes.Add("stream/" + folderNames[sexNr] + "_p.rpf");
+                    streamCfgIncludes.Add("stream/" + folderNames[sexNr] + "_p.rpf/*");
                 }
 
                 if (isAnyClothAdded || isAnyPropAdded)
@@ -456,7 +456,7 @@ namespace AltTool
                     File.WriteAllText(outputFolder + "\\stream\\" + prefixes[sexNr] + "freemode_01_" + prefixes[sexNr] + collectionName + ".meta", GenerateShopMeta((Sex)sexNr, collectionName));
                     streamCfgMetas.Add("stream/" + prefixes[sexNr] + "freemode_01_" + prefixes[sexNr] + collectionName + ".meta: SHOP_PED_APPAREL_META_FILE");
                     ymt.Save(outputFolder + "\\stream\\" + folderNames[sexNr] + ".rpf\\" + prefixes[sexNr] + "freemode_01_" + prefixes[sexNr] + collectionName + ".ymt");
-                    streamCfgIncludes.Add("stream/" + folderNames[sexNr] + ".rpf");
+                    streamCfgIncludes.Add("stream/" + folderNames[sexNr] + ".rpf/*");
                 }
 
             }
