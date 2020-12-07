@@ -6,10 +6,11 @@ using System.Runtime.CompilerServices;
 
 namespace AltTool
 {
-    public class ClothData: INotifyPropertyChanged
+    public class ClothData
+        : INotifyPropertyChanged
     {
-        public readonly ClothNameResolver.ClothTypes clothClothTypes;
-        public readonly ClothNameResolver.DrawableTypes drawableTypes;
+        public readonly ClothNameResolver.ClothTypes ClothType;
+        public readonly ClothNameResolver.DrawableTypes DrawableType;
 
         public struct ComponentFlags
         {
@@ -39,22 +40,17 @@ namespace AltTool
         private static char _offsetLetter = 'a';
         private static readonly string[] SexIcons = { "👨🏻", "👩🏻" };
         private static readonly string[] TypeIcons = { "🧥", "👓" };
-
-        public string MainPath = "";
         private string _origNumerics = "";
         private string _postfix = "";
 
+        public string MainPath = "";
         public ComponentFlags componentFlags;
         public PedPropFlags pedPropFlags;
-
         public string FpModelPath;
         public ObservableCollection<string> Textures = new ObservableCollection<string>();
-
         public Sex TargetSex;
-
         public string Icon => SexIcons[(int)TargetSex];
-
-        public string Type => TypeIcons[(int)clothClothTypes];
+        public string Type => TypeIcons[(int)ClothType];
 
         private int _currentComponentIndex;
         private int CurrentComponentIndex
@@ -92,24 +88,20 @@ namespace AltTool
         public string DisplayName => $"{_name} (ID: {_currentComponentIndex}) ({_componentNumerics})";
 
         public ClothData()
-        {
+        { }
 
-        }
-
-        public ClothData(string path, ClothNameResolver.ClothTypes clothTypes, ClothNameResolver.DrawableTypes drawableTypes, string numeric, string postfix, Sex sex)
+        public ClothData(string path, ClothNameResolver.ClothTypes clothType, ClothNameResolver.DrawableTypes drawableType, string numeric, string postfix, Sex sex)
         {
             if (!File.Exists(path))
                 throw new Exception("YDD file not found");
-
-            clothClothTypes = clothTypes;
-            this.drawableTypes = drawableTypes;
+            
             _origNumerics = numeric;
-
-            TargetSex = sex;
             _postfix = postfix;
 
-            _name = this.drawableTypes + "_" + _origNumerics;
-
+            ClothType = clothType;
+            DrawableType = drawableType;
+            Name = DrawableType + "_" + _origNumerics;
+            TargetSex = sex;
             MainPath = path;
         }
 
@@ -135,14 +127,14 @@ namespace AltTool
             {
                 for (int i = 0; ; ++i)
                 {
-                    string relPath = rootPath + "\\" + ClothNameResolver.DrawableTypeToString(drawableTypes) + "_diff_" + _origNumerics + "_" + (char)(_offsetLetter + i) + "_uni.ytd";
+                    string relPath = rootPath + "\\" + ClothNameResolver.DrawableTypeToString(DrawableType) + "_diff_" + _origNumerics + "_" + (char)(_offsetLetter + i) + "_uni.ytd";
                     if (!File.Exists(relPath))
                         break;
                     Textures.Add(relPath);
                 }
                 for (int i = 0; ; ++i)
                 {
-                    string relPath = rootPath + "\\" + ClothNameResolver.DrawableTypeToString(drawableTypes) + "_diff_" + _origNumerics + "_" + (char)(_offsetLetter + i) + "_whi.ytd";
+                    string relPath = rootPath + "\\" + ClothNameResolver.DrawableTypeToString(DrawableType) + "_diff_" + _origNumerics + "_" + (char)(_offsetLetter + i) + "_whi.ytd";
                     if (!File.Exists(relPath))
                         break;
                     Textures.Add(relPath);
@@ -152,7 +144,7 @@ namespace AltTool
             {
                 for (int i = 0; ; ++i)
                 {
-                    string relPath = rootPath + "\\" + ClothNameResolver.DrawableTypeToString(drawableTypes) + "_diff_" + _origNumerics + "_" + (char)(_offsetLetter + i) + ".ytd";
+                    string relPath = rootPath + "\\" + ClothNameResolver.DrawableTypeToString(DrawableType) + "_diff_" + _origNumerics + "_" + (char)(_offsetLetter + i) + ".ytd";
                     if (!File.Exists(relPath))
                         break;
                     Textures.Add(relPath);
@@ -180,7 +172,7 @@ namespace AltTool
 
         public bool IsComponent()
         {
-            if (drawableTypes <= ClothNameResolver.DrawableTypes.Top)
+            if (DrawableType <= ClothNameResolver.DrawableTypes.Top)
                 return true;
             return false;
         }
@@ -188,7 +180,7 @@ namespace AltTool
         public byte GetComponentTypeID()
         {
             if(IsComponent())
-                return (byte)drawableTypes;
+                return (byte)DrawableType;
             return 255;
         }
 
@@ -200,13 +192,13 @@ namespace AltTool
         public byte GetPedPropTypeID()
         {
             if (IsPedProp())
-                return (byte)((int)drawableTypes - (int)ClothNameResolver.DrawableTypes.PropHead);
+                return (byte)((int)DrawableType - (int)ClothNameResolver.DrawableTypes.PropHead);
             return 255;
         }
 
         public string GetPrefix()
         {
-            return ClothNameResolver.DrawableTypeToString(drawableTypes);
+            return ClothNameResolver.DrawableTypeToString(DrawableType);
         }
 
         public void SetComponentNumerics(string componentNumerics, int currentComponentIndex)

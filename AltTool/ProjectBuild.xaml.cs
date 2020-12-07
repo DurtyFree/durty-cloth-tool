@@ -27,8 +27,9 @@ namespace AltTool
             Single,
             Fivem
         }
-        public string outputFolder = "";
-        public string collectionName = "";
+        public string OutputFolder = "";
+        public string CollectionName = "";
+
         public ProjectBuild()
         {
             InitializeComponent();
@@ -43,20 +44,20 @@ namespace AltTool
             else if (isFivemResourceRadio.IsChecked == true)
                 resType = TargetResourceType.Fivem;
 
-            collectionName = collectionNameText.Text;
+            CollectionName = collectionNameText.Text;
 
             switch (resType)
             {
                 case TargetResourceType.Altv:
-                    ResourceBuilder.BuildResourceAltv(outputFolder, collectionName);
+                    ResourceBuilder.BuildResourceAltv(OutputFolder, CollectionName);
                     break;
 
                 case TargetResourceType.Single:
-                    ResourceBuilder.BuildResourceSingle(outputFolder, collectionName);
+                    ResourceBuilder.BuildResourceSingle(OutputFolder, CollectionName);
                     break;
 
                 case TargetResourceType.Fivem:
-                    ResourceBuilder.BuildResourceFivem(outputFolder, collectionName);
+                    ResourceBuilder.BuildResourceFivem(OutputFolder, CollectionName);
                     break;
             }
         }
@@ -66,8 +67,8 @@ namespace AltTool
             var dialog = new Ookii.Dialogs.Wpf.VistaFolderBrowserDialog();
             if (dialog.ShowDialog(this).GetValueOrDefault())
             {
-                outputFolder = dialog.SelectedPath;
-                outFolderPathText.Content = outputFolder;
+                OutputFolder = dialog.SelectedPath;
+                outFolderPathText.Content = OutputFolder;
             }
         }
 

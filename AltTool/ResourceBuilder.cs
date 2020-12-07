@@ -301,7 +301,7 @@ namespace AltTool
                             string postfix = cd.MainPath.EndsWith("_u.ydd") ? "u" : "r";
                             string ytdPostfix = cd.MainPath.EndsWith("_u.ydd") ? "uni" : "whi";
                             
-                            if((cd.drawableTypes == ClothNameResolver.DrawableTypes.Shoes) || (cd.drawableTypes == ClothNameResolver.DrawableTypes.Legs))
+                            if((cd.DrawableType == ClothNameResolver.DrawableTypes.Shoes) || (cd.DrawableType == ClothNameResolver.DrawableTypes.Legs))
                             {
                                 postfix = "r";
                                 ytdPostfix = "uni";

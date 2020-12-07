@@ -34,8 +34,8 @@ namespace AltTool
         {
             InitializeComponent();
 
-            _statusTextBlock = ((TextBlock)FindName("currentStatusBar"));
-            _statusProgress = ((ProgressBar)FindName("currentProgress"));
+            _statusTextBlock = (TextBlock)FindName("currentStatusBar");
+            _statusProgress = (ProgressBar)FindName("currentProgress");
 
             Clothes = new ObservableCollection<ClothData>();
             clothesListBox.ItemsSource = Clothes;
