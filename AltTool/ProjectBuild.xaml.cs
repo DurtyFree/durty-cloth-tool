@@ -54,7 +54,7 @@ namespace AltTool
                     break;
 
                 case TargetResourceType.FiveM:
-                    ResourceBuilder.BuildResourceFivem(OutputFolder, CollectionName);
+                    ResourceBuilder.BuildResourceFiveM(OutputFolder, CollectionName);
                     break;
             }
         }
