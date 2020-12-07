@@ -581,6 +581,8 @@ namespace AltTool
                             string componentNumerics = currentComponentIndex.ToString().PadLeft(3, '0');
                             string prefix = clothData.GetPrefix();
 
+                            clothData.SetComponentNumerics(componentNumerics, currentComponentIndex);
+
                             var resource = currComponentDir.CreateResourceFile();
                             resource.Name = prefix + "_" + componentNumerics + "_" + yddPostfix + ".ydd";
                             resource.Import(clothData.MainPath);
@@ -627,6 +629,8 @@ namespace AltTool
 
                             string componentNumerics = currentPropIndex.ToString().PadLeft(3, '0');
                             string prefix = clothData.GetPrefix();
+
+                            clothData.SetComponentNumerics(componentNumerics, currentPropIndex);
 
                             var resource = currPropDir.CreateResourceFile();
                             resource.Name = prefix + "_" + componentNumerics + ".ydd";
@@ -758,6 +762,8 @@ namespace AltTool
                         string componentNumerics = currentComponentIndex.ToString().PadLeft(3, '0');
                         string prefix = clothData.GetPrefix();
 
+                        clothData.SetComponentNumerics(componentNumerics, currentComponentIndex);
+
                         File.Copy(clothData.MainPath, outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "^" + prefix + "_" + componentNumerics + "_" + yddPostfix + ".ydd", true);
 
                         char offsetLetter = 'a';
@@ -788,6 +794,7 @@ namespace AltTool
 
                         string componentNumerics = currentPropIndex.ToString().PadLeft(3, '0');
                         string prefix = clothData.GetPrefix();
+                        clothData.SetComponentNumerics(componentNumerics, currentPropIndex);
 
                         File.Copy(clothData.MainPath, outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_p_" + Prefixes[sexNr] + collectionName + "\\" + Prefixes[sexNr] + "freemode_01_p_" + Prefixes[sexNr] + collectionName + "^" + prefix + "_" + componentNumerics + ".ydd", true);
 
