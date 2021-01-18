@@ -51,7 +51,7 @@ namespace AltTool
                             MainWindow.Clothes.Add(cloth);
                         }
 
-                        StatusController.SetStatus(nextCloth + " added (FP model found: " + (nextCloth.FirstPersonModelPath != "" ? "Yes" : "No") + ", Textures: " + nextCloth.Textures.Count + "). Total: " + MainWindow.Clothes.Count);
+                        StatusController.SetStatus(nextCloth + " added (" + (!string.IsNullOrEmpty(nextCloth.FirstPersonModelPath)? "FP Model found, " : "") + "Found " + nextCloth.Textures.Count + " textures). Total clothes: " + MainWindow.Clothes.Count);
                     }
                     else
                     {
@@ -67,7 +67,7 @@ namespace AltTool
                             MainWindow.Clothes.Add(cloth);
                         }
 
-                        StatusController.SetStatus(nextCloth + " added, Textures: " + nextCloth.Textures.Count + "). Total: " + MainWindow.Clothes.Count);
+                        StatusController.SetStatus(nextCloth + " added. (Found " + nextCloth.Textures.Count + " textures). Total clothes: " + MainWindow.Clothes.Count);
                     }
                 }
                 else

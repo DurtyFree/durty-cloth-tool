@@ -7,7 +7,6 @@ using RageLib.Resources.GTA5.PC.Meta;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Windows;
 using static AltTool.ClothData;
 
 namespace AltTool
@@ -349,8 +348,6 @@ namespace AltTool
 
             File.WriteAllText(outputFolder + "\\stream.cfg", GenerateAltvStreamCfg(streamCfgIncludes, streamCfgMetas));
             File.WriteAllText(outputFolder + "\\resource.cfg", GenerateAltvResourceCfg());
-
-            MessageBox.Show("alt:V Resource built!");
         }
 
         private static void UpdateYmtComponentTextureBindings(MUnk_3538495220[] componentTextureBindings, YmtPedDefinitionFile ymt)
@@ -706,8 +703,6 @@ namespace AltTool
 
                 rpf.Flush();
                 rpf.Dispose();
-
-                MessageBox.Show("Singleplayer Resource built!");
             }
         }
 
@@ -820,8 +815,6 @@ namespace AltTool
             }
 
             File.WriteAllText(outputFolder + "\\fxmanifest.lua", GenerateFiveMResourceLua(resourceLUAMetas));
-
-            MessageBox.Show("FiveM Resource built!");
         }
     }
 }

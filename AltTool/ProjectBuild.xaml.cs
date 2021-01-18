@@ -1,18 +1,9 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using Ookii.Dialogs.Wpf;
 
 namespace AltTool
 {
@@ -43,19 +34,61 @@ namespace AltTool
 
             CollectionName = collectionNameText.Text;
 
-            switch (resType)
+            try
             {
-                case TargetResourceType.AltV:
-                    ResourceBuilder.BuildResourceAltv(OutputFolder, CollectionName);
-                    break;
+                switch (resType)
+                {
+                    case TargetResourceType.AltV:
+                        ResourceBuilder.BuildResourceAltv(OutputFolder, CollectionName);
+                        MessageBox.Show("alt:V Resource built!");
+                        break;
 
-                case TargetResourceType.Single:
-                    ResourceBuilder.BuildResourceSingle(OutputFolder, CollectionName);
-                    break;
+                    case TargetResourceType.Single:
+                        ResourceBuilder.BuildResourceSingle(OutputFolder, CollectionName);
+                        MessageBox.Show("Singleplayer Resource built!");
+                        break;
 
-                case TargetResourceType.FiveM:
-                    ResourceBuilder.BuildResourceFiveM(OutputFolder, CollectionName);
-                    break;
+                    case TargetResourceType.FiveM:
+                        ResourceBuilder.BuildResourceFiveM(OutputFolder, CollectionName);
+                        MessageBox.Show("FiveM Resource built!");
+                        break;
+                }
+            }
+            catch (Exception exception)
+            {
+                ShowExceptionErrorDialog(exception);
+            }
+        }
+
+        private void ShowExceptionErrorDialog(Exception exception)
+        {
+            var reportErrorButton = new TaskDialogButton("Report error");
+            var taskDialog = new TaskDialog
+            {
+                WindowTitle = "",
+                CollapsedControlText = "See error details",
+                ExpandedControlText = "Close error details",
+                Content = "Building cloth resource failed. Please report this error at https://github.com/DurtyFree/altv-cloth-tool",
+                Buttons =
+                {
+                    reportErrorButton,
+                    new TaskDialogButton("Close")
+                    {
+                        ButtonType = ButtonType.Close
+                    },
+                },
+                ExpandedInformation = exception.ToString(),
+                MainIcon = TaskDialogIcon.Error,
+                MainInstruction = "Unknown error occured"
+            };
+            var pressedButton = taskDialog.ShowDialog(this);
+            if (pressedButton == reportErrorButton)
+            {
+                var issueBody = "I have the following error:\n" + exception +
+                                "\n\nCloth files: [Please provide cloth files (ydd, ytd) and cloth project file here]";
+                var issueTitle = "Exception error";
+                Process.Start(
+                    $"https://github.com/DurtyFree/altv-cloth-tool/issues/new?body={Uri.EscapeDataString(issueBody)}&title={Uri.EscapeDataString(issueTitle)}");
             }
         }
 
