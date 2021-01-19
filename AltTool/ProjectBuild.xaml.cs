@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
@@ -34,6 +35,13 @@ namespace AltTool
 
             CollectionName = collectionNameText.Text;
 
+            if (FilePathHasInvalidChars(OutputFolder))
+            {
+                MessageBox.Show("Output folder path contains invalid characters.\nPlease choose another output location.");
+                StatusController.SetStatus("Error: Invalid build output folder.");
+                return;
+            }
+
             try
             {
                 switch (resType)
@@ -58,6 +66,24 @@ namespace AltTool
             {
                 ShowExceptionErrorDialog(exception);
             }
+        }
+
+        private bool FilePathHasInvalidChars(string path)
+        {
+            bool ret = false;
+            if(!string.IsNullOrEmpty(path))
+            {
+                try
+                {
+                    string fileName = System.IO.Path.GetFileName(path);
+                    string fileDirectory = System.IO.Path.GetDirectoryName(path);
+                }
+                catch (ArgumentException)
+                {
+                    ret = true;
+                }
+            }
+            return ret;
         }
 
         private void ShowExceptionErrorDialog(Exception exception)
@@ -87,8 +113,7 @@ namespace AltTool
                 var issueBody = "I have the following error:\n" + exception +
                                 "\n\nCloth files: [Please provide cloth files (ydd, ytd) and cloth project file here]";
                 var issueTitle = "Exception error";
-                Process.Start(
-                    $"https://github.com/DurtyFree/altv-cloth-tool/issues/new?body={Uri.EscapeDataString(issueBody)}&title={Uri.EscapeDataString(issueTitle)}");
+                Process.Start($"https://github.com/DurtyFree/altv-cloth-tool/issues/new?body={Uri.EscapeDataString(issueBody)}&title={Uri.EscapeDataString(issueTitle)}");
             }
         }
 

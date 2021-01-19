@@ -26,6 +26,7 @@ namespace AltTool
             {
                 MainWindow.Clothes.Add(cd);
             }
+            StatusController.SetStatus("Project loaded. Total clothes: " + MainWindow.Clothes.Count);
         }
     }
 }
