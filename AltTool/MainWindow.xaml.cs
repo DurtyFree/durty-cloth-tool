@@ -67,11 +67,10 @@ namespace AltTool
         {
             if (_selectedCloth == null) 
                 return;
+            var removedClothName = _selectedCloth.Name;
 
             var clothes = Clothes.OrderBy(x => x.Name, new AlphanumericComparer()).ToList();
-
             Clothes.Clear();
-
             foreach(var cloth in clothes.Where(c => c != _selectedCloth))
             {
                 Clothes.Add(cloth);
@@ -79,6 +78,9 @@ namespace AltTool
 
             _selectedCloth = null;
             editGroupBox.Visibility = Visibility.Collapsed;
+            clothEditWindow.Visibility = Visibility.Collapsed;
+            pedPropEditWindow.Visibility = Visibility.Collapsed;
+            StatusController.SetStatus($"Removed '{removedClothName}'. Total clothes: " + Clothes.Count);
         }
 
         private void ClothesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
