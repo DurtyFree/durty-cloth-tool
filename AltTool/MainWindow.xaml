@@ -68,7 +68,7 @@
                                 </StackPanel>
                             </GroupBox>
                         </Grid>
-                        <GroupBox Header="Item name" HorizontalAlignment="Left" Height="40" Margin="0,0,0,0" VerticalAlignment="Top" Width="200">
+                        <GroupBox Header="Name" HorizontalAlignment="Left" Height="40" Margin="0,0,0,0" VerticalAlignment="Top" Width="200">
                             <TextBox x:Name="drawableName" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0" TextChanged="DrawableName_TextChanged" BorderBrush="{x:Null}"/>
                         </GroupBox>
                         <GroupBox Header="First person model" HorizontalAlignment="Right" Height="40" Margin="0,0,0,0" VerticalAlignment="Top" Width="360">
@@ -106,7 +106,7 @@
                                 </StackPanel>
                             </GroupBox>
                         </Grid>
-                        <GroupBox Header="Ped prop name" HorizontalAlignment="Left" Height="40" Margin="0,0,0,0" VerticalAlignment="Top" Width="200">
+                        <GroupBox Header="Name" HorizontalAlignment="Left" Height="40" Margin="0,0,0,0" VerticalAlignment="Top" Width="200">
                             <TextBox x:Name="pedPropName" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0" BorderBrush="{x:Null}" TextChanged="PedPropName_TextChanged"/>
                         </GroupBox>
                     </Grid>
