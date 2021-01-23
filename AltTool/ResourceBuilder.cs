@@ -330,6 +330,7 @@ namespace AltTool
                 if (isAnyClothAdded)
                 {
                     UpdateYmtComponentTextureBindings(componentTextureBindings, ymt);
+                    ymt.Save(outputFolder + "\\stream\\" + FolderNames[sexNr] + ".rpf\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + ".ymt");
                 }
 
                 if(isAnyPropAdded)
@@ -341,7 +342,7 @@ namespace AltTool
                 {
                     File.WriteAllText(outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + ".meta", GenerateShopMeta((Sex)sexNr, collectionName));
                     streamCfgMetas.Add("stream/" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + ".meta: SHOP_PED_APPAREL_META_FILE");
-                    ymt.Save(outputFolder + "\\stream\\" + FolderNames[sexNr] + ".rpf\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + ".ymt");
+
                     streamCfgIncludes.Add("stream/" + FolderNames[sexNr] + ".rpf/*");
                 }
             }
@@ -804,11 +805,11 @@ namespace AltTool
                 if (isAnyClothAdded)
                 {
                     UpdateYmtComponentTextureBindings(componentTextureBindings, ymt);
+                    ymt.Save(outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + ".ymt");
                 }
 
                 if(isAnyClothAdded || isAnyPropAdded)
                 {
-                    ymt.Save(outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + ".ymt");
                     File.WriteAllText(outputFolder + "\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + ".meta", GenerateShopMeta((Sex)sexNr, collectionName));
                     resourceLUAMetas.Add(Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + ".meta");
                 }
