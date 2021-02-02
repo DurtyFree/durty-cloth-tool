@@ -1,4 +1,4 @@
-﻿namespace AltTool
+﻿namespace altClothTool.App
 {
     class StatusController
     {

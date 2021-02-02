@@ -1,15 +1,15 @@
-﻿using RageLib.Archives;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using RageLib.Archives;
 using RageLib.GTA5.Archives;
 using RageLib.GTA5.ArchiveWrappers;
 using RageLib.GTA5.ResourceWrappers.PC.Meta.Structures;
 using RageLib.Resources.GTA5.PC.GameFiles;
 using RageLib.Resources.GTA5.PC.Meta;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using static AltTool.ClothData;
+using static altClothTool.App.ClothData;
 
-namespace AltTool
+namespace altClothTool.App
 {
     public class ResourceBuilder
     {

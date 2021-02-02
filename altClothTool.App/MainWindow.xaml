@@ -3,8 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:AltTool"
-        xmlns:Properties="clr-namespace:AltTool.Properties" x:Class="AltTool.MainWindow"
+        xmlns:Properties="clr-namespace:altClothTool.App.Properties" x:Class="altClothTool.App.MainWindow"
         mc:Ignorable="d"
         Title="alt:V | Clothes Tool" Height="450" Width="850" Icon="icon_alpha.ico">
     <Grid>

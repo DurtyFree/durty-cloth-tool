@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 using Ookii.Dialogs.Wpf;
 
-namespace AltTool
+namespace altClothTool.App
 {
     public partial class ProjectBuild : Window
     {

@@ -1,8 +1,8 @@
-﻿using Microsoft.Win32;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
+using Microsoft.Win32;
 
-namespace AltTool
+namespace altClothTool.App
 {
     class ProjectController
     {

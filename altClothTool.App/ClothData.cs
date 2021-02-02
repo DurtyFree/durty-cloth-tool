@@ -3,9 +3,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
-using Newtonsoft.Json;
 
-namespace AltTool
+namespace altClothTool.App
 {
     public class ClothData
         : INotifyPropertyChanged

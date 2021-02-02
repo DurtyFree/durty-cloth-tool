@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace AltTool
+namespace altClothTool.App
 {
     public class ClothNameResolver
     {

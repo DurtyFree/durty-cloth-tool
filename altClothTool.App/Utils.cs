@@ -1,11 +1,11 @@
-﻿using RageLib.GTA5.Cryptography;
-using RageLib.GTA5.Cryptography.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
+using RageLib.GTA5.Cryptography;
+using RageLib.GTA5.Cryptography.Helpers;
 
-namespace AltTool
+namespace altClothTool.App
 {
     class Utils
     {
