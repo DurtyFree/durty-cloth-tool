@@ -1,9 +1,14 @@
 # alt:V Cloth Tool
 
 ### Generate **alt:V resource** / **Singleplayer dlc** or **FiveM resource** for addon ped components / props
+#### Join our GTA 5 Modding Discord server: https://discord.gg/hgSutAU
 
 ![screen-1](https://image.prntscr.com/image/MKOD2aGBQ5GRtIytkFx2cQ.png)
 ![screen-2](https://image.prntscr.com/image/W9Mx-YdXTFijeJB6Mih0sA.png)
+
+# Useful projects
+If you are in search for an easy way to browse all GTA V clothes data, try **Pleb Masters: Forge**.
+[![Pleb Masters Forge Logo](https://i.imgur.com/hotlSPf.png)](https://forge.plebmasters.de)
 
 # Additional notes
 ## from `Divined#2725`
