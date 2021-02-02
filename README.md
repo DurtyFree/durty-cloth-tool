@@ -1,19 +1,47 @@
-# altv-cloth-tool
+# alt:V Cloth Tool
 
-### Generate alt:V resource / SP dlc or FiveM Resource for addon ped component / props
+### Generate **alt:V resource** / **Singleplayer dlc** or **FiveM resource** for addon ped components / props
 
 ![screen-1](https://image.prntscr.com/image/MKOD2aGBQ5GRtIytkFx2cQ.png)
 ![screen-2](https://image.prntscr.com/image/W9Mx-YdXTFijeJB6Mih0sA.png)
 
-### Additional notes (from Divined#2725)
-
+# Additional notes
+## from `Divined#2725`
 ```
 feet ydd needs to be imported with _r
 lowr ydd needs to be imported with _r
 teef ydd needs to be imported with _u
 everything else imported with _u for .ydd
 ```
+## from `DurtyFree#3216`
+#### peds .ymt postfixes for models & textures
+For models (`_postfix`)
+```
+_r (race)
+_u (universal)
+_m (?? - only used 4 times)
+_g (?? - only used twice)
+_p (props - used in cutscenes)
+```
+For textures (`texIds` = `_postfix`)
+```
+0  = '_uni' (universal)
+1  = '_whi' (white)
+2  = '_bla' (black)
+3  = '_chi' (chinese)
+4  = '_lat' (latino)
+5  = '_ara' (arabic)
+6  = '_bal' ??
+7  = '_jam' ??
+8  = '_kor' (korean)
+9  = '_ita' (italian)
+10 = '_pak' (pakistani - resembles indians mostly, like shopkeepers)
+```
+## How to fix addon hats
+#### See the following tutorial on how to fix addon hats: https://forum.cfx.re/t/how-to-fix-addon-hats
 
-
-
-### Thanks [Tuxick](https://github.com/emcifuntik) for initial version of this tool :)
+# Credits
+### - [Tuxick](https://github.com/emcifuntik) for initial version of this tool :)
+### - [GiZz (indilo53)](https://github.com/indilo53) for various fixes and improvements
+### - [DurtyFree](https://github.com/durtyfree) for various fixes and improvements
+### - [alt:V](https://altv.mp/) for the icon, branding and being the superior GTA 5 mp platform
