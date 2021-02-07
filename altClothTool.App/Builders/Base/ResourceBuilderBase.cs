@@ -174,6 +174,28 @@ namespace altClothTool.App.Builders.Base
             };
         }
 
+        protected YmtPedDefinitionFile CreateYmtPedDefinitionFile(string ymtName, out MUnk_3538495220[] componentTextureBindings, out int[] componentIndexes, out int[] propIndexes)
+        {
+            //Male YMT generating
+            YmtPedDefinitionFile ymt = new YmtPedDefinitionFile
+            {
+                metaYmtName = ymtName,
+                Unk_376833625 = {DlcName = RageLib.Hash.Jenkins.Hash(ymtName)}
+            };
+                    
+            componentTextureBindings = new MUnk_3538495220[]{ null, null, null, null, null, null, null, null, null, null, null, null };
+            componentIndexes = new []{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            propIndexes = new []{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+            //ymt.Unk_376833625.Unk_1235281004 = 0;
+            //ymt.Unk_376833625.Unk_4086467184 = 0;
+            //ymt.Unk_376833625.Unk_911147899 = 0;
+            //ymt.Unk_376833625.Unk_315291935 = 0;
+            //ymt.Unk_376833625.Unk_2996560424 = ;
+
+            return ymt;
+        }
+
         public abstract void BuildResource(string outputFolder, string collectionName);
     }
 }

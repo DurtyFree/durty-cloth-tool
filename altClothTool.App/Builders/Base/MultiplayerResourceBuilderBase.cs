@@ -14,22 +14,10 @@ namespace altClothTool.App.Builders.Base
 
             for(int sexNr = 0; sexNr < 2; ++sexNr)
             {
-                // Male YMT generating
-                YmtPedDefinitionFile ymt = new YmtPedDefinitionFile
-                {
-                    metaYmtName = Prefixes[sexNr] + collectionName,
-                    Unk_376833625 = {DlcName = RageLib.Hash.Jenkins.Hash(Prefixes[sexNr] + collectionName)}
-                };
-                
-                MUnk_3538495220[] componentTextureBindings = { null, null, null, null, null, null, null, null, null, null, null, null };
-                int[] componentIndexes = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-                int[] propIndexes      = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-
-                //ymt.Unk_376833625.Unk_1235281004 = 0;
-                //ymt.Unk_376833625.Unk_4086467184 = 0;
-                //ymt.Unk_376833625.Unk_911147899 = 0;
-                //ymt.Unk_376833625.Unk_315291935 = 0;
-                //ymt.Unk_376833625.Unk_2996560424 = ;
+                YmtPedDefinitionFile ymt = CreateYmtPedDefinitionFile(Prefixes[sexNr] + collectionName, 
+                    out var componentTextureBindings, 
+                    out var componentIndexes, 
+                    out var propIndexes);
 
                 bool isAnyClothAdded = false;
                 bool isAnyPropAdded = false;
@@ -93,6 +81,7 @@ namespace altClothTool.App.Builders.Base
 
                         string componentNumerics = currentPropIndex.ToString().PadLeft(3, '0');
                         string prefix = clothData.GetPrefix();
+
                         clothData.SetComponentNumerics(componentNumerics, currentPropIndex);
 
                         CopyPropModelToResource(clothData, sexNr, outputFolder, collectionName, componentNumerics, prefix);
