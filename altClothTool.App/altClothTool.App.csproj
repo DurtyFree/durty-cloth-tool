@@ -74,7 +74,7 @@
     <Compile Include="ProjectBuild.xaml.cs">
       <DependentUpon>ProjectBuild.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProjectBuilder.cs" />
+    <Compile Include="ProjectManager.cs" />
     <Compile Include="Resource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -103,7 +103,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ProjectController.cs" />
+    <Compile Include="ClothesManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

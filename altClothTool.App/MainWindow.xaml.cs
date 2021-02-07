@@ -44,12 +44,12 @@ namespace altClothTool.App
 
         private void AddMaleClothes_Click(object sender, RoutedEventArgs e)
         {
-            ProjectController.Instance().AddFiles(Sex.Male);
+            ClothesManager.Instance().AddClothes(Sex.Male);
         }
 
         private void AddFemaleClothes_Click(object sender, RoutedEventArgs e)
         {
-            ProjectController.Instance().AddFiles(Sex.Female);
+            ClothesManager.Instance().AddClothes(Sex.Female);
         }
 
         private void RemoveUnderCursor_Click(object sender, RoutedEventArgs e)
@@ -143,7 +143,7 @@ namespace altClothTool.App
 
             foreach (string filename in openFileDialog.FileNames)
             {
-                ProjectBuilder.LoadProject(filename);
+                ProjectManager.LoadProject(filename);
             }
         }
 
@@ -161,14 +161,14 @@ namespace altClothTool.App
 
             foreach (string filename in saveFileDialog.FileNames)
             {
-                ProjectBuilder.SaveProject(filename);
+                ProjectManager.SaveProject(filename);
             }
         }
 
         private void AddTexture_Click(object sender, RoutedEventArgs e)
         {
             if(_selectedCloth != null)
-                ProjectController.Instance().AddTexture(_selectedCloth);
+                ClothesManager.Instance().AddClothTextures(_selectedCloth);
         }
 
         private void RemoveTexture_Click(object sender, RoutedEventArgs e)
@@ -225,7 +225,7 @@ namespace altClothTool.App
         private void SelectFirstPersonModel_Click(object sender, RoutedEventArgs e)
         {
             if (_selectedCloth != null)
-                ProjectController.Instance().SetFirstPersonModel(_selectedCloth);
+                ClothesManager.Instance().SetClothFirstPersonModel(_selectedCloth);
             firstPersonModelPath.Text = !string.IsNullOrEmpty(_selectedCloth?.FirstPersonModelPath) ? _selectedCloth.FirstPersonModelPath : "Not selected...";
         }
 

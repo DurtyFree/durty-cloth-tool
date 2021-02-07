@@ -1,6 +1,6 @@
 ﻿namespace altClothTool.App
 {
-    class StatusController
+    internal static class StatusController
     {
 
         public static void SetStatus(string status)

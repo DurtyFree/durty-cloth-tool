@@ -5,26 +5,27 @@ using Newtonsoft.Json;
 
 namespace altClothTool.App
 {
-    class ProjectBuilder
+    internal static class ProjectManager
     {
-        public static void SaveProject(string outputFile)
+        public static void SaveProject(string filePath)
         {
             var data = JsonConvert.SerializeObject(MainWindow.Clothes, Formatting.Indented);
 
-            File.WriteAllText(outputFile, data);
+            File.WriteAllText(filePath, data);
+            StatusController.SetStatus("Project saved.");
         }
 
-        public static void LoadProject(string inputFile)
+        public static void LoadProject(string filePath)
         {
-            var data = JsonConvert.DeserializeObject<List<ClothData>>(File.ReadAllText(inputFile));
+            var data = JsonConvert.DeserializeObject<List<ClothData>>(File.ReadAllText(filePath));
 
             MainWindow.Clothes.Clear();
 
             var clothes = data.OrderBy(x => x.Name, new AlphanumericComparer()).ToList();
 
-            foreach (var cd in clothes)
+            foreach (var cloth in clothes)
             {
-                MainWindow.Clothes.Add(cd);
+                MainWindow.Clothes.Add(cloth);
             }
             StatusController.SetStatus("Project loaded. Total clothes: " + MainWindow.Clothes.Count);
         }

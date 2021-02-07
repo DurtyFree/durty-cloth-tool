@@ -7,7 +7,7 @@ using RageLib.GTA5.Cryptography.Helpers;
 
 namespace altClothTool.App
 {
-    class Utils
+    internal static class Utils
     {
         public static void EnsureKeys()
         {
