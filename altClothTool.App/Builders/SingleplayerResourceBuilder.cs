@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using altClothTool.App.Builders.Base;
 using RageLib.Archives;
 using RageLib.GTA5.Archives;
 using RageLib.GTA5.ArchiveWrappers;

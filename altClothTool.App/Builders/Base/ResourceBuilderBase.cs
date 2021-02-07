@@ -3,7 +3,7 @@ using RageLib.GTA5.ResourceWrappers.PC.Meta.Structures;
 using RageLib.Resources.GTA5.PC.GameFiles;
 using RageLib.Resources.GTA5.PC.Meta;
 
-namespace altClothTool.App.Builders
+namespace altClothTool.App.Builders.Base
 {
     public abstract class ResourceBuilderBase
         : IClothesResourceBuilder

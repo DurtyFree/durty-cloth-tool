@@ -73,7 +73,8 @@
     </ApplicationDefinition>
     <Compile Include="Builders\FivemResourceBuilder.cs" />
     <Compile Include="Builders\AltvResourceBuilder.cs" />
-    <Compile Include="Builders\ResourceBuilderBase.cs" />
+    <Compile Include="Builders\Base\MultiplayerResourceBuilderBase.cs" />
+    <Compile Include="Builders\Base\ResourceBuilderBase.cs" />
     <Compile Include="Contracts\IClothesResourceBuilder.cs" />
     <Compile Include="ProjectBuild.xaml.cs">
       <DependentUpon>ProjectBuild.xaml</DependentUpon>

@@ -1,123 +1,88 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using RageLib.GTA5.ResourceWrappers.PC.Meta.Structures;
-using RageLib.Resources.GTA5.PC.GameFiles;
-using RageLib.Resources.GTA5.PC.Meta;
+using altClothTool.App.Builders.Base;
 
 namespace altClothTool.App.Builders
 {
     internal class FivemResourceBuilder
-        : ResourceBuilderBase
+        : MultiplayerResourceBuilderBase
     {
-        public override void BuildResource(string outputFolder, string collectionName)
+        private readonly List<string> _resourceLuaMetas = new List<string>();
+        
+        #region Resource Props 
+        
+        protected override void OnFirstPropAddedToResource(string outputFolder, int sexNr, string collectionName)
         {
-            List<string> resourceLUAMetas = new List<string>();
+            Directory.CreateDirectory($"{outputFolder}\\stream");
+            Directory.CreateDirectory($"{outputFolder}\\stream\\{Prefixes[sexNr]}freemode_01_p_{Prefixes[sexNr]}{collectionName}");
+        }
+        
+        protected override void CopyPropTextureToResource(string propTextureFilePath, int sexNr, string outputFolder, string collectionName,
+            string componentNumerics, string prefix, char offsetLetter)
+        {
+            string targetFilePath = $"{outputFolder}\\stream\\{Prefixes[sexNr]}freemode_01_p_{Prefixes[sexNr]}{collectionName}\\{Prefixes[sexNr]}freemode_01_p_{Prefixes[sexNr]}{collectionName}^{prefix}_diff_{componentNumerics}_{offsetLetter}.ytd";
+            File.Copy(propTextureFilePath, targetFilePath, true);
+        }
 
-            for(int sexNr = 0; sexNr < 2; ++sexNr)
-            {
-                //Male YMT generating
-                YmtPedDefinitionFile ymt = new YmtPedDefinitionFile
-                {
-                    metaYmtName = Prefixes[sexNr] + collectionName,
-                    Unk_376833625 = {DlcName = RageLib.Hash.Jenkins.Hash(Prefixes[sexNr] + collectionName)}
-                };
-                
-                MUnk_3538495220[] componentTextureBindings = { null, null, null, null, null, null, null, null, null, null, null, null };
-                int[] componentIndexes = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-                int[] propIndexes      = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        protected override void CopyPropModelToResource(ClothData propClothData, int sexNr, string outputFolder, string collectionName,
+            string componentNumerics, string prefix)
+        {
+            string targetFilePath = $"{outputFolder}\\stream\\{Prefixes[sexNr]}freemode_01_p_{Prefixes[sexNr]}{collectionName}\\{Prefixes[sexNr]}freemode_01_p_{Prefixes[sexNr]}{collectionName}^{prefix}_{componentNumerics}.ydd";
+            File.Copy(propClothData.MainPath, targetFilePath, true);
+        }
 
-                //ymt.Unk_376833625.Unk_1235281004 = 0;
-                //ymt.Unk_376833625.Unk_4086467184 = 0;
-                //ymt.Unk_376833625.Unk_911147899 = 0;
-                //ymt.Unk_376833625.Unk_315291935 = 0;
-                //ymt.Unk_376833625.Unk_2996560424 = ;
+        #endregion
 
-                bool isAnyClothAdded = false;
-                bool isAnyPropAdded = false;
+        #region Resource Clothes
+        
+        protected override string GetClothYmtFilePath(string outputFolder, int sexNr, string collectionName)
+        {
+            return $"{outputFolder}\\stream\\{Prefixes[sexNr]}freemode_01_{Prefixes[sexNr]}{collectionName}.ymt";
+        }
 
-                foreach (ClothData clothData in MainWindow.Clothes)
-                {
-                    if (clothData.IsComponent())
-                    {
-                        if (clothData.Textures.Count <= 0 || (int) clothData.TargetSex != sexNr) 
-                            continue;
+        protected override void OnFirstClothAddedToResource(string outputFolder, int sexNr, string collectionName)
+        {
+            Directory.CreateDirectory(outputFolder + "\\stream");
+            Directory.CreateDirectory(outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName);
+        }
 
-                        var componentItemInfo = GenerateYmtPedComponentItem(clothData, ref componentTextureBindings);
-                        ymt.Unk_376833625.CompInfos.Add(componentItemInfo);
+        protected override void CopyClothFirstPersonModelToResource(string clothDataFirstPersonModelPath, int sexNr, string outputFolder,
+            string collectionName, string componentNumerics, string prefix, string yddPostfix)
+        {
+            string targetFilePath = $"{outputFolder}\\stream\\{Prefixes[sexNr]}freemode_01_{Prefixes[sexNr]}{collectionName}\\{Prefixes[sexNr]}freemode_01_{Prefixes[sexNr]}{collectionName}^{prefix}_{componentNumerics}_{yddPostfix}_1.ydd";
+            File.Copy(clothDataFirstPersonModelPath, targetFilePath, true);
+        }
 
-                        var componentTypeId = componentItemInfo.Unk_3509540765;
-                        GetClothPostfixes(clothData, out var ytdPostfix, out var yddPostfix);
+        protected override void CopyClothTextureToResource(string clothTextureFilePath, int sexNr, string outputFolder, string collectionName,
+            string componentNumerics, string prefix, string ytdPostfix, char offsetLetter)
+        {
+            string targetFilePath = $"{outputFolder}\\stream\\{Prefixes[sexNr]}freemode_01_{Prefixes[sexNr]}{collectionName}\\{Prefixes[sexNr]}freemode_01_{Prefixes[sexNr]}{collectionName}^{prefix}_diff_{componentNumerics}_{offsetLetter}_{ytdPostfix}.ytd";
+            File.Copy(clothTextureFilePath, targetFilePath, true);
+        }
 
-                        if (!isAnyClothAdded)
-                        {
-                            isAnyClothAdded = true;
-                            Directory.CreateDirectory(outputFolder + "\\stream");
-                            Directory.CreateDirectory(outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName);
-                        }
+        protected override void CopyClothModelToResource(ClothData clothData, int sexNr, string outputFolder, string collectionName,
+            string componentNumerics, string prefix, string yddPostfix)
+        {
+            string targetFilePath = $"{outputFolder}\\stream\\{Prefixes[sexNr]}freemode_01_{Prefixes[sexNr]}{collectionName}\\{Prefixes[sexNr]}freemode_01_{Prefixes[sexNr]}{collectionName}^{prefix}_{componentNumerics}_{yddPostfix}.ydd";
+            File.Copy(clothData.MainPath, targetFilePath, true);
+        }
 
-                        int currentComponentIndex = componentIndexes[componentTypeId]++;
+        #endregion
+        
+        protected override void OnResourceBuildingFinished(string outputFolder)
+        {
+            File.WriteAllText(outputFolder + "\\fxmanifest.lua", GenerateFiveMResourceLuaContent(_resourceLuaMetas));
+        }
 
-                        string componentNumerics = currentComponentIndex.ToString().PadLeft(3, '0');
-                        string prefix = clothData.GetPrefix();
+        protected override void OnResourceClothDataFinished(string outputFolder, int sexNr, string collectionName, bool isAnyPropAdded, bool isAnyClothAdded)
+        {
+            if (!isAnyClothAdded && !isAnyPropAdded) 
+                return;
 
-                        clothData.SetComponentNumerics(componentNumerics, currentComponentIndex);
+            string shopMetaFilePath = $"{outputFolder}\\{Prefixes[sexNr]}freemode_01_{Prefixes[sexNr]}{collectionName}.meta";
+            File.WriteAllText(shopMetaFilePath, GenerateShopMetaContent((ClothData.Sex)sexNr, collectionName));
 
-                        File.Copy(clothData.MainPath, outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "^" + prefix + "_" + componentNumerics + "_" + yddPostfix + ".ydd", true);
-
-                        char offsetLetter = 'a';
-                        for (int i = 0; i < clothData.Textures.Count; ++i)
-                            File.Copy(clothData.Textures[i], outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "^" + prefix + "_diff_" + componentNumerics + "_" + (char)(offsetLetter + i) + "_" + ytdPostfix + ".ytd", true);
-
-                        if (clothData.FirstPersonModelPath != "")
-                            File.Copy(clothData.FirstPersonModelPath, outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + "^" + prefix + "_" + componentNumerics + "_" + yddPostfix + "_1.ydd", true);
-                    }
-                    else
-                    {
-                        if (clothData.Textures.Count <= 0 || (int) clothData.TargetSex != sexNr) 
-                            continue;
-
-                        Unk_2834549053 anchor = (Unk_2834549053)clothData.GetPedPropTypeId();
-                        var defs = ymt.Unk_376833625.PropInfo.Props[anchor] ?? new List<MUnk_94549140>();
-                        var item = GenerateYmtPedPropItem(ymt, anchor, clothData);
-                        defs.Add(item);
-
-                        if (!isAnyPropAdded)
-                        {
-                            isAnyPropAdded = true;
-                            Directory.CreateDirectory(outputFolder + "\\stream");
-                            Directory.CreateDirectory(outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_p_" + Prefixes[sexNr] + collectionName);
-                        }
-
-                        int currentPropIndex = propIndexes[(byte)anchor]++;
-
-                        string componentNumerics = currentPropIndex.ToString().PadLeft(3, '0');
-                        string prefix = clothData.GetPrefix();
-                        clothData.SetComponentNumerics(componentNumerics, currentPropIndex);
-
-                        File.Copy(clothData.MainPath, outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_p_" + Prefixes[sexNr] + collectionName + "\\" + Prefixes[sexNr] + "freemode_01_p_" + Prefixes[sexNr] + collectionName + "^" + prefix + "_" + componentNumerics + ".ydd", true);
-
-                        char offsetLetter = 'a';
-                        for (int i = 0; i < clothData.Textures.Count; ++i)
-                        {
-                            File.Copy(clothData.Textures[i], outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_p_" + Prefixes[sexNr] + collectionName + "\\" + Prefixes[sexNr] + "freemode_01_p_" + Prefixes[sexNr] + collectionName + "^" + prefix + "_diff_" + componentNumerics + "_" + (char)(offsetLetter + i) + ".ytd", true);
-                        }
-                    }
-                }
-                
-                if (isAnyClothAdded)
-                {
-                    UpdateYmtComponentTextureBindings(componentTextureBindings, ymt);
-                    ymt.Save(outputFolder + "\\stream\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + ".ymt");
-                }
-
-                if(isAnyClothAdded || isAnyPropAdded)
-                {
-                    File.WriteAllText(outputFolder + "\\" + Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + ".meta", GenerateShopMetaContent((ClothData.Sex)sexNr, collectionName));
-                    resourceLUAMetas.Add(Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + ".meta");
-                }
-            }
-
-            File.WriteAllText(outputFolder + "\\fxmanifest.lua", GenerateFiveMResourceLuaContent(resourceLUAMetas));
+            _resourceLuaMetas.Add(Prefixes[sexNr] + "freemode_01_" + Prefixes[sexNr] + collectionName + ".meta");
         }
 
         private string GenerateFiveMResourceLuaContent(List<string> metas)
