@@ -71,6 +71,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Builders\FivemResourceBuilder.cs" />
+    <Compile Include="Builders\AltvResourceBuilder.cs" />
+    <Compile Include="Builders\ResourceBuilderBase.cs" />
+    <Compile Include="Contracts\IClothesResourceBuilder.cs" />
     <Compile Include="ProjectBuild.xaml.cs">
       <DependentUpon>ProjectBuild.xaml</DependentUpon>
     </Compile>
@@ -80,7 +84,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
-    <Compile Include="ResourceBuilder.cs" />
+    <Compile Include="Builders\SingleplayerResourceBuilder.cs" />
+    <Compile Include="ClothesResourceBuilderFactory.cs" />
     <Compile Include="StatusController.cs" />
     <Compile Include="Utils.cs" />
     <Page Include="MainWindow.xaml">
