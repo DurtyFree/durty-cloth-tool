@@ -56,9 +56,18 @@ namespace altClothTool.App.Builders.Base
 
             for (int i = 0; i < clothData.Textures.Count; i++)
             {
+                byte texId = (byte)i;
+                if (clothData.DrawableType == ClothNameResolver.DrawableTypes.Legs)
+                {
+                    texId = 1;
+                }
+                else if (clothData.DrawableType == ClothNameResolver.DrawableTypes.Shoes)
+                {
+                    texId = 0;
+                }
                 var texture = new MUnk_254518642
                 {
-                    TexId = (byte) i
+                    TexId = texId
                 };
                 item.TexData.Add(texture);
             }
@@ -88,8 +97,12 @@ namespace altClothTool.App.Builders.Base
             yddPostfix = clothData.MainPath.EndsWith("_u.ydd") ? "u" : "r";
             ytdPostfix = clothData.MainPath.EndsWith("_u.ydd") ? "uni" : "whi";
 
-            if (clothData.DrawableType == ClothNameResolver.DrawableTypes.Shoes ||
-                clothData.DrawableType == ClothNameResolver.DrawableTypes.Legs)
+            if (clothData.DrawableType == ClothNameResolver.DrawableTypes.Legs)
+            {
+                yddPostfix = "r";
+                ytdPostfix = "whi";
+            }
+            else if (clothData.DrawableType == ClothNameResolver.DrawableTypes.Shoes)
             {
                 yddPostfix = "r";
                 ytdPostfix = "uni";
