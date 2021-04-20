@@ -25,11 +25,6 @@ feet ytd needs to be imported with _uni
 berd ydd needs to be imported with _r
 berd ytd needs to be imported with _whi
 ```
-## from `Nicoo#3630`
-```
-berd ydd needs to be imported with _r
-berd ytd needs to be imported with _whi
-```
 ## from `DurtyFree#3216`
 #### peds .ymt postfixes for models & textures
 For models (`_postfix`)
