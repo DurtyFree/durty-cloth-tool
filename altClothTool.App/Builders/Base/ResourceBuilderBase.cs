@@ -1,4 +1,5 @@
-﻿using altClothTool.App.Contracts;
+﻿using System.Collections.Generic;
+using altClothTool.App.Contracts;
 using RageLib.GTA5.ResourceWrappers.PC.Meta.Structures;
 using RageLib.Resources.GTA5.PC.GameFiles;
 using RageLib.Resources.GTA5.PC.Meta;
@@ -32,7 +33,7 @@ namespace altClothTool.App.Builders.Base
 </ShopPedApparel>";
         }
 
-        protected static void UpdateYmtComponentTextureBindings(MUnk_3538495220[] componentTextureBindings, YmtPedDefinitionFile ymt)
+        protected void UpdateYmtComponentTextureBindings(MUnk_3538495220[] componentTextureBindings, YmtPedDefinitionFile ymt)
         {
             int arrIndex = 0;
             for (int i = 0; i < componentTextureBindings.Length; ++i)
@@ -47,51 +48,58 @@ namespace altClothTool.App.Builders.Base
             }
         }
 
-        protected static MUnk_94549140 GenerateYmtPedPropItem(YmtPedDefinitionFile ymt, Unk_2834549053 anchor, ClothData clothData)
+        private List<MUnk_254518642> GetTexDataForCloth(ClothData clothData)
         {
-            var item = new MUnk_94549140(ymt.Unk_376833625.PropInfo)
-            {
-                AnchorId = (byte) anchor
-            };
-
+            List<MUnk_254518642> items = new List<MUnk_254518642>();
             for (int i = 0; i < clothData.Textures.Count; i++)
             {
                 byte texId = (byte)i;
-                if (clothData.DrawableType == ClothNameResolver.DrawableTypes.Legs)
+                switch (clothData.DrawableType)
                 {
-                    texId = 1;
+                    case ClothNameResolver.DrawableTypes.Legs:
+                        texId = 1;
+                        break;
+                    case ClothNameResolver.DrawableTypes.Shoes:
+                        texId = 0;
+                        break;
                 }
-                else if (clothData.DrawableType == ClothNameResolver.DrawableTypes.Shoes)
-                {
-                    texId = 0;
-                }
-                var texture = new MUnk_254518642
+                MUnk_254518642 texture = new MUnk_254518642
                 {
                     TexId = texId
                 };
-                item.TexData.Add(texture);
+                items.Add(texture);
             }
+            return items;
+        }
 
-            // Get or create linked anchor
-            var aanchor = ymt.Unk_376833625.PropInfo.AAnchors.Find(e => e.Anchor == anchor);
-
-            if (aanchor == null)
+        protected MUnk_94549140 GenerateYmtPedPropItem(YmtPedDefinitionFile ymt, Unk_2834549053 anchor, ClothData clothData)
+        {
+            var item = new MUnk_94549140(ymt.Unk_376833625.PropInfo)
             {
-                aanchor = new MCAnchorProps(ymt.Unk_376833625.PropInfo)
+                AnchorId = (byte) anchor,
+                TexData = GetTexDataForCloth(clothData)
+            };
+            
+            // Get or create linked anchor
+            var anchorProps = ymt.Unk_376833625.PropInfo.AAnchors.Find(e => e.Anchor == anchor);
+
+            if (anchorProps == null)
+            {
+                anchorProps = new MCAnchorProps(ymt.Unk_376833625.PropInfo)
                 {
                     Anchor = anchor,
                     PropsMap = {[item] = (byte) item.TexData.Count}
                 };
 
-                ymt.Unk_376833625.PropInfo.AAnchors.Add(aanchor);
+                ymt.Unk_376833625.PropInfo.AAnchors.Add(anchorProps);
             }
             else
             {
-                aanchor.PropsMap[item] = (byte) item.TexData.Count;
+                anchorProps.PropsMap[item] = (byte) item.TexData.Count;
             }
             return item;
         }
-
+        
         protected void GetClothPostfixes(ClothData clothData, out string ytdPostfix, out string yddPostfix)
         {
             yddPostfix = clothData.MainPath.EndsWith("_u.ydd") ? "u" : "r";
