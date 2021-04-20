@@ -17,6 +17,18 @@ feet ydd needs to be imported with _r
 lowr ydd needs to be imported with _r
 teef ydd needs to be imported with _u
 everything else imported with _u for .ydd
+lowr ytd needs to be imported with _whi
+feet ytd needs to be imported with _uni
+```
+## from `Nicoo#3630`
+```
+berd ydd needs to be imported with _r
+berd ytd needs to be imported with _whi
+```
+## from `Nicoo#3630`
+```
+berd ydd needs to be imported with _r
+berd ytd needs to be imported with _whi
 ```
 ## from `DurtyFree#3216`
 #### peds .ymt postfixes for models & textures
@@ -36,8 +48,8 @@ For textures (`texIds` = `_postfix`)
 3  = '_chi' (chinese)
 4  = '_lat' (latino)
 5  = '_ara' (arabic)
-6  = '_bal' ??
-7  = '_jam' ??
+6  = '_bal' (baltic)
+7  = '_jam' (jamaican)
 8  = '_kor' (korean)
 9  = '_ita' (italian)
 10 = '_pak' (pakistani - resembles indians mostly, like shopkeepers)
