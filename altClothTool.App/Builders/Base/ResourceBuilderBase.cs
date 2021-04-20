@@ -53,16 +53,7 @@ namespace altClothTool.App.Builders.Base
             List<MUnk_254518642> items = new List<MUnk_254518642>();
             for (int i = 0; i < clothData.Textures.Count; i++)
             {
-                byte texId = (byte)i;
-                switch (clothData.DrawableType)
-                {
-                    case ClothNameResolver.DrawableTypes.Legs:
-                        texId = 1;
-                        break;
-                    case ClothNameResolver.DrawableTypes.Shoes:
-                        texId = 0;
-                        break;
-                }
+                byte texId = GetTexIdByDrawableType(clothData, i);
                 MUnk_254518642 texture = new MUnk_254518642
                 {
                     TexId = texId
@@ -70,6 +61,22 @@ namespace altClothTool.App.Builders.Base
                 items.Add(texture);
             }
             return items;
+        }
+
+        /// TODO DURTY: verify if its really based on index? Shouldnt be like this actually, because its connected to skin tone or something
+        private static byte GetTexIdByDrawableType(ClothData clothData, int index)
+        {
+            byte texId = (byte) index;
+            switch (clothData.DrawableType)
+            {
+                case ClothNameResolver.DrawableTypes.Legs:
+                    texId = 1;
+                    break;
+                case ClothNameResolver.DrawableTypes.Shoes:
+                    texId = 0;
+                    break;
+            }
+            return texId;
         }
 
         protected MUnk_94549140 GenerateYmtPedPropItem(YmtPedDefinitionFile ymt, Unk_2834549053 anchor, ClothData clothData)
