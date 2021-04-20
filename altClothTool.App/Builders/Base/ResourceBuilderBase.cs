@@ -97,15 +97,20 @@ namespace altClothTool.App.Builders.Base
             yddPostfix = clothData.MainPath.EndsWith("_u.ydd") ? "u" : "r";
             ytdPostfix = clothData.MainPath.EndsWith("_u.ydd") ? "uni" : "whi";
 
-            if (clothData.DrawableType == ClothNameResolver.DrawableTypes.Legs)
+            switch (clothData.DrawableType)
             {
-                yddPostfix = "r";
-                ytdPostfix = "whi";
-            }
-            else if (clothData.DrawableType == ClothNameResolver.DrawableTypes.Shoes)
-            {
-                yddPostfix = "r";
-                ytdPostfix = "uni";
+                case ClothNameResolver.DrawableTypes.Legs:
+                    yddPostfix = "r";
+                    ytdPostfix = "whi";
+                    break;
+                case ClothNameResolver.DrawableTypes.Mask:
+                    yddPostfix = "r";
+                    ytdPostfix = "whi";
+                    break;
+                case ClothNameResolver.DrawableTypes.Shoes:
+                    yddPostfix = "r";
+                    ytdPostfix = "uni";
+                    break;
             }
         }
 
@@ -150,6 +155,11 @@ namespace altClothTool.App.Builders.Base
             };
 
             byte texId = (byte) (clothData.MainPath.EndsWith("_u.ydd") ? 0 : 1);
+
+            if (clothData.DrawableType == ClothNameResolver.DrawableTypes.Mask)
+            {
+                texId = 1;
+            }
 
             foreach (string texPath in clothData.Textures)
             {
