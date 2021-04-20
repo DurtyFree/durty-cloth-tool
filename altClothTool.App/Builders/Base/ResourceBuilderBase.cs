@@ -61,10 +61,6 @@ namespace altClothTool.App.Builders.Base
                 {
                     texId = 1;
                 }
-                else if (clothData.DrawableType == ClothNameResolver.DrawableTypes.Mask)
-                {
-                    texId = 1;
-                }
                 else if (clothData.DrawableType == ClothNameResolver.DrawableTypes.Shoes)
                 {
                     texId = 0;
@@ -159,6 +155,11 @@ namespace altClothTool.App.Builders.Base
             };
 
             byte texId = (byte) (clothData.MainPath.EndsWith("_u.ydd") ? 0 : 1);
+
+            if (clothData.DrawableType == ClothNameResolver.DrawableTypes.Mask)
+            {
+              texId = 1;
+            }
 
             foreach (string texPath in clothData.Textures)
             {
