@@ -63,7 +63,7 @@ namespace altClothTool.App.Builders.Base
                 }
                 else if (clothData.DrawableType == ClothNameResolver.DrawableTypes.Mask)
                 {
-                    texId = 0;
+                    texId = 1;
                 }
                 else if (clothData.DrawableType == ClothNameResolver.DrawableTypes.Shoes)
                 {
