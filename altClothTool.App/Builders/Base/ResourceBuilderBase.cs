@@ -63,8 +63,8 @@ namespace altClothTool.App.Builders.Base
             return items;
         }
 
-        /// TODO DURTY: verify if its really based on index? Shouldnt be like this actually, because its connected to skin tone or something
-        private static byte GetTexIdByDrawableType(ClothData clothData, int index)
+        // TODO DURTY: verify if its really based on index? Shouldnt be like this actually, because its connected to skin tone or something
+        private byte GetTexIdByDrawableType(ClothData clothData, int index = 1)
         {
             byte texId = (byte) index;
             switch (clothData.DrawableType)
@@ -74,6 +74,9 @@ namespace altClothTool.App.Builders.Base
                     break;
                 case ClothNameResolver.DrawableTypes.Shoes:
                     texId = 0;
+                    break;
+                case ClothNameResolver.DrawableTypes.Mask:
+                    texId = 1;
                     break;
             }
             return texId;
@@ -169,13 +172,7 @@ namespace altClothTool.App.Builders.Base
                 }
             };
 
-            byte texId = (byte) (clothData.MainPath.EndsWith("_u.ydd") ? 0 : 1);
-
-            if (clothData.DrawableType == ClothNameResolver.DrawableTypes.Mask)
-            {
-                texId = 1;
-            }
-
+            byte texId = GetTexIdByDrawableType(clothData);
             foreach (string texPath in clothData.Textures)
             {
                 MUnk_1036962405 texInfo = new MUnk_1036962405
