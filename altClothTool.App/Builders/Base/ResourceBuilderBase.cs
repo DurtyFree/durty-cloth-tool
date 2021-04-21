@@ -64,7 +64,7 @@ namespace altClothTool.App.Builders.Base
         }
 
         // TODO DURTY: verify if its really based on index? Shouldnt be like this actually, because its connected to skin tone or something
-        private byte GetTexIdByDrawableType(ClothData clothData, int index = 1)
+        private byte GetTexIdByDrawableType(ClothData clothData, int index = 0)
         {
             byte texId = (byte) index;
             switch (clothData.DrawableType)
