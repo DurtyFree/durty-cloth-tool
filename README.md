@@ -11,19 +11,13 @@ If you are in search for an easy way to browse all GTA V clothes data, try **Ple
 [![Pleb Masters Forge Logo](https://i.imgur.com/hotlSPf.png)](https://forge.plebmasters.de)
 
 # Additional notes
-## from `Divined#2725`
+## from `grzybeek#9100`
 ```
-feet ydd needs to be imported with _r
-lowr ydd needs to be imported with _r
-teef ydd needs to be imported with _u
-everything else imported with _u for .ydd
-lowr ytd needs to be imported with _whi
-feet ytd needs to be imported with _uni
-```
-## from `Nicoo#3630`
-```
-berd ydd needs to be imported with _r
-berd ytd needs to be imported with _whi
+The only components that SHOULD have _r is lowr, feet and head. (Only if .ydd model contains skin, otherwise it should be _u)
+Rest should have _u
+
+.ydd model ends with _u = .ytd texture needs to have _uni
+.ydd model ends with _r = .ytd texture needs to have _whi
 ```
 ## from `DurtyFree#3216`
 #### peds .ymt postfixes for models & textures
