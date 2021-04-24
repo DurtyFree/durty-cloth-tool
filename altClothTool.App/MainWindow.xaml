@@ -67,14 +67,24 @@
                                 </StackPanel>
                             </GroupBox>
                         </Grid>
-                        <GroupBox Header="Name" HorizontalAlignment="Left" Height="40" Margin="0,0,0,0" VerticalAlignment="Top" Width="200">
+                        <GroupBox Header="Name" HorizontalAlignment="Left" Height="40" Margin="0,0,0,0" VerticalAlignment="Top" Width="145">
                             <TextBox x:Name="drawableName" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0" TextChanged="DrawableName_TextChanged" BorderBrush="{x:Null}"/>
                         </GroupBox>
-                        <GroupBox Header="First person model" HorizontalAlignment="Right" Height="40" Margin="0,0,0,0" VerticalAlignment="Top" Width="360">
+                        <GroupBox Header="First person model" HorizontalAlignment="Right" Height="40" Margin="0,0,0,0" VerticalAlignment="Top" Width="324">
                             <Grid>
-                                <TextBox x:Name="firstPersonModelPath" VerticalAlignment="Stretch" Margin="0, 0, 100, 0" Text="Not selected..." FontSize="12" Background="Transparent" BorderBrush="{x:Null}" IsEnabled="False" IsReadOnly="True" IsUndoEnabled="False" MaxLines="1"/>
-                                <Button x:Name="selectFirstPersonModel" HorizontalAlignment="Right" Width="40" Margin="0,0,50,-0.333" Content="Select" BorderBrush="{x:Null}" BorderThickness="0" Click="SelectFirstPersonModel_Click"/>
-                                <Button x:Name="clearFirstPersonModel" VerticalAlignment="Stretch" HorizontalAlignment="Right" Width="40" Content="Clear" BorderThickness="0" Click="ClearFirstPersonModel_Click"/>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="23*"/>
+                                    <ColumnDefinition Width="151*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="firstPersonModelPath" VerticalAlignment="Stretch" Margin="0, 0, 100, 0" Text="Not selected..." FontSize="12" Background="Transparent" BorderBrush="{x:Null}" IsEnabled="False" IsReadOnly="True" IsUndoEnabled="False" MaxLines="1" Grid.ColumnSpan="2"/>
+                                <Button x:Name="selectFirstPersonModel" HorizontalAlignment="Right" Width="40" Margin="0,0,50,0" Content="Select" BorderBrush="{x:Null}" BorderThickness="0" Click="SelectFirstPersonModel_Click" Grid.Column="1"/>
+                                <Button x:Name="clearFirstPersonModel" VerticalAlignment="Stretch" HorizontalAlignment="Right" Width="40" Content="Clear" BorderThickness="0" Click="ClearFirstPersonModel_Click" Grid.Column="1"/>
+                            </Grid>
+                        </GroupBox>
+                        <GroupBox Header="Postfix" HorizontalAlignment="Left" Height="40" Margin="150,0,0,0" VerticalAlignment="Top" Width="89">
+                            <Grid>
+                                <RadioButton x:Name="PostfixUCheck" GroupName="postfix" Content="__u" Checked="PostfixUCheck_Checked" Margin="0,0,40,0"/>
+                                <RadioButton x:Name="PostfixRCheck" GroupName="postfix" Content="__r" Checked="PostfixRCheck_Checked" Margin="42,0,0,0"/>
                             </Grid>
                         </GroupBox>
                     </Grid>
