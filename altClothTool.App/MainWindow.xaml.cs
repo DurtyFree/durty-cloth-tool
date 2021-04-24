@@ -3,7 +3,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Win32;
-using System;
 using static altClothTool.App.ClothData;
 
 namespace altClothTool.App
