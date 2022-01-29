@@ -98,6 +98,10 @@ namespace altClothTool.App
                 unkFlag3Check.IsChecked = _selectedCloth.PedComponentFlags.unkFlag3;
                 unkFlag4Check.IsChecked = _selectedCloth.PedComponentFlags.unkFlag4;
                 isHighHeelsCheck.IsChecked = _selectedCloth.PedComponentFlags.isHighHeels;
+
+                PostfixUCheck.IsChecked = _selectedCloth.IsPostfix_U();
+                PostfixRCheck.IsChecked = !_selectedCloth.IsPostfix_U();
+
             }
             else
             {
@@ -265,6 +269,22 @@ namespace altClothTool.App
         {
             if (_selectedCloth != null)
                 _selectedCloth.PedPropFlags.unkFlag5 = unkFlag1Check.IsChecked.GetValueOrDefault(false);
+        }
+
+        private void PostfixUCheck_Checked(object sender, RoutedEventArgs e)
+        {
+            if (_selectedCloth != null)
+            {
+                _selectedCloth.SetCustomPostfix("u");
+            }
+        }
+
+        private void PostfixRCheck_Checked(object sender, RoutedEventArgs e)
+        {
+            if (_selectedCloth != null)
+            {
+                _selectedCloth.SetCustomPostfix("r");
+            }
         }
     }
 }

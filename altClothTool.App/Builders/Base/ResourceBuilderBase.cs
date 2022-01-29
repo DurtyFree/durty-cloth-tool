@@ -53,7 +53,7 @@ namespace altClothTool.App.Builders.Base
             List<MUnk_254518642> items = new List<MUnk_254518642>();
             for (int i = 0; i < clothData.Textures.Count; i++)
             {
-                byte texId = GetTexIdByDrawableType(clothData, i);
+                byte texId = clothData.IsPostfix_U() ? (byte) 0 : (byte) 1;
                 MUnk_254518642 texture = new MUnk_254518642
                 {
                     TexId = texId
@@ -61,25 +61,6 @@ namespace altClothTool.App.Builders.Base
                 items.Add(texture);
             }
             return items;
-        }
-
-        // TODO DURTY: verify if its really based on index? Shouldnt be like this actually, because its connected to skin tone or something
-        private byte GetTexIdByDrawableType(ClothData clothData, int index = 0)
-        {
-            byte texId = (byte) index;
-            switch (clothData.DrawableType)
-            {
-                case ClothNameResolver.DrawableTypes.Legs:
-                    texId = 1;
-                    break;
-                case ClothNameResolver.DrawableTypes.Shoes:
-                    texId = 0;
-                    break;
-                case ClothNameResolver.DrawableTypes.Mask:
-                    texId = 1;
-                    break;
-            }
-            return texId;
         }
 
         protected MUnk_94549140 GenerateYmtPedPropItem(YmtPedDefinitionFile ymt, Unk_2834549053 anchor, ClothData clothData)
@@ -112,24 +93,8 @@ namespace altClothTool.App.Builders.Base
         
         protected void GetClothPostfixes(ClothData clothData, out string ytdPostfix, out string yddPostfix)
         {
-            yddPostfix = clothData.MainPath.EndsWith("_u.ydd") ? "u" : "r";
-            ytdPostfix = clothData.MainPath.EndsWith("_u.ydd") ? "uni" : "whi";
-
-            switch (clothData.DrawableType)
-            {
-                case ClothNameResolver.DrawableTypes.Legs:
-                    yddPostfix = "r";
-                    ytdPostfix = "whi";
-                    break;
-                case ClothNameResolver.DrawableTypes.Mask:
-                    yddPostfix = "r";
-                    ytdPostfix = "whi";
-                    break;
-                case ClothNameResolver.DrawableTypes.Shoes:
-                    yddPostfix = "r";
-                    ytdPostfix = "uni";
-                    break;
-            }
+            yddPostfix = clothData.IsPostfix_U() ? "u" : "r";
+            ytdPostfix = clothData.IsPostfix_U() ? "uni" : "whi";
         }
 
         protected MCComponentInfo GenerateYmtPedComponentItem(ClothData clothData, ref MUnk_3538495220[] componentTextureBindings)
@@ -138,25 +103,44 @@ namespace altClothTool.App.Builders.Base
             if (componentTextureBindings[componentTypeId] == null)
                 componentTextureBindings[componentTypeId] = new MUnk_3538495220();
 
-            byte nextPropMask = 17;
+            byte nextPropMask = 1;
             switch (componentTypeId)
             {
+                case 0:
+                    nextPropMask = clothData.IsPostfix_U() ? (byte) 1 : (byte) 17;
+                    break;
+                case 1:
+                    nextPropMask = clothData.IsPostfix_U() ? (byte) 1 : (byte) 17;
+                    break;
                 case 2:
-                case 7:
-                    nextPropMask = 11;
+                    nextPropMask = clothData.IsPostfix_U() ? (byte) 1 : (byte) 17;
+                    break;
+                case 3:
+                    nextPropMask = clothData.IsPostfix_U() ? (byte) 1 : (byte) 17;
+                    break;
+                case 4:
+                    nextPropMask = clothData.IsPostfix_U() ? (byte) 1 : (byte) 17;
                     break;
                 case 5:
+                    nextPropMask = clothData.IsPostfix_U() ? (byte) 1 : (byte) 17;
+                    break;
+                case 6:
+                    nextPropMask = clothData.IsPostfix_U() ? (byte) 1 : (byte) 17;
+                    break;
+                case 7:
+                    nextPropMask = clothData.IsPostfix_U() ? (byte) 11 : (byte) 17;
+                    break;
                 case 8:
-                    nextPropMask = 65;
+                    nextPropMask = clothData.IsPostfix_U() ? (byte) 65: (byte) 17;
                     break;
                 case 9:
-                    nextPropMask = 1;
+                    nextPropMask = clothData.IsPostfix_U() ? (byte) 1 : (byte) 17;
                     break;
                 case 10:
-                    nextPropMask = 5;
+                    nextPropMask = clothData.IsPostfix_U() ? (byte) 5 : (byte) 17;
                     break;
                 case 11:
-                    nextPropMask = 1;
+                    nextPropMask = clothData.IsPostfix_U() ? (byte) 1 : (byte) 17;
                     break;
                 default:
                     break;
@@ -172,7 +156,7 @@ namespace altClothTool.App.Builders.Base
                 }
             };
 
-            byte texId = GetTexIdByDrawableType(clothData);
+            byte texId = clothData.IsPostfix_U() ? (byte)0 : (byte)1;
             foreach (string texPath in clothData.Textures)
             {
                 MUnk_1036962405 texInfo = new MUnk_1036962405

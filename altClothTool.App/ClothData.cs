@@ -206,5 +206,15 @@ namespace altClothTool.App
             ComponentNumerics = componentNumerics;
             CurrentComponentIndex = currentComponentIndex;
         }
+
+        public bool IsPostfix_U()
+        {
+            return _postfix == "u" ? true : false;
+        }
+
+        public void SetCustomPostfix(string newPostfix)
+        {
+            _postfix = newPostfix;
+        }
     }
 }
