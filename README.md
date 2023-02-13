@@ -1,7 +1,7 @@
-# alt:V Cloth Tool
+# Durty Cloth Tool
 
 ### Generate **alt:V resource** / **Singleplayer dlc** or **FiveM resource** for addon ped components / props
-#### Join our GTA 5 Modding Discord server: https://discord.gg/hgSutAU
+#### Join our GTA 5 Modding Discord server: https://discord.plebmasters.de
 
 ![screen-1](https://image.prntscr.com/image/MKOD2aGBQ5GRtIytkFx2cQ.png)
 ![screen-2](https://image.prntscr.com/image/W9Mx-YdXTFijeJB6Mih0sA.png)
