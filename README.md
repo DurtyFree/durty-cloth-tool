@@ -1,50 +1,53 @@
+# Open Source Code outdated
+My last public commit to this project was on April 2021, since then I have started to rewrite this tool due to high demands for a more professional software with much more features. 
+
+This new version, next generation, is known as **Durty Cloth Tool** and a very popular tool for helping you out with all your GTA V cloth modding needs. As the development, support and maintaining of such a feature rich tool is very time consuming, it has been a licensed software since then.
+
+Feel free to check it out, thanks for all the support ❤
+
 # Durty Cloth Tool
+![screen-1](https://gta.clothing/assets/img/graphics/static/app-1.png)
+#### Website: https://gta.clothing
+## 🔎 Made for people that don't want to waste hours testing around 
+[![](https://assets.plebmasters.de/durtyclothtool/images/v25/3d-preview-male-example.gif)](#)
 
-### Generate **alt:V resource** / **Singleplayer dlc** or **FiveM resource** for addon ped components / props
-#### Join our GTA 5 Modding Discord server: https://discord.plebmasters.de
+Durty Cloth Tool is the best available tool to easily create & manage your GTA 5 addon cloth packs (for singleplayer, FiveM, alt:V & RageMP) without any knowledge in GTA 5 modding needed.
 
-![screen-1](https://image.prntscr.com/image/MKOD2aGBQ5GRtIytkFx2cQ.png)
-![screen-2](https://image.prntscr.com/image/W9Mx-YdXTFijeJB6Mih0sA.png)
+ It supports you on your GTA 5 clothes modding journey by providing all features needed for you to create cloth addon packs with working high heel shoes, hats that cut or remove hairs and more.
 
-# Useful projects
+Cloth modding has never been easier with the help of 3d previews of your cloth drawables and textures + super easy advanced optimization options to get the best out of your clothes. 
+
+
+## 🪄 Easy one-click cloth optimization options, support for FiveM, alt:V and RageMP
+[![](https://assets.plebmasters.de/durtyclothtool/images/v25/durty-cloth-tool-texture-optimizing.gif)](#)
+
+Latest major release adds tons of useful features besides full support for RageMP additionally to FiveM and alt:V. 
+The Texture Optimization Feature is here to **revolutionize the way you optimize your textures and models** with ease.
+
+With a range of easily optimizations and edits to apply, including:
+  - **Automatic optimization of the compression format** for your textures, ensuring the best quality with the smallest file size, or choose your own compression format to be applied.
+  - **Automatic generation of the suggested amount of mipmap levels** for your texture, providing the perfect balance between quality and performance.
+  - Seamless adjustments to your textures with the **automatic adjustment to the next power of two** width and height.
+  - **Easy downscaling of your textures** to your preferred size, ensuring that your models look great at any resolution.
+  - Effortless compatibility with **embedded model textures and cloth texture variations**, without the need for any other tools or manual editing.
+
+With the Texture Optimization Feature, you can streamline your workflow and focus on creating the best GTA V cloth pack possible.
+
+## 💇 Advanced cloth options, pre-build warnings and tons more
+[![](https://assets.plebmasters.de/durtyclothtool/images/v25/showcase-hoodie-hairs-option.png)](#)
+[![](https://assets.plebmasters.de/durtyclothtool/images/v25/showcase-removehatvehicle-option.png)](#)
+[![](https://assets.plebmasters.de/durtyclothtool/images/v25/durty-cloth-tool-removehatinvehicle_flag_on.gif)](#)
+
+[![](https://assets.plebmasters.de/durtyclothtool/images/v25/durty-cloth-tool-errors-warnings-infos.gif)](#)
+
+# Download
+### Download latest version: https://github.com/DurtyFree/durty-cloth-tool/releases/latest/download/DurtyClothTool.App.zip
+### Check out our website: https://gta.clothing/
+### Join our Discord for support: https://discord.plebmasters.de/
+
+# Useful other tools
 If you are in search for an easy way to browse all GTA V clothes data, try **Pleb Masters: Forge**.
 [![Pleb Masters Forge Logo](https://i.imgur.com/hotlSPf.png)](https://forge.plebmasters.de)
-
-# Additional notes
-## from `grzybeek#9100`
-```
-The only components that SHOULD have _r is lowr, feet and head. (Only if .ydd model contains skin, otherwise it should be _u)
-Rest should have _u
-
-.ydd model ends with _u = .ytd texture needs to have _uni
-.ydd model ends with _r = .ytd texture needs to have _whi
-```
-## from `DurtyFree#3216`
-#### peds .ymt postfixes for models & textures
-For models (`_postfix`)
-```
-_r (race)
-_u (universal)
-_m (?? - only used 4 times)
-_g (?? - only used twice)
-_p (props - used in cutscenes)
-```
-For textures (`texIds` = `_postfix`)
-```
-0  = '_uni' (universal)
-1  = '_whi' (white)
-2  = '_bla' (black)
-3  = '_chi' (chinese)
-4  = '_lat' (latino)
-5  = '_ara' (arabic)
-6  = '_bal' (baltic)
-7  = '_jam' (jamaican)
-8  = '_kor' (korean)
-9  = '_ita' (italian)
-10 = '_pak' (pakistani - resembles indians mostly, like shopkeepers)
-```
-## How to fix addon hats
-#### See the following tutorial on how to fix addon hats: https://forum.cfx.re/t/how-to-fix-addon-hats
 
 # Credits
 ### - [Tuxick](https://github.com/emcifuntik) for initial version of this tool :)
