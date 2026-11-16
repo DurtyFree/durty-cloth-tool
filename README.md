@@ -7,7 +7,7 @@ Durty Cloth Tool is a Windows app for creating GTA 5 clothing packs for FiveM, f
 ### Download Durty Cloth Tool V4: https://gta.clothing
 ### Guides and documentation: https://docs.gta.clothing
 
-No license is needed to try it; pack-size limits apply to the free version.
+No license is needed to try it: the free version builds within pack-size limits.
 
 ## What V4 brings
 
@@ -20,6 +20,8 @@ Version 4 is the biggest update Durty Cloth Tool has had.
 - **Tested in game.** FiveM builds can include the Clothing Inspector, an in-game menu that lists every streamed cloth, tattoo and facial overlay.
 - **Fitting, tattoos and fixes.** Fit, rig and import clothing in 3D, place tattoo designs on the ped, and use the Fix action on every finding a tool can act on.
 - **Builds for GTA V Enhanced** as well as Legacy, with a clear destination and progress you can follow.
+
+Custom addon peds and the Clothing Inspector build option need an Advanced or Ultimate license. Saving and exporting in Texture Studio, Model Studio, Creator Link live preview and 3D fitting need Ultimate, and the 3D features need GTA V set up in Durty Cloth Tool.
 
 See every V4 feature and the full changelog at https://gta.clothing/v4/.
 
