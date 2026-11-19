@@ -1,49 +1,40 @@
-# Open Source Code outdated
-My last public commit to this project was on April 2021, since then I have started to rewrite this tool due to high demands for a more professional software with much more features. 
-
-This new version, next generation, is known as **Durty Cloth Tool** and a very popular tool for helping you out with all your GTA V cloth modding needs. As the development, support and maintaining of such a feature rich tool is very time consuming, it has been a licensed software since then.
-
-Feel free to check it out, thanks for all the support ❤
-
 # Durty Cloth Tool
-![screen-1](https://gta.clothing/assets/img/graphics/static/app-1.png)
-#### Website: https://gta.clothing
-## 🔎 Made for people that don't want to waste hours testing around 
-[![](https://assets.plebmasters.de/durtyclothtool/images/v25/3d-preview-male-example.gif)](#)
 
-Durty Cloth Tool is the best available tool to easily create & manage your GTA 5 addon cloth packs (for singleplayer, FiveM, alt:V & RageMP) without any knowledge in GTA 5 modding needed.
+Catch GTA clothing pack problems before your players do.
 
- It supports you on your GTA 5 clothes modding journey by providing all features needed for you to create cloth addon packs with working high heel shoes, hats that cut or remove hairs and more.
+Durty Cloth Tool is a Windows app for creating GTA 5 clothing packs for FiveM, for MP Freemode or custom addon peds. Preview in 3D, fix findings in one click, and build GTA 5 clothing and tattoo resources from one project.
 
-Cloth modding has never been easier with the help of 3d previews of your cloth drawables and textures + super easy advanced optimization options to get the best out of your clothes. 
+### Download Durty Cloth Tool V4: https://gta.clothing
+### Guides and documentation: https://docs.gta.clothing
 
+No license is needed to try it: the free version builds within pack-size limits.
 
-## 🪄 Easy one-click cloth optimization options, support for FiveM, alt:V and RageMP
-[![](https://assets.plebmasters.de/durtyclothtool/images/v25/durty-cloth-tool-texture-optimizing.gif)](#)
+## What V4 brings
 
-Latest major release adds tons of useful features besides full support for RageMP additionally to FiveM and alt:V. 
-The Texture Optimization Feature is here to **revolutionize the way you optimize your textures and models** with ease.
+Version 4 is the biggest update Durty Cloth Tool has had.
 
-With a range of easily optimizations and edits to apply, including:
-  - **Automatic optimization of the compression format** for your textures, ensuring the best quality with the smallest file size, or choose your own compression format to be applied.
-  - **Automatic generation of the suggested amount of mipmap levels** for your texture, providing the perfect balance between quality and performance.
-  - Seamless adjustments to your textures with the **automatic adjustment to the next power of two** width and height.
-  - **Easy downscaling of your textures** to your preferred size, ensuring that your models look great at any resolution.
-  - Effortless compatibility with **embedded model textures and cloth texture variations**, without the need for any other tools or manual editing.
+- **Custom addon peds.** Not only MP Freemode: create clothing projects for custom addon peds and other game peds, each with its own model, skeleton and clothes, then build FiveM or Singleplayer resources.
+- **Texture Studio.** Add pictures, text, patches and insignia to a cloth texture and watch the ped update in 3D while you work. The layers stay editable in your project.
+- **Model Studio (Experimental).** Sculpting, selection, weight painting and fitting around the 3D preview.
+- **Creator Link plugins.** Paint in Photoshop, Photopea, GIMP, Krita or Substance 3D Painter, or create with Blender or Marvelous Designer, and see your work on the ped in the 3D preview while you go.
+- **Tested in game.** FiveM builds can include the Clothing Inspector, an in-game menu that lists every streamed cloth, tattoo and facial overlay.
+- **Fitting, tattoos and fixes.** Fit, rig and import clothing in 3D, place tattoo designs on the ped, and use the Fix action on every finding a tool can act on.
+- **Builds for GTA V Enhanced** as well as Legacy, with a clear destination and progress you can follow.
 
-With the Texture Optimization Feature, you can streamline your workflow and focus on creating the best GTA V cloth pack possible.
+Custom addon peds and the Clothing Inspector build option need an Advanced or Ultimate license. Saving and exporting in Texture Studio, Model Studio, Creator Link live preview and 3D fitting need Ultimate, and the 3D features need GTA V set up in Durty Cloth Tool.
 
-## 💇 Advanced cloth options, pre-build warnings and tons more
-[![](https://assets.plebmasters.de/durtyclothtool/images/v25/showcase-hoodie-hairs-option.png)](#)
-[![](https://assets.plebmasters.de/durtyclothtool/images/v25/showcase-removehatvehicle-option.png)](#)
-[![](https://assets.plebmasters.de/durtyclothtool/images/v25/durty-cloth-tool-removehatinvehicle_flag_on.gif)](#)
+See every V4 feature and the full changelog at https://gta.clothing/v4/.
 
-[![](https://assets.plebmasters.de/durtyclothtool/images/v25/durty-cloth-tool-errors-warnings-infos.gif)](#)
+## Get started
 
-# Download
-### Download latest version: https://github.com/DurtyFree/durty-cloth-tool/releases/latest/download/DurtyClothTool.App.zip
-### Check out our website: https://gta.clothing/
-### Join our Discord for support: https://discord.plebmasters.de/
+1. Download Durty Cloth Tool from https://gta.clothing, as an installer or a portable ZIP.
+2. Follow the quickstart guide to set up your first project: https://docs.gta.clothing/getting-started/quickstart
+
+Join our Discord for support: https://discord.plebmasters.de/
+
+## About this repository
+
+The source code in this repository is the original open-source tool, last updated in April 2021. It is no longer maintained: Durty Cloth Tool was rewritten from the ground up and has been licensed software since then. Thanks for all the support ❤
 
 # Useful other tools
 If you are in search for an easy way to browse all GTA V clothes data, try **Pleb Masters: Forge**.
